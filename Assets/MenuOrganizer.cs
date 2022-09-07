@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MenuOrganizer : MonoBehaviour
 {
+
+    public void GoToMenuStart()
+    {
+        SceneManager.LoadScene("MenuStart");
+    }
+
     public void GoToGameMode()
     {
         SceneManager.LoadScene("GameScene");
@@ -12,7 +18,7 @@ public class MenuOrganizer : MonoBehaviour
 
     public void GoToPersonaggiMode()
     {
-        SceneManager.LoadScene("PersonaggiMode");
+        SceneManager.LoadScene("PersonaggiScene");
     }
 
 }
