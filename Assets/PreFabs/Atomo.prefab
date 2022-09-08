@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7305812156856362105}
   - component: {fileID: 7982892329120492241}
   m_Layer: 0
-  m_Name: Friend
+  m_Name: Atomo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129,8 +129,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d8d7ed9646504888a5702b5d7ed33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: PIERPAOLO
-  unitLevel: 40
-  damage: 10
-  maxHP: 30
-  currentHP: 30
+  unitName: Atomo
+  unitLevel: 100
+  damage: 27
+  maxHP: 100
+  currentHP: 100
+  attacco: 90
+  difesa: 80
+  attacco_speciale: 100
+  difesa_speciale: 60
+  velocita: 50
+  mosse:
+  - {fileID: 5297637820578396799, guid: 704ab24a74922e7429bfefbbdfda6cdf, type: 3}
+  - {fileID: 1191857724624331421, guid: 8285a2f02341ab346a123b64fc5f18fd, type: 3}
+  - {fileID: 5179171615908493374, guid: c21da7f37754c2649b296007503034ce, type: 3}
+  - {fileID: 2611070430221132175, guid: 57908a695f7e7e9459486a6c8080086b, type: 3}

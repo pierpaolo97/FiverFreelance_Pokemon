@@ -13,7 +13,16 @@ public class Unit : MonoBehaviour
 	public int maxHP;
 	public int currentHP;
 
-	public bool TakeDamage(int dmg)
+    public int attacco;
+    public int difesa;
+    public int attacco_speciale;
+    public int difesa_speciale;
+    public int velocita;
+
+    public List<Mossa> mosse;
+
+
+    public bool TakeDamage(int dmg)
 	{
 		currentHP -= dmg;
 
