@@ -49,3 +49,4 @@ MonoBehaviour:
   danni: 120
   precisione: 50
   elemento: TERRA
+  tipologiaDiMosaa: ATTACCO NORMALE

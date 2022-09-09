@@ -47,5 +47,6 @@ MonoBehaviour:
   nomeMossa: Ordine Della Futura Regina
   tipo: CURA
   danni: 0
-  precisione: 0
+  precisione: 100
   elemento: CURA
+  tipologiaDiMosaa: DIFESA

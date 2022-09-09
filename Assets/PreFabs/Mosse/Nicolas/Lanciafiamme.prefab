@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6670970400398797677}
   - component: {fileID: 7599772078493800742}
+  - component: {fileID: 155383639216349531}
   m_Layer: 0
   m_Name: Lanciafiamme
   m_TagString: Untagged
@@ -49,3 +50,16 @@ MonoBehaviour:
   danni: 70
   precisione: 70
   elemento: FUOCO
+  tipologiaDiMosaa: ATTACCO NORMALE
+--- !u!114 &155383639216349531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6228994368707666744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

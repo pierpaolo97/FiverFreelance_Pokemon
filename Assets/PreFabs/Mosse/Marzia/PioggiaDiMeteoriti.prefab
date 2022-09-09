@@ -49,3 +49,4 @@ MonoBehaviour:
   danni: 100
   precisione: 60
   elemento: SPAZIO
+  tipologiaDiMosaa: ATTACCO NORMALE

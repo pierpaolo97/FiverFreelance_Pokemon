@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2190641623163256884}
   - component: {fileID: 3136023489529557631}
+  - component: {fileID: -7197980753842858964}
   m_Layer: 0
   m_Name: Eruzione
   m_TagString: Untagged
@@ -49,3 +50,16 @@ MonoBehaviour:
   danni: 120
   precisione: 50
   elemento: FUOCO
+  tipologiaDiMosaa: ATTACCO NORMALE
+--- !u!114 &-7197980753842858964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478132507265468513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

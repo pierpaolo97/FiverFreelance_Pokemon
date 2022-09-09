@@ -6,7 +6,7 @@ using TMPro;
 using System;
 using System.Linq;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, FRIENDTURN, ENEMY2TURN, WON, LOST }
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, FRIENDTURN, ENEMY2TURN, WON, LOST, FINISHED}
 
 public class BattleSystem : MonoBehaviour
 {
@@ -22,10 +22,10 @@ public class BattleSystem : MonoBehaviour
     public Transform friendBattleStation; //posizione del nostro giocatore
     public Transform enemy2BattleStation; //posizione del nemico
 
-    Unit playerUnit;
-	Unit enemyUnit;
-    Unit friendUnit;
-    Unit enemy2Unit;
+    public Unit playerUnit;
+    public Unit enemyUnit;
+    public Unit friendUnit;
+    public Unit enemy2Unit;
 
     public Text dialogueText;
 
@@ -50,6 +50,12 @@ public class BattleSystem : MonoBehaviour
     public Unit nemicoAttaccatoDalPlayer;
     public BattleHUD nemicoAttaccatoDalPlayerHUD;
 
+    public Unit[] amici;
+    public Unit[] nemici;
+
+    public Mossa emptyMossa;
+    public Mossa mossaDaEseguire;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,7 +78,7 @@ public class BattleSystem : MonoBehaviour
         GameObject enemy2GO = Instantiate(enemy2Prefab, enemy2BattleStation);
         enemy2Unit = enemy2GO.GetComponent<Unit>();
 
-        dialogueText.text = enemyUnit.unitName + " e " + enemy2Unit.unitName + " ti sfidano!";
+        dialogueText.text = playerUnit.unitName + " e " + friendUnit.unitName + ", " + enemyUnit.unitName + " e " + enemy2Unit.unitName + " vi sfidano!";
 
 		playerHUD.SetHUD(playerUnit);
 		enemyHUD.SetHUD(enemyUnit);
@@ -83,17 +89,21 @@ public class BattleSystem : MonoBehaviour
         for(int i=0; i<4; i++)
         {
             bottoniMosse.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = playerUnit.mosse[i].nomeMossa;
+            Mossa mossa = playerUnit.mosse[i];
+            bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => mossa.SalvaMossa(mossa));
+            //bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => emptyMossa.EseguiMossa(playerUnit.mosse[i]));
+
         }
 
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSecondsRealtime(2);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 	}
 
 
-    IEnumerator PlayerAttackMIO(Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
+    /*IEnumerator PlayerAttackMIO(Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
         bool isDead = qualeNemicoAttacchi.TakeDamage(playerUnit.damage);
 
@@ -127,10 +137,10 @@ public class BattleSystem : MonoBehaviour
             ProssimoCheAttacca();
             //StartCoroutine(EnemyTurn());
         }
-    }
+    }*/
 
 
-    void PlayerTurn()
+    void PlayerTurn() //Qui il giocatore sceglie la mossa, che non viene eseguita qui ma dopo quando sarà il suo turno di gioco. Se sei morto esce che sei esausto.
     {
         state = BattleState.PLAYERTURN;
         if (playerUnit.currentHP > 0)
@@ -143,7 +153,9 @@ public class BattleSystem : MonoBehaviour
             dialogueText.text = playerUnit.unitName + " è esausto!";
             state = BattleState.ENEMYTURN;
             StartCoroutine(Wait(2));
-            StartCoroutine(EnemyTurn());
+            //StartCoroutine(EnemyTurn());
+            ProssimoCheAttacca();
+
         }
     }
 
@@ -380,21 +392,20 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void OrdinaAttacchi()
+    public void OrdinaAttacchi() //Metto in ordine i giocatori per velocità per capire chi attacca per primo
     {
         
         valoriVelocita.Add(Tuple.Create(playerPrefab, playerUnit.velocita));
         valoriVelocita.Add(Tuple.Create(friendPrefab, friendUnit.velocita));
         valoriVelocita.Add(Tuple.Create(enemyPrefab, enemyUnit.velocita));
         valoriVelocita.Add(Tuple.Create(enemy2Prefab, enemy2Unit.velocita));
+
         valoriVelocita = valoriVelocita.OrderByDescending(t => t.Item2).ToList();
 
         int k = 0;
 
         foreach (var item in valoriVelocita)
         {
-            Debug.Log(item.Item1.name);
-            Debug.Log(item.Item2);
             gameobjectInOrdine[k] = item.Item1;
             k++;       
         }
@@ -410,7 +421,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void ProssimoCheAttacca()
+    public void ProssimoCheAttacca() //Dopo aver ordinato i giocatori per velocità, vedo chi sarà il prossimo ad attaccare. Se sta attaccando l'ultimo (index=3) ricomincio il giro.
     {
         int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
         Debug.Log(index);
@@ -431,12 +442,16 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void SceltaTurno()
+    public void SceltaTurno() //Qui è il momento vero in cui il giocatore esegue la mossa. Prima la salva e basta, poi a questo punto viene realmente eseguita.
     {
         if (turnoDiGameobject.name == playerPrefab.gameObject.name)
         {
             //state = BattleState.PLAYERTURN;
-            StartCoroutine(PlayerAttackMIO(nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD));
+
+            
+            mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+
+            //StartCoroutine(PlayerAttackMIO(nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD));
             //PlayerTurn();
             Debug.Log("Player");
         }
@@ -549,7 +564,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void ChiAttacchi(Button button)
+    public void ChiAttacchi(Button button) //Il player sceglie chi vuole attaccare, schiacciando sul bottone dei giocatori
     {
         if(button.name== "Enemy1")
         {
@@ -572,7 +587,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void ScegliChiAttaccare()
+    public void ScegliChiAttaccare() //Dopo aver selezionato la mossa, si attivano i bottoni dei due nemici. Se uno dei due è morto è reso interactable=false.
     {
         chiVuoiAttaccare.SetActive(true);
         chiVuoiAttaccareText.text = "Scegli chi attaccare!";
@@ -599,7 +614,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    void EndBattle()
+    public void EndBattle()
 	{
 		if(state == BattleState.WON)
 		{

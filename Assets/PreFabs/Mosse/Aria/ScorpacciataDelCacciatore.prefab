@@ -49,3 +49,4 @@ MonoBehaviour:
   danni: 0
   precisione: 0
   elemento: CURA
+  tipologiaDiMosaa: DIFESA

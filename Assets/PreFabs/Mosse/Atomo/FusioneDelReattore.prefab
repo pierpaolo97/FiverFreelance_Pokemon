@@ -49,3 +49,4 @@ MonoBehaviour:
   danni: 200
   precisione: 60
   elemento: NORMALE
+  tipologiaDiMosaa: ATTACCO PARTICOLARE

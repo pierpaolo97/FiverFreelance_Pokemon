@@ -47,5 +47,6 @@ MonoBehaviour:
   nomeMossa: Bacio della Principessa
   tipo: PARALISI
   danni: 0
-  precisione: 0
+  precisione: 100
   elemento: PARALISI
+  tipologiaDiMosaa: PARALISI
