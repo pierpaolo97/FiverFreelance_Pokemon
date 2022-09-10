@@ -6712,13 +6712,20 @@ MonoBehaviour:
   nemicoAttaccatoDalPlayer: {fileID: 0}
   nemicoAttaccatoDalPlayerHUD: {fileID: 0}
   amici:
-  - {fileID: 4363536997099518543, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
-  - {fileID: 7982892329120492241, guid: 7517869b5572252438f85d93d0b2a8b1, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   nemici:
-  - {fileID: 4612583364151593901, guid: 98ff83b503f71ce4abbf86913c6dc8b0, type: 3}
-  - {fileID: 3763780388596319052, guid: 302bdc8dead690247957754e115acde3, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
   emptyMossa: {fileID: 9168572435300955590}
   mossaDaEseguire: {fileID: 0}
+  friendMossaDaEseguire: {fileID: 0}
+  enemyMossaDaEseguire: {fileID: 0}
+  enemy2MossaDaEseguire: {fileID: 0}
+  bot:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &1714929644
 Transform:
   m_ObjectHideFlags: 0

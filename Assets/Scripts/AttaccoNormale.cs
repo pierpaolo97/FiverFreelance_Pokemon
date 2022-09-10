@@ -31,7 +31,7 @@ public class AttaccoNormale : MonoBehaviour
 
         if (x <= precisione)
         {
-            int dannoEffettivo = calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);
+            int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);
 
             bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
 
@@ -110,11 +110,6 @@ public class AttaccoNormale : MonoBehaviour
      
     }
 
-    int calcolaDannoEffettivo(int danni, int attaccoSpeciale)
-    {
-        int valoreDanno = (danni+10)*2/3;
-        return valoreDanno;
-    }
 
 
 

@@ -31,6 +31,10 @@ public class Mossa : MonoBehaviour
             Debug.Log("QUAAA");
             StartCoroutine(mossa.GetComponent<AttaccoNormale>().Attacco(attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
         }
+        else
+        {
+            Debug.Log("Mossa ancora non programmata: " + mossa.nomeMossa);
+        }
     }
 
 }
