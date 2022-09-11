@@ -27,7 +27,7 @@ public class BattleSystem : MonoBehaviour
     public Unit friendUnit;
     public Unit enemy2Unit;
 
-    public Text dialogueText;
+    public TextMeshProUGUI dialogueText;
 
 	public BattleHUD playerHUD;
 	public BattleHUD enemyHUD;
@@ -80,7 +80,7 @@ public class BattleSystem : MonoBehaviour
 
 	IEnumerator SetupBattle()
 	{
-		GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
+        /*GameObject playerGO = Instantiate(playerPrefab, playerBattleStation);
 		playerUnit = playerGO.GetComponent<Unit>();
 
 		GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
@@ -90,7 +90,12 @@ public class BattleSystem : MonoBehaviour
         friendUnit = friendGO.GetComponent<Unit>();
 
         GameObject enemy2GO = Instantiate(enemy2Prefab, enemy2BattleStation);
-        enemy2Unit = enemy2GO.GetComponent<Unit>();
+        enemy2Unit = enemy2GO.GetComponent<Unit>();*/
+
+        playerUnit = playerPrefab.GetComponent<Unit>();
+        friendUnit = friendPrefab.GetComponent<Unit>();
+        enemyUnit = enemyPrefab.GetComponent<Unit>();
+        enemy2Unit = enemy2Prefab.GetComponent<Unit>();
 
         dialogueText.text = playerUnit.unitName + " e " + friendUnit.unitName + ", " + enemyUnit.unitName + " e " + enemy2Unit.unitName + " vi sfidano!";
 
@@ -164,23 +169,45 @@ public class BattleSystem : MonoBehaviour
 
     void PlayerTurn() //Qui il giocatore sceglie la mossa, che non viene eseguita qui ma dopo quando sarà il suo turno di gioco. Se sei morto esce che sei esausto.
     {
-        BotSalvaMossa();
         state = BattleState.PLAYERTURN;
+        BotSalvaMossa();
+
+        Debug.Log("IL GIOCATORE DEVE SCEGLIEREEEEEEEEEEEEEEEEEEEEEEEEE");
+        
         if (playerUnit.currentHP > 0)
         {
-            dialogueText.text = playerUnit.unitName + " scegli un'azione!";
-            bottoniMosse.SetActive(true);
+            if (!playerUnit.paralizzato)
+            {
+                Debug.Log("TUTTO OK");
+                dialogueText.text = playerUnit.unitName + " scegli un'azione!";
+                bottoniMosse.SetActive(true);
+            }
+            else
+            {
+                Debug.Log(playerUnit.unitName + " è paralizzatooooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
+                //playerUnit.paralizzato = false;
+                dialogueText.text = playerUnit.unitName + " è paralizzato!";
+                StartCoroutine(Wait(2));
+                Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
+                //ProssimoCheAttacca();
+                SceltaTurno();
+            }
         }
         else
         {
+            Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
             dialogueText.text = playerUnit.unitName + " è esausto!";
             state = BattleState.ENEMYTURN;
             StartCoroutine(Wait(2));
             //StartCoroutine(EnemyTurn());
+            Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
             ProssimoCheAttacca();
 
         }
+
+
     }
+
 
     public void BotSalvaMossa()
     {
@@ -197,6 +224,7 @@ public class BattleSystem : MonoBehaviour
 
             if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == friendUnit.unitName)
             {
+                Debug.Log("Friend mossa selezionata");
                 //friendMossaDaEseguire = mossaSelezionata;
                 (giocatoreAttaccato, giocatoreAttaccatoHUD, friendMossaDaEseguire, boolAttacco) = BotSceglieMossa(friendUnit);
                 giocatoreDaAttaccareFRIEND = giocatoreAttaccato;
@@ -204,6 +232,7 @@ public class BattleSystem : MonoBehaviour
             }
             else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == enemyUnit.unitName)
             {
+                Debug.Log("ENEMY mossa selezionata");
                 (giocatoreAttaccato, giocatoreAttaccatoHUD, enemyMossaDaEseguire, boolAttacco) = BotSceglieMossa(enemyUnit);
                 giocatoreDaAttaccareENEMY = giocatoreAttaccato;
                 giocatoreDaAttaccareENEMY_HUD = giocatoreAttaccatoHUD;
@@ -211,6 +240,7 @@ public class BattleSystem : MonoBehaviour
             }
             else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == enemy2Unit.unitName)
             {
+                Debug.Log("ENEMY 2 mossa selezionata");
                 (giocatoreAttaccato, giocatoreAttaccatoHUD, enemy2MossaDaEseguire, boolAttacco) = BotSceglieMossa(enemy2Unit);
                 giocatoreDaAttaccareENEMY2 = giocatoreAttaccato;
                 giocatoreDaAttaccareENEMY2_HUD = giocatoreAttaccatoHUD;
@@ -218,6 +248,7 @@ public class BattleSystem : MonoBehaviour
             }
         }
     }
+
 
     public (Unit, BattleHUD, Mossa, bool) BotSceglieMossa(Unit giocatoreCheDeveDecidereUnit)
     {
@@ -253,9 +284,21 @@ public class BattleSystem : MonoBehaviour
             }
 
             // In questa parte ci entra solo se non è nei due casi particolari precedenti: se l'avversario non sta schiattando e se io non sto schiattando, scelgo una mossa a caso.
-            // Qua si potrebbe far si che si seleziona una mossa a caso solo tra quelle di attacco. 
+            // Qua si potrebbe far si che si seleziona una mossa a caso solo tra quelle di attacco o comunque non di cura. 
 
-            int x = UnityEngine.Random.Range(0, 4);
+            //Se quando carichiamo le mosse, mettiamo le mosse di cura sempre per ultime nel vettore mosse, possiamo contare per ogni giocatore le mosse di CURA, 
+            //e quindi poi scegliere solo tra le altre mosse che saranno le prime 4-numeroDiMossaCura del vettore giocatoreCheDeveDecidereUnit.mosse
+    
+            int numeroDiMossaCura = 0;
+            foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
+            {
+                if(mossa.tipologiaDiMosaa == "CURA")
+                {
+                    numeroDiMossaCura++;
+                }
+            }
+
+            int x = UnityEngine.Random.Range(0, 4-numeroDiMossaCura);
             Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];
             bool mossaDiAttacco;
 
@@ -317,7 +360,16 @@ public class BattleSystem : MonoBehaviour
                 }
             }
 
-            int x = UnityEngine.Random.Range(0, 4);
+            int numeroDiMossaCura = 0;
+            foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
+            {
+                if (mossa.tipologiaDiMosaa == "CURA")
+                {
+                    numeroDiMossaCura++;
+                }
+            }
+
+            int x = UnityEngine.Random.Range(0, 4 - numeroDiMossaCura);
             Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];
             bool mossaDiAttacco;
 
@@ -355,64 +407,24 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-
-
     IEnumerator FriendTurn()
     {
         bottoniMosse.SetActive(false);
         if (friendUnit.currentHP > 0)
         {
-
-
-            //(giocatoreAttaccato, giocatoreAttaccatoHUD, boolAttacco) = ChooseToAttackOrDefend(friendUnit);
-
-            friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
-
-            /*if (boolAttacco) //se è vero vuol dire che devo attaccare
+            if (!friendUnit.paralizzato)
             {
-
-                dialogueText.text = friendUnit.unitName + " attacca " + giocatoreAttaccato.unitName;
-                bool isDead = giocatoreAttaccato.TakeDamage(friendUnit.damage);
-                giocatoreAttaccatoHUD.SetHP(giocatoreAttaccato.currentHP);
-
-                yield return new WaitForSeconds(2f);
-
-                Unit giocatoreNONAttaccato;
-
-                if (giocatoreAttaccato.unitName == enemyUnit.unitName)
-                {
-                    giocatoreNONAttaccato = enemy2Unit;
-                }
-                else
-                {
-                    giocatoreNONAttaccato = enemyUnit;
-                }
-
-                if (isDead && giocatoreNONAttaccato.currentHP==0) // se è morto anche l'altro finisce altrimenti no!!!
-                {
-                    state = BattleState.WON;
-                    EndBattle();
-                }
-                else
-                {
-                    //state = BattleState.ENEMY2TURN;
-                    //PlayerTurn();
-                    //StartCoroutine(Enemy2Turn());
-                    ProssimoCheAttacca();
-                }
-
+                friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
             }
             else
             {
-                Debug.Log(friendUnit.unitName + " si difende!");
-                StartCoroutine(EnemyHeal(friendUnit, friendHUD));
-                dialogueText.text = friendUnit.unitName + " si difende!";
-                //state = BattleState.ENEMY2TURN;
-                yield return new WaitForSeconds(2f);
-                //PlayerTurn();
-                //StartCoroutine(Enemy2Turn());
-                ProssimoCheAttacca();
-            }*/
+                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
+                friendUnit.paralizzato = false;
+                dialogueText.text = friendUnit.unitName + " è paralizzato, non può attaccare!";
+                yield return new WaitForSeconds(1f);
+                //ProssimoCheAttacca();
+            }
+
         }
         else
         {
@@ -420,10 +432,12 @@ public class BattleSystem : MonoBehaviour
             dialogueText.text = friendUnit.unitName + " è esausto";
             yield return new WaitForSeconds(1f);
             //StartCoroutine(Enemy2Turn());
-            ProssimoCheAttacca();
+            //ProssimoCheAttacca();
         }
 
         yield return new WaitForSeconds(1f);
+
+        ProssimoCheAttacca();
         
 
     }
@@ -434,56 +448,17 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemyUnit.currentHP > 0)
         {
-
-            //(giocatoreAttaccato, giocatoreAttaccatoHUD, boolAttacco) = ChooseToAttackOrDefend(enemyUnit);
-            enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
-
-            /*if (boolAttacco) //se è vero vuol dire che devo attaccare
+            if (!enemyUnit.paralizzato)
             {
-
-                dialogueText.text = enemyUnit.unitName + " attacca " + giocatoreAttaccato.unitName;
-                bool isDead = giocatoreAttaccato.TakeDamage(enemyUnit.damage);
-                giocatoreAttaccatoHUD.SetHP(giocatoreAttaccato.currentHP);
-
-                yield return new WaitForSeconds(2f);
-
-
-                Unit giocatoreNONAttaccato;
-
-                if (giocatoreAttaccato.unitName == playerUnit.unitName)
-                {
-                    giocatoreNONAttaccato = friendUnit;
-                }
-                else
-                {
-                    giocatoreNONAttaccato = playerUnit;
-                }
-
-                if (isDead && giocatoreNONAttaccato.currentHP==0)
-                {
-                    state = BattleState.LOST;
-                    EndBattle();
-                }
-                else
-                {
-                    //state = BattleState.FRIENDTURN;
-                    //PlayerTurn();
-                    //StartCoroutine(FriendTurn());
-                    ProssimoCheAttacca();
-                }
-
+                enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
             }
             else
             {
-                Debug.Log(enemyUnit.unitName + " si difende!");
-                StartCoroutine(EnemyHeal(enemyUnit, enemyHUD));
-                dialogueText.text = enemyUnit.unitName + " si difende!";
-                //state = BattleState.FRIENDTURN;
-                yield return new WaitForSeconds(2f);
-                //PlayerTurn();
-                //StartCoroutine(FriendTurn());
-                ProssimoCheAttacca();
-            }*/
+                enemyUnit.paralizzato = false;
+                dialogueText.text = enemyUnit.unitName + " è paralizzato, non può attaccare!";
+                yield return new WaitForSeconds(1f);
+                //ProssimoCheAttacca();
+            }
         }
         else
         {
@@ -491,10 +466,13 @@ public class BattleSystem : MonoBehaviour
             dialogueText.text = enemyUnit.unitName + " è esausto";
             yield return new WaitForSeconds(1f);
             //StartCoroutine(FriendTurn());
-            ProssimoCheAttacca();
+            //ProssimoCheAttacca();
         }
 
+
         yield return new WaitForSeconds(1f);
+
+        ProssimoCheAttacca();
         
 
     }
@@ -505,52 +483,17 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemy2Unit.currentHP > 0)
         {
-
-            enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
-            //(giocatoreAttaccato, giocatoreAttaccatoHUD, boolAttacco) = ChooseToAttackOrDefend(enemyUnit);
-
-            /*if (boolAttacco) //se è vero vuol dire che devo attaccare
+            if (!enemy2Unit.paralizzato)
             {
-
-                dialogueText.text = enemy2Unit.unitName + " attacca " + giocatoreAttaccato.unitName;
-                bool isDead = giocatoreAttaccato.TakeDamage(enemy2Unit.damage);
-                giocatoreAttaccatoHUD.SetHP(giocatoreAttaccato.currentHP);
-
-                yield return new WaitForSeconds(2f);
-
-                Unit giocatoreNONAttaccato;
-                if (giocatoreAttaccato.unitName == playerUnit.unitName)
-                {
-                    giocatoreNONAttaccato = friendUnit;
-                }
-                else
-                {
-                    giocatoreNONAttaccato = playerUnit;
-                }
-
-                if (isDead && giocatoreNONAttaccato.currentHP == 0)
-                {
-                    state = BattleState.LOST;
-                    EndBattle();
-                }
-                else
-                {
-                    //state = BattleState.PLAYERTURN;
-                    //PlayerTurn();
-                    ProssimoCheAttacca();
-                }
-
+                enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
             }
             else
             {
-                Debug.Log(enemy2Unit.unitName + " si difende!");
-                StartCoroutine(EnemyHeal(enemy2Unit, enemy2HUD));
-                dialogueText.text = enemy2Unit.unitName + " si difende!";
-                //state = BattleState.PLAYERTURN;
-                yield return new WaitForSeconds(2f);
-                //PlayerTurn();
-                ProssimoCheAttacca();
-            }*/
+                enemy2Unit.paralizzato = false;
+                dialogueText.text = enemy2Unit.unitName + " è paralizzato, non può attaccare!";
+                yield return new WaitForSeconds(1f);
+                //ProssimoCheAttacca();
+            }
         }
         else
         {
@@ -558,11 +501,13 @@ public class BattleSystem : MonoBehaviour
             //state = BattleState.PLAYERTURN;
             yield return new WaitForSeconds(1f);
             //PlayerTurn();
-            ProssimoCheAttacca();
+            //ProssimoCheAttacca();
         }
 
 
         yield return new WaitForSeconds(1f);
+
+        ProssimoCheAttacca();
 
     }
 
@@ -587,7 +532,7 @@ public class BattleSystem : MonoBehaviour
 
         turnoDiGameobject = gameobjectInOrdine[0];
 
-        PlayerTurn();         //Ho messo in ordine i giocatori per velocità. A questo punto però deve comunque fare la prima mossa il Player. Quindi richiamo questa funzione. 
+        //PlayerTurn();         //Ho messo in ordine i giocatori per velocità. A questo punto però deve comunque fare la prima mossa il Player. Quindi richiamo questa funzione. 
                               //In PlayerTurn() attivo i bottoni per fargli fare la scelta. 
                               //Nelle funzioni attaccate ai bottoni devo salvare la mossa da qualche parte, per poterla usare quando sarà il turno.
                               //Sarà lì che richiamo SceltaTurno(), 
@@ -600,6 +545,7 @@ public class BattleSystem : MonoBehaviour
     {
         int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
         Debug.Log(index);
+        //Debug.Log(index);
 
         if (index == 3)
         {
@@ -619,39 +565,51 @@ public class BattleSystem : MonoBehaviour
 
     public void SceltaTurno() //Qui è il momento vero in cui il giocatore esegue la mossa. Prima la salva e basta, poi a questo punto viene realmente eseguita.
     {
+
         if (turnoDiGameobject.name == playerPrefab.gameObject.name)
         {
-            //state = BattleState.PLAYERTURN;
+            Debug.Log("SCELTA TURNO Player, turnoDiGameobject.name: " + turnoDiGameobject.name + ", playerPrefab.gameObject.name: " + playerPrefab.gameObject.name);
 
-            
-            mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+            //state = BattleState.PLAYERTURN;
+            if (!playerUnit.paralizzato)
+            {
+                mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+            }
+            else
+            {
+                playerUnit.paralizzato = false;
+                Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+            }
+
+            ProssimoCheAttacca();
 
             //StartCoroutine(PlayerAttackMIO(nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD));
             //PlayerTurn();
-            Debug.Log("Player");
+            
         }
         else if (turnoDiGameobject.name == friendPrefab.gameObject.name)
         {
+            Debug.Log("SCELTA TURNO Friend, turnoDiGameobject.name: " + turnoDiGameobject.name + ", friendPrefab.gameObject.name: " + friendPrefab.gameObject.name);
             state = BattleState.FRIENDTURN;
             StartCoroutine(FriendTurn());
-            Debug.Log("Friend");
+            
         }
         else if (turnoDiGameobject.name == enemy2Prefab.gameObject.name)
         {
+            Debug.Log("SCELTA TURNO Enemy2, turnoDiGameobject.name: " + turnoDiGameobject.name + ", enemy2Prefab.gameObject.name: " + enemy2Prefab.gameObject.name);
             state = BattleState.ENEMY2TURN;
-            StartCoroutine(Enemy2Turn());
-            Debug.Log("Enemy2Turn");
+            StartCoroutine(Enemy2Turn());           
         }
         else
         {
+            Debug.Log("SCELTA TURNO ENEMY, turnoDiGameobject.name: " + turnoDiGameobject.name + ", enemyPrefab.gameObject.name: " + enemyPrefab.gameObject.name);
             state = BattleState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());
-            Debug.Log("EnemyTurn");
+            StartCoroutine(EnemyTurn());      
         }
     }
 
 
-    public (Unit, BattleHUD, bool) ChooseToAttackOrDefend(Unit giocatoreCheDeveDecidereUnit)
+    /*public (Unit, BattleHUD, bool) ChooseToAttackOrDefend(Unit giocatoreCheDeveDecidereUnit)
     {
         if (giocatoreCheDeveDecidereUnit.unitName == friendUnit.unitName) 
         {
@@ -736,14 +694,14 @@ public class BattleSystem : MonoBehaviour
         }
         
         return (giocatoreCheDeveDecidereUnit, playerHUD, false); //qui non dovrebbe mai finirci
-    }
+    }*/
 
 
     public void ChiAttacchi(Button button) //Il player sceglie chi vuole attaccare, schiacciando sul bottone dei giocatori
     {
-        if(button.name== "Enemy1")
+        if(button.name == "Enemy1")
         {
-            Debug.Log("Hai scelto di attaccare enemy1");
+            //Debug.Log("Hai scelto di attaccare enemy1");
             nemicoAttaccatoDalPlayer = enemyUnit;
             nemicoAttaccatoDalPlayerHUD = enemyHUD;
             //StartCoroutine(PlayerAttackMIO(enemyUnit, enemyHUD));
@@ -753,11 +711,13 @@ public class BattleSystem : MonoBehaviour
         {
             nemicoAttaccatoDalPlayer = enemy2Unit;
             nemicoAttaccatoDalPlayerHUD = enemy2HUD;
-            Debug.Log("Hai scelto di attaccare enemy2");
+            //Debug.Log("Hai scelto di attaccare enemy2");
             //StartCoroutine(PlayerAttackMIO(enemy2Unit, enemy2HUD));
         }
 
         chiVuoiAttaccare.SetActive(false);
+
+        Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
         SceltaTurno();
     }
 
@@ -809,7 +769,7 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    IEnumerator PlayerHeal()
+    /*IEnumerator PlayerHeal()
 	{
 		playerUnit.Heal(5);
 
@@ -820,10 +780,10 @@ public class BattleSystem : MonoBehaviour
 
 		yield return new WaitForSeconds(2f);
 		StartCoroutine(EnemyTurn());
-	}
+	}*/
 
 
-    IEnumerator EnemyHeal(Unit qualeNemicoSiDifende, BattleHUD qualeNemicoSiDifendeHUD)
+    /*IEnumerator EnemyHeal(Unit qualeNemicoSiDifende, BattleHUD qualeNemicoSiDifendeHUD)
     {
         qualeNemicoSiDifende.Heal(5);
 
@@ -835,16 +795,16 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(2f);
         //StartCoroutine(EnemyTurn());
         PlayerTurn();
-    }
+    }*/
 
 
-    public void OnHealButton()
+    /*public void OnHealButton()
 	{
 		if (state != BattleState.PLAYERTURN)
 			return;
 
 		StartCoroutine(PlayerHeal());
-	}
+	}*/
 
 
     public int calcolaDannoEffettivo(int danni, int attaccoSpeciale)

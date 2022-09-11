@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4230362734461571860}
   - component: {fileID: 1105238103054197087}
+  - component: {fileID: 2438067050180507348}
   m_Layer: 0
   m_Name: BlasterAlieno
   m_TagString: Untagged
@@ -50,3 +51,15 @@ MonoBehaviour:
   precisione: 100
   elemento: SPAZIO
   tipologiaDiMosaa: ATTACCO NORMALE
+--- !u!114 &2438067050180507348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3481455283106028353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

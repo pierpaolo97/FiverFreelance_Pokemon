@@ -19,6 +19,8 @@ public class Unit : MonoBehaviour
     public int difesa_speciale;
     public int velocita;
 
+    public bool paralizzato = false;
+
     public List<Mossa> mosse;
 
 

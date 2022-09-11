@@ -55,11 +55,12 @@ MonoBehaviour:
   attacco_speciale: 100
   difesa_speciale: 40
   velocita: 80
+  paralizzato: 0
   mosse:
   - {fileID: 461373997255153931, guid: 6cd60c06243e1ca4fb30336647f69afd, type: 3}
-  - {fileID: 5249307606928326075, guid: e070e31aabe83864bb3cecb05c96ea41, type: 3}
-  - {fileID: 9110688425378150430, guid: 758e0034815b0cc41ae70a592029538d, type: 3}
   - {fileID: 9171043431113752961, guid: 15704594007114d488958736c6423af9, type: 3}
+  - {fileID: 9110688425378150430, guid: 758e0034815b0cc41ae70a592029538d, type: 3}
+  - {fileID: 5249307606928326075, guid: e070e31aabe83864bb3cecb05c96ea41, type: 3}
 --- !u!1 &5492376629917588543
 GameObject:
   m_ObjectHideFlags: 0

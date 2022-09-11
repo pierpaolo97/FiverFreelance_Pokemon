@@ -44,9 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689f6838381ae2439f137182b76c087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeMossa: Sguardo del drago
+  nomeMossa: Sguardo Del Drago
   tipo: SPECIALE
   danni: 70
-  precisione: 70
+  precisione: 100
   elemento: NORMALE
-  tipologiaDiMosaa: ATTACCO NORMALE
+  tipologiaDiMosaa: SENZA_TARGET
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}

@@ -47,6 +47,9 @@ MonoBehaviour:
   nomeMossa: Difensore della Giustizia
   tipo: SPECIALE
   danni: 200
-  precisione: 60
+  precisione: 100
   elemento: NORMALE
-  tipologiaDiMosaa: DIFESA
+  tipologiaDiMosaa: SENZA_TARGET
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}

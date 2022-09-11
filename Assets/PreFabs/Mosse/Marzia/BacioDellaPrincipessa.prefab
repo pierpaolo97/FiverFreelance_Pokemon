@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7689f6838381ae2439f137182b76c087, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nomeMossa: Bacio della Principessa
+  nomeMossa: Bacio Della Principessa
   tipo: PARALISI
   danni: 0
   precisione: 100
   elemento: PARALISI
   tipologiaDiMosaa: PARALISI
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}

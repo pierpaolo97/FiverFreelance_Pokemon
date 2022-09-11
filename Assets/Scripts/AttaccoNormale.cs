@@ -12,32 +12,30 @@ public class AttaccoNormale : MonoBehaviour
     Unit giocatoreNONAttaccato;
 
 
-    public IEnumerator Attacco(Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
+    public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
-
-        Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().name + " contro " + qualeNemicoAttacchi.unitName);
-
-
+       
         BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
         battleSystem.bottoniMosse.SetActive(false);
 
-        string tipo = this.gameObject.GetComponent<Mossa>().tipo;
-        int danno = this.gameObject.GetComponent<Mossa>().danni;
-        int precisione = this.gameObject.GetComponent<Mossa>().precisione;
-        string elemento = this.gameObject.GetComponent<Mossa>().elemento;
+        string tipo = mossa.tipo;
+        int danno = mossa.danni;
+        int precisione = mossa.precisione;
+        string elemento = mossa.elemento;
 
         
         int x = UnityEngine.Random.Range(0, 100);
 
         if (x <= precisione)
         {
+            Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
             int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);
 
             bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
 
             qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-            battleSystem.dialogueText.text = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().name + " contro " + qualeNemicoAttacchi.unitName + " e ha successo!";
-            Debug.Log("ooooooooooooooooooo");
+            battleSystem.dialogueText.text = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo!";
+            //Debug.Log("ooooooooooooooooooo");
             yield return new WaitForSecondsRealtime(2);
             
 
@@ -96,16 +94,17 @@ public class AttaccoNormale : MonoBehaviour
 
                 yield return new WaitForSeconds(2f);
                 
-                battleSystem.ProssimoCheAttacca();
+                //battleSystem.ProssimoCheAttacca();
                 //StartCoroutine(EnemyTurn());
             }
 
         }
         else
         {
+            Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco!");
             battleSystem.dialogueText.text = giocatoreCheAttacca.unitName + " fallisce l'attacco!";
             yield return new WaitForSeconds(2f);
-            battleSystem.ProssimoCheAttacca();
+            //battleSystem.ProssimoCheAttacca();
         }
      
     }

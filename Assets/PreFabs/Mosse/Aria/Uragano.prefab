@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3712370684842388288}
   - component: {fileID: 461373997255153931}
+  - component: {fileID: 2808636013039813376}
   m_Layer: 0
   m_Name: Uragano
   m_TagString: Untagged
@@ -50,3 +51,15 @@ MonoBehaviour:
   precisione: 70
   elemento: VENTO
   tipologiaDiMosaa: ATTACCO NORMALE
+--- !u!114 &2808636013039813376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4134625670893036309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
