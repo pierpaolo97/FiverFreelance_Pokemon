@@ -70,6 +70,10 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject[] bot;
 
+    private float delay = 0.05f;
+
+    string currentText = "";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -97,15 +101,19 @@ public class BattleSystem : MonoBehaviour
         enemyUnit = enemyPrefab.GetComponent<Unit>();
         enemy2Unit = enemy2Prefab.GetComponent<Unit>();
 
-        dialogueText.text = playerUnit.unitName + " e " + friendUnit.unitName + ", " + enemyUnit.unitName + " e " + enemy2Unit.unitName + " vi sfidano!";
-
         playerHUD.SetHUD(playerUnit);
-		enemyHUD.SetHUD(enemyUnit);
+        enemyHUD.SetHUD(enemyUnit);
         friendHUD.SetHUD(friendUnit);
         enemy2HUD.SetHUD(enemy2Unit);
 
+        string TestoBenvenuto = playerUnit.unitName + " e " + friendUnit.unitName + ", " + enemyUnit.unitName + " e " + enemy2Unit.unitName + " vi sfidano! ";
 
-        for(int i=0; i<4; i++)
+        StartCoroutine(ShowText(TestoBenvenuto));
+
+        yield return new WaitForSeconds(5);
+
+
+        for (int i=0; i<4; i++)
         {
             bottoniMosse.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = playerUnit.mosse[i].nomeMossa;
             Mossa mossa = playerUnit.mosse[i];
@@ -123,7 +131,7 @@ public class BattleSystem : MonoBehaviour
         bot[1] = enemy2Prefab;
         bot[2] = friendPrefab;
 
-        yield return new WaitForSecondsRealtime(2);
+        //yield return new WaitForSecondsRealtime(5);
 
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
@@ -179,33 +187,47 @@ public class BattleSystem : MonoBehaviour
             if (!playerUnit.paralizzato)
             {
                 Debug.Log("TUTTO OK");
-                dialogueText.text = playerUnit.unitName + " scegli un'azione!";
+                string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
+
+                StartCoroutine(ShowText(ScegliAzione));
+
                 bottoniMosse.SetActive(true);
             }
             else
             {
                 Debug.Log(playerUnit.unitName + " è paralizzatooooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
                 //playerUnit.paralizzato = false;
-                dialogueText.text = playerUnit.unitName + " è paralizzato!";
-                StartCoroutine(Wait(2));
-                Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
+                string Paralizzato = playerUnit.unitName + " è paralizzato! ";
+                StartCoroutine(ShowText(Paralizzato));
+                StartCoroutine(WaitSceltaTurno(1));
+
                 //ProssimoCheAttacca();
-                SceltaTurno();
             }
         }
         else
         {
             Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
-            dialogueText.text = playerUnit.unitName + " è esausto!";
+            string Esausto = playerUnit.unitName + " è esausto! ";
+            StartCoroutine(ShowText(Esausto));
             state = BattleState.ENEMYTURN;
-            StartCoroutine(Wait(2));
+            StartCoroutine(WaitProssimoCheAttacca(5));
             //StartCoroutine(EnemyTurn());
-            Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
-            ProssimoCheAttacca();
-
         }
 
+    }
 
+
+    public IEnumerator WaitProssimoCheAttacca(float delayInSecs)
+    {
+        yield return new WaitForSeconds(delayInSecs);
+        Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
+        ProssimoCheAttacca();
+    }
+    public IEnumerator WaitSceltaTurno(float delayInSecs)
+    {
+        yield return new WaitForSeconds(delayInSecs);
+        Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
+        SceltaTurno();
     }
 
 
@@ -414,14 +436,17 @@ public class BattleSystem : MonoBehaviour
         {
             if (!friendUnit.paralizzato)
             {
+                yield return new WaitForSeconds(1);
+
                 friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
             }
             else
             {
-                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
+                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare! ");
                 friendUnit.paralizzato = false;
-                dialogueText.text = friendUnit.unitName + " è paralizzato, non può attaccare!";
-                yield return new WaitForSeconds(1f);
+                string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
+                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
 
@@ -429,13 +454,14 @@ public class BattleSystem : MonoBehaviour
         else
         {
             //state = BattleState.ENEMY2TURN;
-            dialogueText.text = friendUnit.unitName + " è esausto";
-            yield return new WaitForSeconds(1f);
+            string Esausto = friendUnit.unitName + " è esausto ";
+            StartCoroutine(ShowText(Esausto));
+            yield return new WaitForSeconds(5f);
             //StartCoroutine(Enemy2Turn());
             //ProssimoCheAttacca();
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
 
         ProssimoCheAttacca();
         
@@ -450,27 +476,31 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemyUnit.paralizzato)
             {
+                yield return new WaitForSeconds(1);
+
                 enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
             }
             else
             {
                 enemyUnit.paralizzato = false;
-                dialogueText.text = enemyUnit.unitName + " è paralizzato, non può attaccare!";
-                yield return new WaitForSeconds(1f);
+                string ParalizzatoNoAttaccare = enemyUnit.unitName + " è paralizzato, non può attaccare! ";
+                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
         }
         else
         {
             //state = BattleState.FRIENDTURN;
-            dialogueText.text = enemyUnit.unitName + " è esausto";
-            yield return new WaitForSeconds(1f);
+            string Esausto = enemyUnit.unitName + " è esausto ";
+            StartCoroutine(ShowText(Esausto));
+            yield return new WaitForSeconds(5f);
             //StartCoroutine(FriendTurn());
             //ProssimoCheAttacca();
         }
 
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
 
         ProssimoCheAttacca();
         
@@ -485,27 +515,31 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemy2Unit.paralizzato)
             {
+                yield return new WaitForSeconds(1);
+
                 enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
             }
             else
             {
                 enemy2Unit.paralizzato = false;
-                dialogueText.text = enemy2Unit.unitName + " è paralizzato, non può attaccare!";
-                yield return new WaitForSeconds(1f);
+                string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è paralizzato, non può attaccare! ";
+                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
         }
         else
         {
-            dialogueText.text = enemy2Unit.unitName + " è esausto";
+            string Esausto = enemy2Unit.unitName + " è esausto ";
+            StartCoroutine(ShowText(Esausto));
             //state = BattleState.PLAYERTURN;
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
             //PlayerTurn();
             //ProssimoCheAttacca();
         }
 
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(5f);
 
         ProssimoCheAttacca();
 
@@ -551,15 +585,28 @@ public class BattleSystem : MonoBehaviour
         {
             index = 0;
             turnoDiGameobject = gameobjectInOrdine[index];
-            PlayerTurn();
+            StartCoroutine(WaitPlayerTurn());
         }
         else
         {
             index++;
             turnoDiGameobject = gameobjectInOrdine[index];
-            SceltaTurno();
+            StartCoroutine(WaitSceltaTurno());
         }
 
+    }
+
+    IEnumerator WaitPlayerTurn()
+    {
+        yield return new WaitForSeconds(10);
+        PlayerTurn();
+    }
+
+
+    IEnumerator WaitSceltaTurno()
+    {
+        yield return new WaitForSeconds(3);
+        SceltaTurno();
     }
 
 
@@ -573,6 +620,7 @@ public class BattleSystem : MonoBehaviour
             //state = BattleState.PLAYERTURN;
             if (!playerUnit.paralizzato)
             {
+
                 mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
             }
             else
@@ -722,10 +770,13 @@ public class BattleSystem : MonoBehaviour
     }
 
 
+
+
     public void ScegliChiAttaccare() //Dopo aver selezionato la mossa, si attivano i bottoni dei due nemici. Se uno dei due è morto è reso interactable=false.
     {
         chiVuoiAttaccare.SetActive(true);
         chiVuoiAttaccareText.text = "Scegli chi attaccare!";
+
         chiVuoiAttaccareButton1.transform.GetChild(0).GetComponent<Text>().text = enemyUnit.unitName;
         chiVuoiAttaccareButton2.transform.GetChild(0).GetComponent<Text>().text = enemy2Unit.unitName;
 
@@ -761,12 +812,6 @@ public class BattleSystem : MonoBehaviour
 			dialogueText.text = "You were defeated.";
 		}
 	}
-
-
-    public IEnumerator Wait(float delayInSecs)
-    {
-        yield return new WaitForSeconds(delayInSecs);
-    }
 
 
     /*IEnumerator PlayerHeal()
@@ -812,6 +857,20 @@ public class BattleSystem : MonoBehaviour
         int valoreDanno = (danni + 10) * 2 / 3;
         return valoreDanno;
     }
+
+    IEnumerator ShowText(string textDaScrivere)
+    {    
+        for (int i = 0; i < textDaScrivere.Length; i++)
+        {
+            currentText = textDaScrivere.Substring(0, i);
+            //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
+            dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
+            yield return new WaitForSeconds(delay);
+        }
+
+        //yield return new WaitForSeconds(5);
+    }
+
 
 
 }

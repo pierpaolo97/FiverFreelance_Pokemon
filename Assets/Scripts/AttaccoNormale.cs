@@ -11,6 +11,10 @@ public class AttaccoNormale : MonoBehaviour
     
     Unit giocatoreNONAttaccato;
 
+    private float delay = 0.05f;
+
+    public bool Successo;
+
 
     public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
@@ -23,24 +27,37 @@ public class AttaccoNormale : MonoBehaviour
         int precisione = mossa.precisione;
         string elemento = mossa.elemento;
 
-        
+        Successo = false;
+
         int x = UnityEngine.Random.Range(0, 100);
 
         if (x <= precisione)
         {
+            Successo = true;
+
+            yield return new WaitForSecondsRealtime(1);
+
             Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
             int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);
 
             bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
 
-            qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-            battleSystem.dialogueText.text = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo!";
-            //Debug.Log("ooooooooooooooooooo");
-            yield return new WaitForSecondsRealtime(2);
+            //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+            string UsaConSuccesso = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
+
+            StartCoroutine(ShowText(UsaConSuccesso));
+
+            yield return new WaitForSecondsRealtime(5);
+
             
 
-            battleSystem.dialogueText.text = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "XP";
-            
+            string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "XP";
+
+            StartCoroutine(ShowText(NemicoPerdeDanni));
+
+            yield return new WaitForSecondsRealtime(5);
+
+            qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
 
             //Unit giocatoreNONAttaccato;
 
@@ -92,7 +109,7 @@ public class AttaccoNormale : MonoBehaviour
                 qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
                 //dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
 
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(5f);
                 
                 //battleSystem.ProssimoCheAttacca();
                 //StartCoroutine(EnemyTurn());
@@ -101,18 +118,33 @@ public class AttaccoNormale : MonoBehaviour
         }
         else
         {
-            Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco!");
-            battleSystem.dialogueText.text = giocatoreCheAttacca.unitName + " fallisce l'attacco!";
-            yield return new WaitForSeconds(2f);
+            Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco! ");
+            String AttaccoFallito = giocatoreCheAttacca.unitName + " fallisce l'attacco! ";
+            StartCoroutine(ShowText(AttaccoFallito));
+            //yield return new WaitForSeconds(5);
             //battleSystem.ProssimoCheAttacca();
+            Successo = false;
+
         }
-     
+
+        Successo = false;
+
     }
 
+    IEnumerator ShowText(string textDaScrivere)
+    {
+        BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
 
+        string currentText = "";
 
+        for (int i = 0; i < textDaScrivere.Length; i++)
+        {
+            currentText = textDaScrivere.Substring(0, i);
+            //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
+            battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
+            yield return new WaitForSeconds(delay);
+        }
 
-
-
-
+        //yield return new WaitForSeconds(5);
+    }
 }

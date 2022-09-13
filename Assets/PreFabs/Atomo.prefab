@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: c185ff698b18541f0b7b0d7afea2c6ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -139,6 +139,7 @@ MonoBehaviour:
   attacco_speciale: 100
   difesa_speciale: 60
   velocita: 50
+  paralizzato: 0
   mosse:
   - {fileID: 5297637820578396799, guid: 704ab24a74922e7429bfefbbdfda6cdf, type: 3}
   - {fileID: 1191857724624331421, guid: 8285a2f02341ab346a123b64fc5f18fd, type: 3}
