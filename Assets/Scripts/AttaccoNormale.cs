@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Linq;
+using DG.Tweening;
 
 public class AttaccoNormale : MonoBehaviour
 {
@@ -25,7 +26,7 @@ public class AttaccoNormale : MonoBehaviour
         string tipo = mossa.tipo;
         int danno = mossa.danni;
         int precisione = mossa.precisione;
-        string elemento = mossa.elemento;
+        //string elemento = mossa.elemento;
 
         Successo = false;
 
@@ -34,8 +35,15 @@ public class AttaccoNormale : MonoBehaviour
         if (x <= precisione)
         {
             Successo = true;
-
-            //yield return new WaitForSecondsRealtime(1);
+            var sequence = DOTween.Sequence();
+            if (giocatoreCheAttacca.transform.position.y < 0)
+            {
+                sequence.Append(giocatoreCheAttacca.transform.DOLocalMoveX(-0.4f, 0.25f));
+            }
+            else
+            {
+                sequence.Append(giocatoreCheAttacca.transform.DOLocalMoveX(0.4f, 0.25f));
+            }
 
             Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
             int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);

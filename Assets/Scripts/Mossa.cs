@@ -12,7 +12,7 @@ public class Mossa : MonoBehaviour
     public string tipo;
     public int danni;
     public int precisione;
-    public string elemento;
+    //public string elemento;
     public string tipologiaDiMosaa;
 
     BattleSystem battleSystem;
@@ -193,11 +193,11 @@ public class Mossa : MonoBehaviour
         }
         else if (mossa.nomeMossa == "Ordine Della Futura Regina")
         {
-            string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
-            string AmicoBoostato = attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!";
-            StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
-            StartCoroutine(BoosterLampeggiante(GameObject.Find(amicoDaBoostare.unitName)));
-            StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
+            //string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
+            //string AmicoBoostato = attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!";
+            //StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+            //StartCoroutine(BoosterLampeggiante(GameObject.Find(amicoDaBoostare.unitName)));
+            //StartCoroutine(ShowText(OrdineRegina));
             OrdineDellaFuturaRegina(mossa, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
@@ -205,8 +205,8 @@ public class Mossa : MonoBehaviour
         {
             string SguardoDrago = attaccanteUnit.unitName + " usa Sguardo Del Drago.";
             string RiduciAttacco = attaccanteUnit.unitName + " riduce di 1 l'attacco degli avversari ";
-            StartCoroutine(WaitAnimationMossa(colpitoUnit));
-            StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+            //StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            //StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
             StartCoroutine(ShowTextDouble(SguardoDrago, RiduciAttacco));
             SguardoDelDrago(mossa, colpitoUnit);
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -234,7 +234,7 @@ public class Mossa : MonoBehaviour
         string tipo = mossa.tipo;
         int danno = mossa.danni;
         int precisione = mossa.precisione;
-        string elemento = mossa.elemento;
+        //string elemento = mossa.elemento;
 
         bool attaccatoMorto = false;
 
@@ -367,8 +367,12 @@ public class Mossa : MonoBehaviour
 
             amicoDaBoostare.difesa += 3;
             amicoDaBoostare.difesa_speciale += 3;
-            //string AmicoBoostato = attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!";
-            //StartCoroutine(ShowText(AmicoBoostato));
+            string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
+            string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
+            StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
+            StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+            StartCoroutine(BoosterLampeggiante(GameObject.Find(amicoDaBoostare.unitName)));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
         }
     }
@@ -385,6 +389,10 @@ public class Mossa : MonoBehaviour
                 {
                     battleSystem.amici[0].attacco -= 1;
                     battleSystem.amici[1].attacco -= 1;
+                    StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
+                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.amici[0].unitName)));
+                    StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
+                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.amici[1].unitName)));
                 }
                 z++;
             }
@@ -397,12 +405,13 @@ public class Mossa : MonoBehaviour
                 {
                     battleSystem.nemici[0].attacco -= 1;
                     battleSystem.nemici[1].attacco -= 1;
+                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
+                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.nemici[0].unitName)));
+                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
+                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.nemici[1].unitName)));
                 }
                 z++;
             }
-
-            //string RiduciAttacco = "COLPISCE GLI AVVERSASRI MA BOO";
-            //StartCoroutine(ShowText(RiduciAttacco));
         }
     }
 
@@ -446,8 +455,9 @@ public class Mossa : MonoBehaviour
             battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
+
         currentText = "";
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
 
         for (int i = 0; i < textDaScrivere2.Length; i++)
         {
