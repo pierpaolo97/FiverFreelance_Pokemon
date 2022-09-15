@@ -1579,8 +1579,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527684664}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -586, y: 5, z: -7452.0005}
-  m_LocalScale: {x: 54.496002, y: 54.496002, z: 54.496002}
+  m_LocalPosition: {x: -563, y: 5, z: -7452.0005}
+  m_LocalScale: {x: 50, y: 47.5, z: 54.496002}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2117699713}
@@ -1627,7 +1627,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 3977e7c6c6c0b4f609560361a5536bcb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2b4b4792b849448ae89b784aaa4d6631, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -2163,9 +2163,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Marzia \xE8 una principessa aliena scappata da un matrimonio combinato
-    e rifugiatasi sulla Terra. Qui incontrer\xE0 Sam il quale le far\xE0 scoprire
-    come la sua famiglia sia da sempre stata collegata alla citt\xE0 di Comet."
+  m_text: "Nicolas \xE8 un grande appassionato di videogiochi che a seguito di un
+    folle esperimento di un professore si ritrova intrappolato, insieme a tutta la
+    sua scuola, all\u2019interno di un mondo virtuale. Qui il ragazzo si fonder\xE0
+    con un drago acquisendo enormi poteri."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -2175,7 +2176,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -2232,7 +2233,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &774204049
@@ -3203,9 +3204,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sam e la Ragazza delle Stelle
-
-    (Elison Publishing, 2021)'
+  m_text: Doma Artbook (Tora Edizioni, 2019)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -3215,7 +3214,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3272,7 +3271,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1222345758
@@ -3351,7 +3350,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5075,7 +5074,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5484,7 +5483,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Marzia
+  m_text: Nicolas
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -5494,7 +5493,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -5551,7 +5550,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1969372612

@@ -13,7 +13,7 @@ public class AttaccoNormale : MonoBehaviour
 
     private float delay = 0.05f;
 
-    public bool Successo;
+    public static bool Successo;
 
 
     public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
@@ -35,7 +35,7 @@ public class AttaccoNormale : MonoBehaviour
         {
             Successo = true;
 
-            yield return new WaitForSecondsRealtime(1);
+            //yield return new WaitForSecondsRealtime(1);
 
             Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
             int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca.attacco_speciale);
@@ -47,15 +47,20 @@ public class AttaccoNormale : MonoBehaviour
 
             StartCoroutine(ShowText(UsaConSuccesso));
 
-            yield return new WaitForSecondsRealtime(5);
+            yield return new WaitForSecondsRealtime(5);         
 
-            
+            if (this.gameObject.GetComponent<Mossa>().nomeMossa == "Fusione Del Reattore")
+            {
+                string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP, ma anche Atomo perde 1/3 dei propri HP ";
+                StartCoroutine(ShowText(NemicoPerdeDanni));
+            }
+            else
+            {
+                string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP ";
+                StartCoroutine(ShowText(NemicoPerdeDanni));
+            }
 
-            string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "XP";
-
-            StartCoroutine(ShowText(NemicoPerdeDanni));
-
-            yield return new WaitForSecondsRealtime(5);
+            yield return new WaitForSecondsRealtime(2);
 
             qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
 
@@ -109,7 +114,7 @@ public class AttaccoNormale : MonoBehaviour
                 qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
                 //dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
 
-                yield return new WaitForSeconds(5f);
+                //yield return new WaitForSeconds(5f);
                 
                 //battleSystem.ProssimoCheAttacca();
                 //StartCoroutine(EnemyTurn());
@@ -119,7 +124,7 @@ public class AttaccoNormale : MonoBehaviour
         else
         {
             Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco! ");
-            String AttaccoFallito = giocatoreCheAttacca.unitName + " fallisce l'attacco! ";
+            String AttaccoFallito = giocatoreCheAttacca.unitName + " prova ad attaccare ma fallisce! ";
             StartCoroutine(ShowText(AttaccoFallito));
             //yield return new WaitForSeconds(5);
             //battleSystem.ProssimoCheAttacca();

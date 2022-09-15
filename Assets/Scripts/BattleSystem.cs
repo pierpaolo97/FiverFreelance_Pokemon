@@ -188,10 +188,8 @@ public class BattleSystem : MonoBehaviour
             {
                 Debug.Log("TUTTO OK");
                 string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
-
                 StartCoroutine(ShowText(ScegliAzione));
-
-                bottoniMosse.SetActive(true);
+                StartCoroutine(WaitBottoniMosse());
             }
             else
             {
@@ -199,7 +197,7 @@ public class BattleSystem : MonoBehaviour
                 //playerUnit.paralizzato = false;
                 string Paralizzato = playerUnit.unitName + " è paralizzato! ";
                 StartCoroutine(ShowText(Paralizzato));
-                StartCoroutine(WaitSceltaTurno(1));
+                StartCoroutine(WaitSceltaTurno(5));
 
                 //ProssimoCheAttacca();
             }
@@ -213,9 +211,7 @@ public class BattleSystem : MonoBehaviour
             StartCoroutine(WaitProssimoCheAttacca(5));
             //StartCoroutine(EnemyTurn());
         }
-
     }
-
 
     public IEnumerator WaitProssimoCheAttacca(float delayInSecs)
     {
@@ -223,6 +219,13 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
         ProssimoCheAttacca();
     }
+
+    public IEnumerator WaitBottoniMosse()
+    {
+        yield return new WaitForSeconds(2);
+        bottoniMosse.SetActive(true);
+    }
+
     public IEnumerator WaitSceltaTurno(float delayInSecs)
     {
         yield return new WaitForSeconds(delayInSecs);
@@ -436,9 +439,10 @@ public class BattleSystem : MonoBehaviour
         {
             if (!friendUnit.paralizzato)
             {
-                yield return new WaitForSeconds(1);
+                //yield return new WaitForSeconds(1);
 
                 friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
+
             }
             else
             {
@@ -446,6 +450,7 @@ public class BattleSystem : MonoBehaviour
                 friendUnit.paralizzato = false;
                 string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
@@ -460,14 +465,18 @@ public class BattleSystem : MonoBehaviour
             //StartCoroutine(Enemy2Turn());
             //ProssimoCheAttacca();
         }
-
-        yield return new WaitForSeconds(5f);
-
-        ProssimoCheAttacca();
-        
+        if (AttaccoNormale.Successo == true)
+        {
+            yield return new WaitForSeconds(10f);
+            ProssimoCheAttacca();
+        }
+        else
+        {
+            yield return new WaitForSeconds(4f);
+            ProssimoCheAttacca();
+        }
 
     }
-
 
     IEnumerator EnemyTurn()
     {
@@ -476,7 +485,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemyUnit.paralizzato)
             {
-                yield return new WaitForSeconds(1);
+                //yield return new WaitForSeconds(1);
 
                 enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
             }
@@ -485,6 +494,7 @@ public class BattleSystem : MonoBehaviour
                 enemyUnit.paralizzato = false;
                 string ParalizzatoNoAttaccare = enemyUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
@@ -494,19 +504,23 @@ public class BattleSystem : MonoBehaviour
             //state = BattleState.FRIENDTURN;
             string Esausto = enemyUnit.unitName + " è esausto ";
             StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(4f);
             //StartCoroutine(FriendTurn());
             //ProssimoCheAttacca();
         }
 
-
-        yield return new WaitForSeconds(5f);
-
-        ProssimoCheAttacca();
-        
-
+        if (AttaccoNormale.Successo == true)
+        {
+            yield return new WaitForSeconds(10f);
+            ProssimoCheAttacca();
+        }
+        else
+        {
+            Debug.Log("HA FALLITO MA STA QUA?");
+            yield return new WaitForSeconds(4f);
+            ProssimoCheAttacca();
+        }
     }
-
 
     IEnumerator Enemy2Turn()
     {
@@ -515,7 +529,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemy2Unit.paralizzato)
             {
-                yield return new WaitForSeconds(1);
+                //yield return new WaitForSeconds(1);
 
                 enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
             }
@@ -524,6 +538,7 @@ public class BattleSystem : MonoBehaviour
                 enemy2Unit.paralizzato = false;
                 string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 yield return new WaitForSeconds(5f);
                 //ProssimoCheAttacca();
             }
@@ -533,16 +548,21 @@ public class BattleSystem : MonoBehaviour
             string Esausto = enemy2Unit.unitName + " è esausto ";
             StartCoroutine(ShowText(Esausto));
             //state = BattleState.PLAYERTURN;
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(4f);
             //PlayerTurn();
             //ProssimoCheAttacca();
         }
-
-
-        yield return new WaitForSeconds(5f);
-
-        ProssimoCheAttacca();
-
+        if (AttaccoNormale.Successo == true)
+        {
+            yield return new WaitForSeconds(10f);
+            ProssimoCheAttacca();
+        }
+        else
+        {
+            Debug.Log("HA FALLITO MA STA QUA?");
+            yield return new WaitForSeconds(4f);
+            ProssimoCheAttacca();
+        }
     }
 
 
@@ -591,22 +611,29 @@ public class BattleSystem : MonoBehaviour
         {
             index++;
             turnoDiGameobject = gameobjectInOrdine[index];
-            StartCoroutine(WaitSceltaTurno());
+            SceltaTurno();
         }
 
     }
 
     IEnumerator WaitPlayerTurn()
     {
-        yield return new WaitForSeconds(10);
-        PlayerTurn();
+            yield return new WaitForSeconds(3f);
+            PlayerTurn();
     }
 
-
-    IEnumerator WaitSceltaTurno()
+    IEnumerator WaitProssimoAttaccaIfSuccesso()
     {
-        yield return new WaitForSeconds(3);
-        SceltaTurno();
+        if (AttaccoNormale.Successo == true)
+        {
+            yield return new WaitForSeconds(10f);
+            ProssimoCheAttacca();
+        }
+        else
+        {
+            yield return new WaitForSeconds(4f);
+            ProssimoCheAttacca();
+        }
     }
 
 
@@ -627,13 +654,17 @@ public class BattleSystem : MonoBehaviour
             {
                 playerUnit.paralizzato = false;
                 Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+                string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
+                StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
+                playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+
             }
 
-            ProssimoCheAttacca();
+            StartCoroutine(WaitProssimoAttaccaIfSuccesso());
 
             //StartCoroutine(PlayerAttackMIO(nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD));
             //PlayerTurn();
-            
+
         }
         else if (turnoDiGameobject.name == friendPrefab.gameObject.name)
         {
@@ -769,9 +800,6 @@ public class BattleSystem : MonoBehaviour
         SceltaTurno();
     }
 
-
-
-
     public void ScegliChiAttaccare() //Dopo aver selezionato la mossa, si attivano i bottoni dei due nemici. Se uno dei due è morto è reso interactable=false.
     {
         chiVuoiAttaccare.SetActive(true);
@@ -871,6 +899,16 @@ public class BattleSystem : MonoBehaviour
         //yield return new WaitForSeconds(5);
     }
 
-
-
+    IEnumerator ShowTextParalizzato(string textDaScrivere)
+    {
+        for (int i = 0; i < textDaScrivere.Length; i++)
+        {
+            currentText = textDaScrivere.Substring(0, i);
+            //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
+            dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
+            yield return new WaitForSeconds(delay);
+        }
+        yield return new WaitForSeconds(4);
+        ProssimoCheAttacca();
+    }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4324080305914343263}
   - component: {fileID: 5750535754982524135}
-  - component: {fileID: 145375239669997194}
+  - component: {fileID: 5042504923861894361}
   m_Layer: 0
   m_Name: Uragano
   m_TagString: Untagged
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!95 &145375239669997194
+--- !u!95 &5042504923861894361
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
