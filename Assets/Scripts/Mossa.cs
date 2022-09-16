@@ -25,10 +25,13 @@ public class Mossa : MonoBehaviour
     string currentText = "";
 
     public GameObject MossaAnimation;
+    GameObject partitaFinita;
 
     public void Start()
     {
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
+        partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
+
     }
 
     public void SalvaMossa(Mossa mossa) //Questa funzione viene attaccata ad ogni bottone, personalizzata a seconda della mossa eseguita. Qui salviamo la mossa che il Player dovr? eseguire.
@@ -293,6 +296,8 @@ public class Mossa : MonoBehaviour
                     battleSystem.state = BattleState.FINISHED;
                     //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                     battleSystem.EndBattle();
+                    partitaFinita.SetActive(true);
+       
                 }
 
                 if (attaccatoMorto)
@@ -315,6 +320,7 @@ public class Mossa : MonoBehaviour
         }
     }
 
+
     public void BacioDellaPrincipessa(Mossa mossa, Unit colpitoUnit)
     {
         if (AttaccoRiesce(mossa.precisione))
@@ -323,6 +329,7 @@ public class Mossa : MonoBehaviour
             Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
         }
     }
+
 
     public void OrdineDellaFuturaRegina(Mossa mossa, Unit attaccanteUnit)
     {
@@ -417,6 +424,7 @@ public class Mossa : MonoBehaviour
         }
     }
 
+
     bool AttaccoRiesce(int precisione)
     {
         int x = Random.Range(0, 100);
@@ -431,6 +439,7 @@ public class Mossa : MonoBehaviour
             return false;
         }
     }
+
 
     public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {

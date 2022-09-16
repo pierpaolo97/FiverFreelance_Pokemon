@@ -16,11 +16,15 @@ public class AttaccoNormale : MonoBehaviour
 
     public static bool Successo;
 
+    GameObject partitaFinita;
 
+   
+       
     public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
        
         BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
+        partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
         battleSystem.bottoniMosse.SetActive(false);
 
         string tipo = mossa.tipo;
@@ -115,6 +119,7 @@ public class AttaccoNormale : MonoBehaviour
                 battleSystem.state = BattleState.FINISHED;
                 //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                 battleSystem.EndBattle();
+                partitaFinita.SetActive(true);
             }
             else
             {

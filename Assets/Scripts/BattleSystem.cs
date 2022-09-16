@@ -208,7 +208,7 @@ public class BattleSystem : MonoBehaviour
             string Esausto = playerUnit.unitName + " è esausto! ";
             StartCoroutine(ShowText(Esausto));
             state = BattleState.ENEMYTURN;
-            StartCoroutine(WaitProssimoCheAttacca(5));
+            StartCoroutine(WaitSceltaTurno(5));
             //StartCoroutine(EnemyTurn());
         }
     }
@@ -369,7 +369,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else if (friendUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit.attacco_speciale) && friendUnit.currentHP > 0)
                 {
-                    return (enemy2Unit, enemy2HUD, mossa, true);
+                    return (friendUnit, friendHUD, mossa, true);
                 }
             }
 
@@ -478,6 +478,7 @@ public class BattleSystem : MonoBehaviour
 
     }
 
+
     IEnumerator EnemyTurn()
     {
         bottoniMosse.SetActive(false);
@@ -521,6 +522,7 @@ public class BattleSystem : MonoBehaviour
             ProssimoCheAttacca();
         }
     }
+
 
     IEnumerator Enemy2Turn()
     {
@@ -643,20 +645,29 @@ public class BattleSystem : MonoBehaviour
         {
             Debug.Log("SCELTA TURNO Player, turnoDiGameobject.name: " + turnoDiGameobject.name + ", playerPrefab.gameObject.name: " + playerPrefab.gameObject.name);
 
-            //state = BattleState.PLAYERTURN;
-            if (!playerUnit.paralizzato)
+            if (playerUnit.currentHP > 0)
             {
+                //state = BattleState.PLAYERTURN;
+                if (!playerUnit.paralizzato)
+                {
 
-                mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+                    mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+                }
+                else
+                {
+                    playerUnit.paralizzato = false;
+                    Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+                    string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
+                    StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
+                    playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+
+                }
             }
             else
             {
-                playerUnit.paralizzato = false;
-                Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
-                string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
+                Debug.Log(playerUnit.unitName + " è esausto, non può attaccare");
+                string PlayerParalizzato = playerUnit.unitName + " è esausto, non può attaccare";
                 StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
-                playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-
             }
 
             //ProssimoCheAttacca();
