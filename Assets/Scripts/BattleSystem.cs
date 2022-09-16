@@ -659,6 +659,8 @@ public class BattleSystem : MonoBehaviour
 
             }
 
+            //ProssimoCheAttacca();
+
             StartCoroutine(WaitProssimoAttaccaIfSuccesso());
 
             //StartCoroutine(PlayerAttackMIO(nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD));
@@ -908,6 +910,6 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
         yield return new WaitForSeconds(3);
-        ProssimoCheAttacca();
+        //ProssimoCheAttacca();
     }
 }
