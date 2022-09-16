@@ -6492,7 +6492,7 @@ PrefabInstance:
         type: 3}
       propertyPath: MossaAnimation
       value: 
-      objectReference: {fileID: 3329263040548135600, guid: b0e70ddf0b8be492ca725d336e3f4ff4,
+      objectReference: {fileID: 1323510264394416555, guid: 2e7e29cc955e54780ac566b70158d2bc,
         type: 3}
     - target: {fileID: 8539661171308576865, guid: 704ab24a74922e7429bfefbbdfda6cdf,
         type: 3}
