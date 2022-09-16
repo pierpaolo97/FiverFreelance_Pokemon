@@ -20,7 +20,7 @@ public class Mossa : MonoBehaviour
     public Unit giocatoreNONAttaccato;
     public Button bottoneDefaultPerMosseCura;
 
-    private float delay = 0.05f;
+    private float delay = 0.025f;
 
     string currentText = "";
 
@@ -98,11 +98,13 @@ public class Mossa : MonoBehaviour
         AttaccoNormale.Successo = false;
     }
 
-    IEnumerator WaitTakeDamageFusioneReattore(Unit Attacante,int danno)
+    IEnumerator WaitTakeDamageFusioneReattore(Unit Attacante,BattleHUD attacanteHUD,int danno)
     {
         AttaccoNormale.Successo = true;
         yield return new WaitForSeconds(6f);
         Attacante.TakeDamage(danno);
+        attacanteHUD.SetHP(Attacante.currentHP);
+
     }
 
     public void Esegui(Mossa mossa, Unit attaccanteUnit, BattleHUD attacanteHUD, Unit colpitoUnit, BattleHUD colpitoHUD) //Quando viene eseguita questa funzione, la mossa viene realmente lanciata. 
@@ -138,12 +140,12 @@ public class Mossa : MonoBehaviour
             {
                 int danno = attaccanteUnit.currentHP / 3;
                 //attaccanteUnit.TakeDamage(danno);
-                attacanteHUD.SetHP(attaccanteUnit.currentHP);
+                //attacanteHUD.SetHP(attaccanteUnit.currentHP);
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
                 StartCoroutine(ColpitoLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
                 StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
-                StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, danno));
+                StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, attacanteHUD,danno));
             }
             //battleSystem.ProssimoCheAttacca();
         }

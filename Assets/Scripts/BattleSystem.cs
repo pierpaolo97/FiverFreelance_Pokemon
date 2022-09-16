@@ -70,7 +70,7 @@ public class BattleSystem : MonoBehaviour
 
     public GameObject[] bot;
 
-    private float delay = 0.05f;
+    private float delay = 0.025f;
 
     string currentText = "";
 
@@ -189,7 +189,7 @@ public class BattleSystem : MonoBehaviour
                 Debug.Log("TUTTO OK");
                 string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
                 StartCoroutine(ShowText(ScegliAzione));
-                StartCoroutine(WaitBottoniMosse());
+                bottoniMosse.SetActive(true);
             }
             else
             {
@@ -517,7 +517,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             Debug.Log("HA FALLITO MA STA QUA?");
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
     }
@@ -560,7 +560,7 @@ public class BattleSystem : MonoBehaviour
         else
         {
             Debug.Log("HA FALLITO MA STA QUA?");
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
     }
@@ -613,7 +613,6 @@ public class BattleSystem : MonoBehaviour
             turnoDiGameobject = gameobjectInOrdine[index];
             SceltaTurno();
         }
-
     }
 
     IEnumerator WaitPlayerTurn()
@@ -631,7 +630,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
     }
@@ -908,7 +907,7 @@ public class BattleSystem : MonoBehaviour
             dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(3);
         ProssimoCheAttacca();
     }
 }

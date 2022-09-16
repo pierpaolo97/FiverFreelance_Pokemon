@@ -12,7 +12,7 @@ public class AttaccoNormale : MonoBehaviour
     
     Unit giocatoreNONAttaccato;
 
-    private float delay = 0.05f;
+    private float delay = 0.025f;
 
     public static bool Successo;
 
