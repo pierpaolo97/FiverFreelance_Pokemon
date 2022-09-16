@@ -96,6 +96,11 @@ public class BattleSystem : MonoBehaviour
         GameObject enemy2GO = Instantiate(enemy2Prefab, enemy2BattleStation);
         enemy2Unit = enemy2GO.GetComponent<Unit>();*/
 
+        playerPrefab.transform.position = new Vector3(-2.8f, -1.29f, 0f);
+        friendPrefab.transform.position = new Vector3(-6.8f, -1.29f, 0f);
+        enemyPrefab.transform.position = new Vector3(2.25f, 1.91f, 0f);
+        enemy2Prefab.transform.position = new Vector3(5.35f, 1.91f, 0f);
+
         playerUnit = playerPrefab.GetComponent<Unit>();
         friendUnit = friendPrefab.GetComponent<Unit>();
         enemyUnit = enemyPrefab.GetComponent<Unit>();

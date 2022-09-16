@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Unit : MonoBehaviour
 {
@@ -18,11 +19,12 @@ public class Unit : MonoBehaviour
     public int attacco_speciale;
     public int difesa_speciale;
     public int velocita;
-
+    
     public bool paralizzato = false;
 
     public List<Mossa> mosse;
 
+    public Sprite spriteUnit;
 
     public bool TakeDamage(int dmg)
 	{
