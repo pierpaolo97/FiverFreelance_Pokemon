@@ -27,6 +27,8 @@ public class Mossa : MonoBehaviour
     public GameObject MossaAnimation;
     GameObject partitaFinita;
 
+    int x;
+
     public void Start()
     {
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
@@ -80,7 +82,7 @@ public class Mossa : MonoBehaviour
     IEnumerator WaitAnimationMossa(Unit Colpito)
     {
         yield return new WaitForSeconds(3f);
-        GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, Quaternion.identity);
+        GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
         Destroy(MossaInstanziata, 1.3f);
     }
 
@@ -126,6 +128,11 @@ public class Mossa : MonoBehaviour
             else if (mossa.nomeMossa == "Pioggia Di Meteoriti" && AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
+                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+            }
+            else if (mossa.nomeMossa == "Uragano" && AttaccoNormale.Successo == true)
+            {
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity));
                 StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
             }
             else if (AttaccoNormale.Successo == true)
@@ -245,7 +252,7 @@ public class Mossa : MonoBehaviour
 
         if (AttaccoRiesce(precisione))
         {
-            int x = Random.Range(0, 5);
+            x = Random.Range(0, 5);
             Debug.Log("Scarica di coltelli viene usata " + x + " volte");
             for (int i = 0; i < x; i++)
             {
@@ -447,12 +454,12 @@ public class Mossa : MonoBehaviour
         int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca.attacco_speciale);
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
         qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-
+        Debug.Log(dannoEffettivo);
         StartCoroutine(WaitAnimationMossaDiagonale(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
         string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
         StartCoroutine(ShowText(UsaSuccesso));
         yield return new WaitForSecondsRealtime(5);
-        string perdeXP = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP ";
+        string perdeXP = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo*x + "HP ";
         StartCoroutine(ShowText(perdeXP));
         yield return new WaitForSecondsRealtime(2);
     }
