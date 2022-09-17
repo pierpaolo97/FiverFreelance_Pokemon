@@ -19,16 +19,71 @@ public class Scelta : MonoBehaviour
     public void Avanza()
     {
         playercompagno.SetActive(false);
-        battleSystem.playerPrefab = scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer];
-        battleSystem.friendPrefab = scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer];
+        GameObject player = Instantiate(scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        player.name = player.GetComponent<Unit>().unitName;
+        player.GetComponent<Unit>().unitID = 0;
+        GameObject friend = Instantiate(scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        friend.name = friend.GetComponent<Unit>().unitName;
+        friend.GetComponent<Unit>().unitID = 1;
+        battleSystem.playerPrefab = player;
+        battleSystem.friendPrefab = friend;
         ememy1e2.SetActive(true);
+
+        GameObject parentMossePlayer = new GameObject();
+        parentMossePlayer.name = "Mosse_" + player.GetComponent<Unit>().unitName;
+
+        for (int i=0; i<4; i++)
+        {
+            Mossa mossa_da_istanziare = Instantiate(player.GetComponent<Unit>().mosse[i], parentMossePlayer.transform);
+            mossa_da_istanziare.name = player.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
+            player.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
+        }
+
+        GameObject parentMosseFriend = new GameObject();
+        parentMosseFriend.name = "Mosse_" + friend.GetComponent<Unit>().unitName;
+
+        for (int i = 0; i < 4; i++)
+        {
+            Mossa mossa_da_istanziare = Instantiate(friend.GetComponent<Unit>().mosse[i], parentMosseFriend.transform);
+            mossa_da_istanziare.name = friend.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
+            friend.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
+        }
+
     }
 
     public void StartGame()
     {
         ememy1e2.SetActive(false);
-        battleSystem.enemyPrefab = scegliEnemy1.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy1.GetComponent<ScegliPersonaggi>().indexPlayer];
-        battleSystem.enemy2Prefab = scegliEnemy2.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy2.GetComponent<ScegliPersonaggi>().indexPlayer];
+        GameObject enemy1 = Instantiate(scegliEnemy1.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy1.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        enemy1.name = enemy1.GetComponent<Unit>().unitName;
+        enemy1.GetComponent<Unit>().unitID = 2;
+        GameObject enemy2 = Instantiate(scegliEnemy2.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy2.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        enemy2.name = enemy2.GetComponent<Unit>().unitName;
+        enemy2.GetComponent<Unit>().unitID = 3;
+        battleSystem.enemyPrefab = enemy1;
+        battleSystem.enemy2Prefab = enemy2;
+
+        GameObject parentMosseEnemy1 = new GameObject();
+        parentMosseEnemy1.name = "Mosse_" + enemy1.GetComponent<Unit>().unitName;
+
+        for (int i = 0; i < 4; i++)
+        {
+            Mossa mossa_da_istanziare = Instantiate(enemy1.GetComponent<Unit>().mosse[i], parentMosseEnemy1.transform);
+            mossa_da_istanziare.name = enemy1.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
+            enemy1.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
+        }
+
+        GameObject parentMosseEnemy2 = new GameObject();
+        parentMosseEnemy2.name = "Mosse_" + enemy2.GetComponent<Unit>().unitName;
+
+        for (int i = 0; i < 4; i++)
+        {
+            Mossa mossa_da_istanziare = Instantiate(enemy2.GetComponent<Unit>().mosse[i], parentMosseEnemy2.transform);
+            mossa_da_istanziare.name = enemy2.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
+            enemy2.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
+        }
+
+
         interoMenu.SetActive(false);
         battleSystem.enabled = true;
     }

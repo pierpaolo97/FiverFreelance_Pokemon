@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5451795452484404485}
   - component: {fileID: 4612583364151593901}
+  - component: {fileID: 4670231676307092650}
   m_Layer: 0
   m_Name: Marzia
   m_TagString: Untagged
@@ -48,8 +49,8 @@ MonoBehaviour:
   unitName: Marzia
   unitLevel: 100
   damage: 35
-  maxHP: 100
-  currentHP: 100
+  maxHP: 200
+  currentHP: 200
   attacco: 40
   difesa: 70
   attacco_speciale: 80
@@ -61,6 +62,28 @@ MonoBehaviour:
   - {fileID: 1105238103054197087, guid: 22f8cd19c4367b94ead0db52366c03fb, type: 3}
   - {fileID: 1957883034144545218, guid: ef13dbe3fe3865b4c8b9152eebbed32c, type: 3}
   - {fileID: 4202700225843859008, guid: 9d04b3309b7ce35458968c7ad05f3b4f, type: 3}
+  spriteUnit: {fileID: 21300000, guid: 3977e7c6c6c0b4f609560361a5536bcb, type: 3}
+  unitID: 0
+--- !u!95 &4670231676307092650
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3617099212306526063}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 077f0a7b859a34d3283055379ec24771, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6229390340745720950
 GameObject:
   m_ObjectHideFlags: 0

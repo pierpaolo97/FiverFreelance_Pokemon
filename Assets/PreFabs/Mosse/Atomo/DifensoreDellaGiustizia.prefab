@@ -48,8 +48,9 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 200
   precisione: 100
-  elemento: NORMALE
   tipologiaDiMosaa: SENZA_TARGET
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 1323510264394416555, guid: 2e7e29cc955e54780ac566b70158d2bc,
+    type: 3}

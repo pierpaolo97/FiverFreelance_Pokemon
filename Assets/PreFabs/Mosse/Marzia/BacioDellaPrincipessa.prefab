@@ -48,7 +48,9 @@ MonoBehaviour:
   tipo: PARALISI
   danni: 0
   precisione: 100
-  elemento: PARALISI
   tipologiaDiMosaa: PARALISI
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 8160239457500532674, guid: 9473248c44b93493a879631b52d75806,
+    type: 3}

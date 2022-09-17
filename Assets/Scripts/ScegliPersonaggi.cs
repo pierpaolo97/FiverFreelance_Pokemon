@@ -12,6 +12,7 @@ public class ScegliPersonaggi : MonoBehaviour
 
     private void Start()
     {
+        //Debug.Log("qua");
         immaginePersonaggioScelto.GetComponent<Image>().sprite = personaggiDisponibili[indexPlayer].GetComponent<Unit>().spriteUnit;
     }
 

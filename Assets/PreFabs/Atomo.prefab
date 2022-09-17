@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7305812156856362105}
   - component: {fileID: 7982892329120492241}
+  - component: {fileID: 4873411544423135060}
   m_Layer: 0
   m_Name: Atomo
   m_TagString: Untagged
@@ -132,8 +133,8 @@ MonoBehaviour:
   unitName: Atomo
   unitLevel: 100
   damage: 27
-  maxHP: 100
-  currentHP: 100
+  maxHP: 200
+  currentHP: 200
   attacco: 90
   difesa: 80
   attacco_speciale: 100
@@ -145,3 +146,25 @@ MonoBehaviour:
   - {fileID: 1191857724624331421, guid: 8285a2f02341ab346a123b64fc5f18fd, type: 3}
   - {fileID: 5179171615908493374, guid: c21da7f37754c2649b296007503034ce, type: 3}
   - {fileID: 2611070430221132175, guid: 57908a695f7e7e9459486a6c8080086b, type: 3}
+  spriteUnit: {fileID: 21300000, guid: c185ff698b18541f0b7b0d7afea2c6ff, type: 3}
+  unitID: 0
+--- !u!95 &4873411544423135060
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2087799920821734931}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 077f0a7b859a34d3283055379ec24771, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4580223938307558884}
   - component: {fileID: 3763780388596319052}
+  - component: {fileID: 4266199719048868076}
   m_Layer: 0
   m_Name: Aria
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5046871492963100558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.25, y: 1.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,8 +49,8 @@ MonoBehaviour:
   unitName: Aria
   unitLevel: 100
   damage: 23
-  maxHP: 100
-  currentHP: 100
+  maxHP: 200
+  currentHP: 200
   attacco: 110
   difesa: 50
   attacco_speciale: 100
@@ -61,6 +62,28 @@ MonoBehaviour:
   - {fileID: 9171043431113752961, guid: 15704594007114d488958736c6423af9, type: 3}
   - {fileID: 9110688425378150430, guid: 758e0034815b0cc41ae70a592029538d, type: 3}
   - {fileID: 5249307606928326075, guid: e070e31aabe83864bb3cecb05c96ea41, type: 3}
+  spriteUnit: {fileID: 21300000, guid: 494790c32c48e48adb9effebb2a13720, type: 3}
+  unitID: 0
+--- !u!95 &4266199719048868076
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5046871492963100558}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 077f0a7b859a34d3283055379ec24771, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5492376629917588543
 GameObject:
   m_ObjectHideFlags: 0

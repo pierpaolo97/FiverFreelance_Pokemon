@@ -49,8 +49,12 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 70
   precisione: 70
-  elemento: FUOCO
   tipologiaDiMosaa: ATTACCO NORMALE
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 615832755187017416, guid: 1b302d7471e1c40f884d77d7ed4d64c3,
+    type: 3}
 --- !u!114 &155383639216349531
 MonoBehaviour:
   m_ObjectHideFlags: 0

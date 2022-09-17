@@ -49,8 +49,12 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 100
   precisione: 60
-  elemento: SPAZIO
   tipologiaDiMosaa: ATTACCO NORMALE
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 188639047447423603, guid: 7468ac01e761e4ae69c210b32d55d494,
+    type: 3}
 --- !u!114 &6481702214717294408
 MonoBehaviour:
   m_ObjectHideFlags: 0

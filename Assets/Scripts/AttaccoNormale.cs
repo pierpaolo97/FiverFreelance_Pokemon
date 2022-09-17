@@ -82,7 +82,7 @@ public class AttaccoNormale : MonoBehaviour
 
             foreach (Unit personaggio in battleSystem.amici)
             {
-                if(personaggio.unitName == qualeNemicoAttacchi.unitName)
+                if(personaggio.unitID == qualeNemicoAttacchi.unitID)
                 {
                     if (z == 0)
                     {
@@ -100,7 +100,7 @@ public class AttaccoNormale : MonoBehaviour
 
             foreach (Unit personaggio in battleSystem.nemici)
             {
-                if (personaggio.unitName == qualeNemicoAttacchi.unitName)
+                if (personaggio.unitID == qualeNemicoAttacchi.unitID)
                 {
                     if (z == 0)
                     {

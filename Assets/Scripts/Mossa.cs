@@ -266,7 +266,7 @@ public class Mossa : MonoBehaviour
                 int z = 0;
                 foreach (Unit personaggio in battleSystem.amici)
                 {
-                    if (personaggio.unitName == colpitoUnit.unitName)
+                    if (personaggio.unitID == colpitoUnit.unitID)
                     {
                         if (z == 0)
                         {
@@ -284,7 +284,7 @@ public class Mossa : MonoBehaviour
 
                 foreach (Unit personaggio in battleSystem.nemici)
                 {
-                    if (personaggio.unitName == colpitoUnit.unitName)
+                    if (personaggio.unitID == colpitoUnit.unitID)
                     {
                         if (z == 0)
                         {
@@ -349,7 +349,7 @@ public class Mossa : MonoBehaviour
 
             foreach (Unit personaggio in battleSystem.amici)
             {
-                if (personaggio.unitName == attaccanteUnit.unitName)
+                if (personaggio.unitID == attaccanteUnit.unitID)
                 {
                     if (z == 0)
                     {
@@ -367,7 +367,7 @@ public class Mossa : MonoBehaviour
 
             foreach (Unit personaggio in battleSystem.nemici)
             {
-                if (personaggio.unitName == attaccanteUnit.unitName)
+                if (personaggio.unitID == attaccanteUnit.unitID)
                 {
                     if (z == 0)
                     {
@@ -401,7 +401,7 @@ public class Mossa : MonoBehaviour
             int z = 0;
             foreach (Unit personaggio in battleSystem.amici)
             {
-                if (personaggio.unitName == colpitoUnit.unitName)
+                if (personaggio.unitID == colpitoUnit.unitID)
                 {
                     battleSystem.amici[0].attacco -= 1;
                     battleSystem.amici[1].attacco -= 1;
@@ -417,7 +417,7 @@ public class Mossa : MonoBehaviour
 
             foreach (Unit personaggio in battleSystem.nemici)
             {
-                if (personaggio.unitName == colpitoUnit.unitName)
+                if (personaggio.unitID == colpitoUnit.unitID)
                 {
                     battleSystem.nemici[0].attacco -= 1;
                     battleSystem.nemici[1].attacco -= 1;

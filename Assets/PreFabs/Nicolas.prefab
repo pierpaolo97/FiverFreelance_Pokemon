@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3973862563508761831}
   - component: {fileID: 4363536997099518543}
+  - component: {fileID: -3623516358728540291}
   m_Layer: 0
   m_Name: Nicolas
   m_TagString: Untagged
@@ -25,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5674484368629161613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 5.35, y: 1.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -48,8 +49,8 @@ MonoBehaviour:
   unitName: Nicolas
   unitLevel: 100
   damage: 37
-  maxHP: 100
-  currentHP: 100
+  maxHP: 200
+  currentHP: 200
   attacco: 100
   difesa: 70
   attacco_speciale: 90
@@ -61,6 +62,28 @@ MonoBehaviour:
   - {fileID: 7599772078493800742, guid: 30ab354df050f1144ac25f6dc730015b, type: 3}
   - {fileID: 502066971008082477, guid: f5e8355c0501bf4428a8b24877a08346, type: 3}
   - {fileID: 3001158899171366909, guid: 5b1141994447e1341acb31f86542d98e, type: 3}
+  spriteUnit: {fileID: 21300000, guid: 2b4b4792b849448ae89b784aaa4d6631, type: 3}
+  unitID: 0
+--- !u!95 &-3623516358728540291
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5674484368629161613}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 077f0a7b859a34d3283055379ec24771, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &6450721039946225802
 GameObject:
   m_ObjectHideFlags: 0

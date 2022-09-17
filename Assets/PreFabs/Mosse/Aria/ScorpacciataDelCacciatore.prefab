@@ -48,8 +48,9 @@ MonoBehaviour:
   tipo: CURA
   danni: 0
   precisione: 100
-  elemento: CURA
   tipologiaDiMosaa: SENZA_TARGET
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 3437147366999624987, guid: 246ccab5e5a5a480489bb874fbe4d676,
+    type: 3}

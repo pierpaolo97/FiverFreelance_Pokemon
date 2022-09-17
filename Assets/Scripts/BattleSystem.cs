@@ -252,7 +252,7 @@ public class BattleSystem : MonoBehaviour
             //int x = UnityEngine.Random.Range(0, 4);
             //Mossa mossaSelezionata = personaggioCheDeveScegliere.GetComponent<Unit>().mosse[x];
 
-            if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == friendUnit.unitName)
+            if (personaggioCheDeveScegliere.GetComponent<Unit>().unitID == friendUnit.unitID)
             {
                 Debug.Log("Friend mossa selezionata");
                 //friendMossaDaEseguire = mossaSelezionata;
@@ -260,7 +260,7 @@ public class BattleSystem : MonoBehaviour
                 giocatoreDaAttaccareFRIEND = giocatoreAttaccato;
                 giocatoreDaAttaccareFRIEND_HUD = giocatoreAttaccatoHUD;
             }
-            else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == enemyUnit.unitName)
+            else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitID == enemyUnit.unitID)
             {
                 Debug.Log("ENEMY mossa selezionata");
                 (giocatoreAttaccato, giocatoreAttaccatoHUD, enemyMossaDaEseguire, boolAttacco) = BotSceglieMossa(enemyUnit);
@@ -268,7 +268,7 @@ public class BattleSystem : MonoBehaviour
                 giocatoreDaAttaccareENEMY_HUD = giocatoreAttaccatoHUD;
                 //enemyMossaDaEseguire = mossaSelezionata;
             }
-            else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitName == enemy2Unit.unitName)
+            else if (personaggioCheDeveScegliere.GetComponent<Unit>().unitID == enemy2Unit.unitID)
             {
                 Debug.Log("ENEMY 2 mossa selezionata");
                 (giocatoreAttaccato, giocatoreAttaccatoHUD, enemy2MossaDaEseguire, boolAttacco) = BotSceglieMossa(enemy2Unit);
@@ -284,7 +284,7 @@ public class BattleSystem : MonoBehaviour
     {
         Mossa mossa_casuale = new Mossa();
 
-        if (giocatoreCheDeveDecidereUnit.unitName == friendUnit.unitName)
+        if (giocatoreCheDeveDecidereUnit.unitID == friendUnit.unitID)
         {
             //il giocatore che deve scegliere è Friend, controllo se i due avversari hanno meno XP di quelli che tolgo e quindi posso ucciderli. Scelgo la mossa che li può uccidere;
             //Se enemy1 sta per morire lo uccido, altrimenti cerco di uccidere enemy2. 
@@ -363,7 +363,7 @@ public class BattleSystem : MonoBehaviour
             }
             
         }
-        else if (giocatoreCheDeveDecidereUnit.unitName == enemyUnit.unitName || giocatoreCheDeveDecidereUnit.unitName == enemy2Unit.unitName)
+        else if (giocatoreCheDeveDecidereUnit.unitID == enemyUnit.unitID || giocatoreCheDeveDecidereUnit.unitID == enemy2Unit.unitID)
         {
 
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)

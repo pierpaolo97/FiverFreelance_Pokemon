@@ -49,8 +49,12 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 120
   precisione: 50
-  elemento: TERRA
   tipologiaDiMosaa: ATTACCO NORMALE
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 4760743801545502700, guid: 094892dcfce094f679eb3552e4f14da2,
+    type: 3}
 --- !u!114 &5829326280846762519
 MonoBehaviour:
   m_ObjectHideFlags: 0

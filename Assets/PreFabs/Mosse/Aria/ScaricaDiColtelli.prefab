@@ -48,5 +48,9 @@ MonoBehaviour:
   tipo: FISICO
   danni: 10
   precisione: 70
-  elemento: NORMALE
   tipologiaDiMosaa: ATTACCO PARTICOLARE
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 585476551801204933, guid: b9e3e756378774081bd043b02121a76a,
+    type: 3}

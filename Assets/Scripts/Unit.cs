@@ -26,6 +26,8 @@ public class Unit : MonoBehaviour
 
     public Sprite spriteUnit;
 
+    public int unitID;
+
     public bool TakeDamage(int dmg)
 	{
 		currentHP -= dmg;

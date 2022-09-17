@@ -49,8 +49,12 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 100
   precisione: 70
-  elemento: VENTO
   tipologiaDiMosaa: ATTACCO NORMALE
+  amicoDaBoostare: {fileID: 0}
+  giocatoreNONAttaccato: {fileID: 0}
+  bottoneDefaultPerMosseCura: {fileID: 0}
+  MossaAnimation: {fileID: 4795034744385437835, guid: b406efcf951be4adb9d71e2b2b0a7a7e,
+    type: 3}
 --- !u!114 &2808636013039813376
 MonoBehaviour:
   m_ObjectHideFlags: 0
