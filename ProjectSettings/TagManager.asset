@@ -6,6 +6,7 @@ TagManager:
   tags:
   - BattleSystem
   - PartitaFinita
+  - CombactButtons
   layers:
   - Default
   - TransparentFX

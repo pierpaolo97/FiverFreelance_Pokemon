@@ -26,6 +26,7 @@ public class Mossa : MonoBehaviour
 
     public GameObject MossaAnimation;
     GameObject partitaFinita;
+    GameObject combactButtons;
 
     int x;
 
@@ -33,7 +34,7 @@ public class Mossa : MonoBehaviour
     {
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
         partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
-
+        
     }
 
     public void SalvaMossa(Mossa mossa) //Questa funzione viene attaccata ad ogni bottone, personalizzata a seconda della mossa eseguita. Qui salviamo la mossa che il Player dovr? eseguire.
@@ -47,6 +48,8 @@ public class Mossa : MonoBehaviour
         else
         {
             //battleSystem.ChiAttacchi(bottoneDefaultPerMosseCura);
+            combactButtons = GameObject.FindGameObjectWithTag("CombactButtons");
+            combactButtons.SetActive(false);
             Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAA");
             battleSystem.nemicoAttaccatoDalPlayer = battleSystem.enemyUnit;
             battleSystem.nemicoAttaccatoDalPlayerHUD = battleSystem.enemyHUD;

@@ -218,6 +218,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+
     public IEnumerator WaitProssimoCheAttacca(float delayInSecs)
     {
         yield return new WaitForSeconds(delayInSecs);
@@ -225,11 +226,13 @@ public class BattleSystem : MonoBehaviour
         ProssimoCheAttacca();
     }
 
+
     public IEnumerator WaitBottoniMosse()
     {
         yield return new WaitForSeconds(2);
         bottoniMosse.SetActive(true);
     }
+
 
     public IEnumerator WaitSceltaTurno(float delayInSecs)
     {
@@ -444,10 +447,22 @@ public class BattleSystem : MonoBehaviour
         {
             if (!friendUnit.paralizzato)
             {
-                //yield return new WaitForSeconds(1);
-
+                if (giocatoreDaAttaccareFRIEND.currentHP <= 0)
+                {
+                    if(giocatoreDaAttaccareFRIEND.unitID == enemyUnit.unitID)
+                    {
+                        giocatoreDaAttaccareFRIEND = enemy2Unit;
+                        giocatoreDaAttaccareFRIEND_HUD = enemy2HUD;
+                    }
+                    else
+                    {
+                        giocatoreDaAttaccareFRIEND = enemyUnit;
+                        giocatoreDaAttaccareFRIEND_HUD = enemyHUD;
+                    }                                             
+                }
+                
                 friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
-
+                
             }
             else
             {
@@ -491,7 +506,19 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemyUnit.paralizzato)
             {
-                //yield return new WaitForSeconds(1);
+                if (giocatoreDaAttaccareENEMY.currentHP <= 0)
+                {
+                    if (giocatoreDaAttaccareENEMY.unitID == playerUnit.unitID)
+                    {
+                        giocatoreDaAttaccareENEMY = friendUnit;
+                        giocatoreDaAttaccareENEMY_HUD = friendHUD;
+                    }
+                    else
+                    {
+                        giocatoreDaAttaccareENEMY = playerUnit;
+                        giocatoreDaAttaccareENEMY_HUD = playerHUD;
+                    }
+                }
 
                 enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
             }
@@ -536,7 +563,19 @@ public class BattleSystem : MonoBehaviour
         {
             if (!enemy2Unit.paralizzato)
             {
-                //yield return new WaitForSeconds(1);
+                if (giocatoreDaAttaccareENEMY2.currentHP <= 0)
+                {
+                    if (giocatoreDaAttaccareENEMY2.unitID == playerUnit.unitID)
+                    {
+                        giocatoreDaAttaccareENEMY2 = friendUnit;
+                        giocatoreDaAttaccareENEMY2_HUD = friendHUD;
+                    }
+                    else
+                    {
+                        giocatoreDaAttaccareENEMY2 = playerUnit;
+                        giocatoreDaAttaccareENEMY2_HUD = playerHUD;
+                    }
+                }
 
                 enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
             }
@@ -622,11 +661,13 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+
     IEnumerator WaitPlayerTurn()
     {
             yield return new WaitForSeconds(3f);
             PlayerTurn();
     }
+
 
     IEnumerator WaitProssimoAttaccaIfSuccesso()
     {
@@ -646,7 +687,7 @@ public class BattleSystem : MonoBehaviour
     public void SceltaTurno() //Qui è il momento vero in cui il giocatore esegue la mossa. Prima la salva e basta, poi a questo punto viene realmente eseguita.
     {
 
-        if (turnoDiGameobject.name == playerPrefab.gameObject.name)
+        if (turnoDiGameobject.GetComponent<Unit>().unitID == playerPrefab.GetComponent<Unit>().unitID)
         {
             Debug.Log("SCELTA TURNO Player, turnoDiGameobject.name: " + turnoDiGameobject.name + ", playerPrefab.gameObject.name: " + playerPrefab.gameObject.name);
 
@@ -655,7 +696,6 @@ public class BattleSystem : MonoBehaviour
                 //state = BattleState.PLAYERTURN;
                 if (!playerUnit.paralizzato)
                 {
-
                     mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
                 }
                 else
@@ -683,14 +723,14 @@ public class BattleSystem : MonoBehaviour
             //PlayerTurn();
 
         }
-        else if (turnoDiGameobject.name == friendPrefab.gameObject.name)
+        else if (turnoDiGameobject.GetComponent<Unit>().unitID == friendPrefab.GetComponent<Unit>().unitID)
         {
             Debug.Log("SCELTA TURNO Friend, turnoDiGameobject.name: " + turnoDiGameobject.name + ", friendPrefab.gameObject.name: " + friendPrefab.gameObject.name);
             state = BattleState.FRIENDTURN;
             StartCoroutine(FriendTurn());
             
         }
-        else if (turnoDiGameobject.name == enemy2Prefab.gameObject.name)
+        else if (turnoDiGameobject.GetComponent<Unit>().unitID == enemy2Prefab.GetComponent<Unit>().unitID)
         {
             Debug.Log("SCELTA TURNO Enemy2, turnoDiGameobject.name: " + turnoDiGameobject.name + ", enemy2Prefab.gameObject.name: " + enemy2Prefab.gameObject.name);
             state = BattleState.ENEMY2TURN;
