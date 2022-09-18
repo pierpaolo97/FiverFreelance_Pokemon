@@ -48,6 +48,7 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 70
   precisione: 100
+  elemento: NORMALE
   tipologiaDiMosaa: SENZA_TARGET
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

@@ -12,8 +12,9 @@ public class Mossa : MonoBehaviour
     public string tipo;
     public int danni;
     public int precisione;
-    //public string elemento;
+    public string elemento;
     public string tipologiaDiMosaa;
+   
 
     BattleSystem battleSystem;
     public Unit amicoDaBoostare;
@@ -253,68 +254,78 @@ public class Mossa : MonoBehaviour
 
         bool attaccatoMorto = false;
 
-        if (AttaccoRiesce(precisione))
+        int mossaHaEffetto = battleSystem.calcolaDannoEffettivo(danno, attaccanteUnit, colpitoUnit, mossa); //Questo serve per verificare se la mossa ha effetto contro l'avversario
+
+        if (mossaHaEffetto > 0)
         {
-            x = Random.Range(0, 5);
-            Debug.Log("Scarica di coltelli viene usata " + x + " volte");
-            for (int i = 0; i < x; i++)
+
+            if (AttaccoRiesce(precisione))
             {
-                StartCoroutine(Coltelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
-      
-                if(colpitoUnit.currentHP <= 0)
+                x = Random.Range(0, 5);
+                Debug.Log("Scarica di coltelli viene usata " + x + " volte");
+                for (int i = 0; i < x; i++)
                 {
-                    attaccatoMorto = true;
-                }
+                    StartCoroutine(Coltelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
 
-                int z = 0;
-                foreach (Unit personaggio in battleSystem.amici)
-                {
-                    if (personaggio.unitID == colpitoUnit.unitID)
+                    if (colpitoUnit.currentHP <= 0)
                     {
-                        if (z == 0)
-                        {
-                            giocatoreNONAttaccato = battleSystem.amici[1];
-                        }
-                        else
-                        {
-                            giocatoreNONAttaccato = battleSystem.amici[0];
-                        }
+                        attaccatoMorto = true;
                     }
-                    z++;
-                }
 
-                z = 0;
-
-                foreach (Unit personaggio in battleSystem.nemici)
-                {
-                    if (personaggio.unitID == colpitoUnit.unitID)
+                    int z = 0;
+                    foreach (Unit personaggio in battleSystem.amici)
                     {
-                        if (z == 0)
+                        if (personaggio.unitID == colpitoUnit.unitID)
                         {
-                            giocatoreNONAttaccato = battleSystem.nemici[1];
+                            if (z == 0)
+                            {
+                                giocatoreNONAttaccato = battleSystem.amici[1];
+                            }
+                            else
+                            {
+                                giocatoreNONAttaccato = battleSystem.amici[0];
+                            }
                         }
-                        else
-                        {
-                            giocatoreNONAttaccato = battleSystem.nemici[0];
-                        }
+                        z++;
                     }
-                    z++;
-                }
 
-                if (attaccatoMorto && giocatoreNONAttaccato.currentHP <= 0)
-                {
-                    battleSystem.state = BattleState.FINISHED;
-                    //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-                    battleSystem.EndBattle();
-                    partitaFinita.SetActive(true);
-       
-                }
+                    z = 0;
 
-                if (attaccatoMorto)
-                {
-                    break;
+                    foreach (Unit personaggio in battleSystem.nemici)
+                    {
+                        if (personaggio.unitID == colpitoUnit.unitID)
+                        {
+                            if (z == 0)
+                            {
+                                giocatoreNONAttaccato = battleSystem.nemici[1];
+                            }
+                            else
+                            {
+                                giocatoreNONAttaccato = battleSystem.nemici[0];
+                            }
+                        }
+                        z++;
+                    }
+
+                    if (attaccatoMorto && giocatoreNONAttaccato.currentHP <= 0)
+                    {
+                        battleSystem.state = BattleState.FINISHED;
+                        //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+                        battleSystem.EndBattle();
+                        partitaFinita.SetActive(true);
+
+                    }
+
+                    if (attaccatoMorto)
+                    {
+                        break;
+                    }
                 }
             }
+        }
+        else
+        {
+            Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo" + colpitoUnit.elemento);
         }
     }
 
@@ -454,7 +465,7 @@ public class Mossa : MonoBehaviour
     public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
         Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
-        int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca.attacco_speciale);
+        int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
         qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
         Debug.Log(dannoEffettivo);

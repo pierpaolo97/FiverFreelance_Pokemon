@@ -48,6 +48,7 @@ MonoBehaviour:
   tipo: PARALISI
   danni: 0
   precisione: 100
+  elemento: NESSUNO
   tipologiaDiMosaa: PARALISI
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

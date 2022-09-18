@@ -49,6 +49,7 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 120
   precisione: 50
+  elemento: FUOCO
   tipologiaDiMosaa: ATTACCO NORMALE
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

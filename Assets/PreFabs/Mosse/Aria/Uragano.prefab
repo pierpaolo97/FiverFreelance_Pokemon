@@ -49,6 +49,7 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 100
   precisione: 70
+  elemento: VENTO
   tipologiaDiMosaa: ATTACCO NORMALE
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

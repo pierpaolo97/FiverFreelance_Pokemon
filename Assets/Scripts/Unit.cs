@@ -19,7 +19,9 @@ public class Unit : MonoBehaviour
     public int attacco_speciale;
     public int difesa_speciale;
     public int velocita;
-    
+
+    public string elemento;
+
     public bool paralizzato = false;
 
     public List<Mossa> mosse;
@@ -27,6 +29,8 @@ public class Unit : MonoBehaviour
     public Sprite spriteUnit;
 
     public int unitID;
+
+
 
     public bool TakeDamage(int dmg)
 	{

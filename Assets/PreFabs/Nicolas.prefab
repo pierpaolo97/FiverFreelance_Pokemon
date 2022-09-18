@@ -56,6 +56,7 @@ MonoBehaviour:
   attacco_speciale: 90
   difesa_speciale: 60
   velocita: 70
+  elemento: FUOCO
   paralizzato: 0
   mosse:
   - {fileID: 3136023489529557631, guid: 4f6def543fe90c44b9d66ec31dedd223, type: 3}

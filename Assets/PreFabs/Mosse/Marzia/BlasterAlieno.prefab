@@ -49,6 +49,7 @@ MonoBehaviour:
   tipo: SPECIALE
   danni: 40
   precisione: 100
+  elemento: SPAZIO
   tipologiaDiMosaa: ATTACCO NORMALE
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

@@ -294,11 +294,11 @@ public class BattleSystem : MonoBehaviour
 
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
-                if (enemyUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit.attacco_speciale) && enemyUnit.currentHP > 0)
+                if (enemyUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit, enemyUnit, mossa) && enemyUnit.currentHP > 0)
                 {
                     return (enemyUnit, enemyHUD, mossa, true);
                 }
-                else if (enemy2Unit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit.attacco_speciale) && enemy2Unit.currentHP > 0)
+                else if (enemy2Unit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit, enemy2Unit, mossa) && enemy2Unit.currentHP > 0)
                 {
                     return (enemy2Unit, enemy2HUD, mossa, true);
                 }
@@ -371,11 +371,11 @@ public class BattleSystem : MonoBehaviour
 
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
-                if (playerUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit.attacco_speciale) && playerUnit.currentHP > 0)
+                if (playerUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit, playerUnit, mossa) && playerUnit.currentHP > 0)
                 {
                     return (playerUnit, playerHUD, mossa, true);
                 }
-                else if (friendUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit.attacco_speciale) && friendUnit.currentHP > 0)
+                else if (friendUnit.currentHP < calcolaDannoEffettivo(mossa.danni, giocatoreCheDeveDecidereUnit, friendUnit, mossa) && friendUnit.currentHP > 0)
                 {
                     return (friendUnit, friendHUD, mossa, true);
                 }
@@ -857,6 +857,7 @@ public class BattleSystem : MonoBehaviour
         SceltaTurno();
     }
 
+
     public void ScegliChiAttaccare() //Dopo aver selezionato la mossa, si attivano i bottoni dei due nemici. Se uno dei due è morto è reso interactable=false.
     {
         chiVuoiAttaccare.SetActive(true);
@@ -937,11 +938,61 @@ public class BattleSystem : MonoBehaviour
 	}*/
 
 
-    public int calcolaDannoEffettivo(int danni, int attaccoSpeciale)
+    public int calcolaDannoEffettivo(int danni, Unit attaccante, Unit attaccato, Mossa mossa)
     {
-        int valoreDanno = (danni + 10) * 2 / 3;
-        return valoreDanno;
+        int valoreAttacco;
+        int valoreDifesa;
+
+        if (mossa.tipo == "SPECIALE")
+        {
+            valoreAttacco = attaccante.attacco_speciale;
+            valoreDifesa = attaccato.difesa_speciale;
+        }
+        else
+        {
+            valoreAttacco = attaccante.attacco;
+            valoreDifesa = attaccato.difesa;
+        }
+
+
+        float valoreDanno = (((2 * 100 / 5 + 2) * danni * valoreAttacco / valoreDifesa) / 50 + 2) * Modificatore(mossa, attaccato);
+        int intValoreDanno = (int)valoreDanno;
+
+        return intValoreDanno;
+
     }
+
+    public float Modificatore(Mossa mossa, Unit attaccato)
+    {
+        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE
+
+        float[,] matrice = { { 0.5f, 1,  1,   1,   1}, 
+                             {  2,   1,  0,   1,   1},
+                             {  1,   1,  1,   1,   1},
+                             {  1,   1,  1,  0.5f, 1},
+                             {  1,   1,  1,   1,   1}};
+
+        Dictionary<string, int> dict = new Dictionary<string, int>()
+        {
+            {"FUOCO",   0 },
+            {"TERRA",   1 },
+            {"VENTO",   2 },
+            {"SPAZIO",  3 },
+            {"NORMALE", 4 },
+        };
+
+        int riga;
+        dict.TryGetValue(mossa.elemento, out riga);
+        int colonna;
+        dict.TryGetValue(attaccato.elemento, out colonna);
+
+        
+        float valore = matrice[riga, colonna];
+        Debug.Log("Riga: " + riga + ", colonna: " + colonna + ", valore: " + valore);
+
+        return valore;
+    }
+
 
     IEnumerator ShowText(string textDaScrivere)
     {    

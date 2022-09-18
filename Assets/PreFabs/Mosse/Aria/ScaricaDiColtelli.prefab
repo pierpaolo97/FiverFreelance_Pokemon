@@ -48,6 +48,7 @@ MonoBehaviour:
   tipo: FISICO
   danni: 10
   precisione: 70
+  elemento: NORMALE
   tipologiaDiMosaa: ATTACCO PARTICOLARE
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

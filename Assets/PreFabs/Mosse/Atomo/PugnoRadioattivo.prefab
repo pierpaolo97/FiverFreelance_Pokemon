@@ -49,6 +49,7 @@ MonoBehaviour:
   tipo: FISICO
   danni: 70
   precisione: 70
+  elemento: TERRA
   tipologiaDiMosaa: ATTACCO NORMALE
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

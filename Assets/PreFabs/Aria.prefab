@@ -56,6 +56,7 @@ MonoBehaviour:
   attacco_speciale: 100
   difesa_speciale: 40
   velocita: 80
+  elemento: VENTO
   paralizzato: 0
   mosse:
   - {fileID: 461373997255153931, guid: 6cd60c06243e1ca4fb30336647f69afd, type: 3}

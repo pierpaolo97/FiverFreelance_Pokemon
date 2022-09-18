@@ -140,6 +140,7 @@ MonoBehaviour:
   attacco_speciale: 100
   difesa_speciale: 60
   velocita: 50
+  elemento: TERRA
   paralizzato: 0
   mosse:
   - {fileID: 5297637820578396799, guid: 704ab24a74922e7429bfefbbdfda6cdf, type: 3}
