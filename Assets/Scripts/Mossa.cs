@@ -30,6 +30,7 @@ public class Mossa : MonoBehaviour
     GameObject combactButtons;
 
     int x;
+    GameObject ColpitoGiusto;
 
     public void Start()
     {
@@ -116,6 +117,20 @@ public class Mossa : MonoBehaviour
 
     }
 
+    public GameObject FindColpito(Unit colpitoUnit)
+    {
+        if (GameObject.Find("Battle System").GetComponent<BattleSystem>().playerPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().playerPrefab;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().enemyPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().enemyPrefab;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().enemy2Prefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().enemy2Prefab;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab;
+        Debug.Log(ColpitoGiusto);
+        return (ColpitoGiusto);
+    }
+
     public void Esegui(Mossa mossa, Unit attaccanteUnit, BattleHUD attacanteHUD, Unit colpitoUnit, BattleHUD colpitoHUD) //Quando viene eseguita questa funzione, la mossa viene realmente lanciata. 
     {
         Debug.Log(attaccanteUnit.unitName + " prova ad usare " + mossa.nomeMossa);
@@ -127,22 +142,22 @@ public class Mossa : MonoBehaviour
             if(mossa.nomeMossa == "Lanciafiamme" && AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.843391478f, 0.537299633f)));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));             
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Pioggia Di Meteoriti" && AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Uragano" && AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
             }
         }
@@ -156,8 +171,8 @@ public class Mossa : MonoBehaviour
                 //attaccanteUnit.TakeDamage(danno);
                 //attacanteHUD.SetHP(attaccanteUnit.currentHP);
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
-                StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(attaccanteUnit)));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
                 StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, attacanteHUD,danno));
             }
@@ -179,7 +194,7 @@ public class Mossa : MonoBehaviour
         {
             //Scarica Di Coltelli ? una mossa normale, ma viene eseguita 1-5 volte:
             //string ScaricaColtelli = attaccanteUnit.unitName + " usa Scarica Di Coltelli.";
-            StartCoroutine(ColpitoLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+            StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             ScaricaDiColtelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD);
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             //battleSystem.ProssimoCheAttacca();
@@ -190,7 +205,7 @@ public class Mossa : MonoBehaviour
             string ScorpacciataCacciatore = attaccanteUnit.unitName + " usa Scorpacciata Del Cacciatore.";
             string Cura = attaccanteUnit.unitName + " si cura del 30% la propria vita.";
             StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-            StartCoroutine(BoosterLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
+            StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
             StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
             ScorpacciataDelCacciatore(mossa, attaccanteUnit, attacanteHUD);
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -201,7 +216,7 @@ public class Mossa : MonoBehaviour
             string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
             string VieneParalalizzato = colpitoUnit.unitName + " viene paralizzato.";
             StartCoroutine(WaitAnimationMossa(colpitoUnit));
-            StartCoroutine(Paralizzato(GameObject.Find(colpitoUnit.unitName)));
+            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
             StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
             BacioDellaPrincipessa(mossa, colpitoUnit);
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -401,7 +416,7 @@ public class Mossa : MonoBehaviour
             string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
             StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
             StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
-            StartCoroutine(BoosterLampeggiante(GameObject.Find(amicoDaBoostare.unitName)));
+            StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
         }
@@ -420,9 +435,9 @@ public class Mossa : MonoBehaviour
                     battleSystem.amici[0].attacco -= 1;
                     battleSystem.amici[1].attacco -= 1;
                     StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
-                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.amici[0].unitName)));
+                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
                     StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
-                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.amici[1].unitName)));
+                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
                 }
                 z++;
             }
@@ -436,9 +451,9 @@ public class Mossa : MonoBehaviour
                     battleSystem.nemici[0].attacco -= 1;
                     battleSystem.nemici[1].attacco -= 1;
                     StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
-                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.nemici[0].unitName)));
+                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
                     StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
-                    StartCoroutine(MalusLampeggiante(GameObject.Find(battleSystem.nemici[1].unitName)));
+                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
                 }
                 z++;
             }
