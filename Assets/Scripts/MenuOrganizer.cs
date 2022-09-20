@@ -5,6 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class MenuOrganizer : MonoBehaviour
 {
+    public void Start()
+    {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+    }
 
     public void GoToMenuStart()
     {

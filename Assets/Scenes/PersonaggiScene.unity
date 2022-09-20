@@ -2072,7 +2072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 364.16998, y: -87.492455}
+  m_AnchoredPosition: {x: 364.17, y: -87.49246}
   m_SizeDelta: {x: 801.81, y: 346.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &858687303
@@ -3329,7 +3329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -102, y: 30.870552}
+  m_AnchoredPosition: {x: -102.00001, y: 30.870556}
   m_SizeDelta: {x: 115.16, y: 71.775}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1338262249
@@ -5115,7 +5115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 364.16998, y: 97.772095}
+  m_AnchoredPosition: {x: 364.16998, y: 97.78065}
   m_SizeDelta: {x: 801.81, y: 83.781}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1953322447
@@ -5138,9 +5138,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sam e la Ragazza delle Stelle
-
-    (Elison Publishing, 2021)'
+  m_text: Sam e la Ragazza delle Stelle (Elison Publishing, 2021)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -5207,7 +5205,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1953322448

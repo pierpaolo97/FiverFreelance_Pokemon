@@ -16,6 +16,10 @@ public class Scelta : MonoBehaviour
 
     public GameObject interoMenu;
 
+    public GameObject back;
+    public GameObject avanti;
+    public GameObject startGame;
+
     public void Avanza()
     {
         playercompagno.SetActive(false);
@@ -48,7 +52,7 @@ public class Scelta : MonoBehaviour
             mossa_da_istanziare.name = friend.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
             friend.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
-
+        back.SetActive(false);
     }
 
     public void StartGame()
@@ -86,6 +90,15 @@ public class Scelta : MonoBehaviour
 
         interoMenu.SetActive(false);
         battleSystem.enabled = true;
+    }
+
+    public void ScegliDiNuovo()
+    {
+        ememy1e2.SetActive(false);
+        back.SetActive(true);
+        playercompagno.SetActive(true);
+        avanti.SetActive(true);
+        startGame.SetActive(false);
     }
 
     
