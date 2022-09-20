@@ -200,6 +200,7 @@ public class BattleSystem : MonoBehaviour
         {
             if (!playerUnit.paralizzato)
             {
+
                 Debug.Log("TUTTO OK");
                 string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
                 StartCoroutine(ShowText(ScegliAzione));
@@ -618,7 +619,6 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log("HA FALLITO MA STA QUA?");
             yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
@@ -709,6 +709,19 @@ public class BattleSystem : MonoBehaviour
                 //state = BattleState.PLAYERTURN;
                 if (!playerUnit.paralizzato)
                 {
+                    if (nemicoAttaccatoDalPlayer.currentHP <= 0)
+                    {
+                        if (nemicoAttaccatoDalPlayer.unitID == enemyUnit.unitID)
+                        {
+                            nemicoAttaccatoDalPlayer = enemy2Unit;
+                            nemicoAttaccatoDalPlayerHUD = enemy2HUD;
+                        }
+                        else
+                        {
+                            nemicoAttaccatoDalPlayer = enemyUnit;
+                            nemicoAttaccatoDalPlayerHUD = enemyHUD;
+                        }
+                    }
                     mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
                 }
                 else

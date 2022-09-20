@@ -91,26 +91,12 @@ public class Mossa : MonoBehaviour
         Destroy(MossaInstanziata, 1.5f);
     }
 
-    IEnumerator WaitAnimationMossaDiagonaleColtelli(Unit Attacante, Unit Colpito, Quaternion Inclinazione)
-    {
-        yield return new WaitForSeconds(1.5f);
-        for (int i = 0; i < x; i++)
-        {
-            yield return new WaitForSeconds(0.5f);
-            GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
-            if (Attacante.transform.position.y > 0)
-                MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
-            MossaInstanziata.transform.DOMove(Colpito.transform.position, 1f);
-            Destroy(MossaInstanziata, 1.5f);
-        }
-    }
-
     IEnumerator WaitAnimationMossaDiagonale(Unit Attacante,Unit Colpito, Quaternion Inclinazione, Mossa mossa)
     {
         if (mossa.nomeMossa== "Scarica Di Coltelli")
         {
             yield return new WaitForSeconds(1.5f);
-            for (int i = 0; i < x; i++)
+            for (int i = 1; i < x; i++)
             {
                 yield return new WaitForSeconds(0.8f);
                 GameObject MossaInstanziataColtelli = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
@@ -152,7 +138,7 @@ public class Mossa : MonoBehaviour
         AttaccoNormale.Successo = true;
         yield return new WaitForSeconds(6f);
         Attacante.TakeDamage(danno);
-        attacanteHUD.SetHP(Attacante.currentHP);
+        attacanteHUD.SetHP(Attacante);
 
     }
 
@@ -238,16 +224,19 @@ public class Mossa : MonoBehaviour
         }
         else if (mossa.nomeMossa == "Bacio Della Principessa")
         {
+            //paralizza qualcu0
             BacioDellaPrincipessa(mossa, colpitoUnit, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Ordine Della Futura Regina")
         {
+            //Il suo compagno di squadra riceve un boost di 3 punti alla difesa e alla difesa speciale.
             OrdineDellaFuturaRegina(mossa, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Sguardo Del Drago")
         {
+            //-1 attacco avversari
             SguardoDelDrago(mossa, colpitoUnit, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
@@ -352,8 +341,10 @@ public class Mossa : MonoBehaviour
                         battleSystem.state = BattleState.FINISHED;
                         //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                         battleSystem.EndBattle();
-                        partitaFinita.SetActive(true);
-
+                        if (attaccanteUnit.unitID == 0 || attaccanteUnit.unitID == 1)
+                            mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                        else
+                            mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
                     }
 
                     if (attaccatoMorto)
@@ -390,7 +381,7 @@ public class Mossa : MonoBehaviour
             int vita = attaccanteUnit.maxHP;
             int cura = vita / 3;
             attaccanteUnit.Heal(cura);
-            attacanteHUD.SetHP(attaccanteUnit.currentHP);
+            attacanteHUD.SetHP(attaccanteUnit);
         }
         else
         {
@@ -463,15 +454,24 @@ public class Mossa : MonoBehaviour
                 z++;
             }
 
-            amicoDaBoostare.difesa += 3;
-            amicoDaBoostare.difesa_speciale += 3;
-            string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
-            string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
-            StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
-            StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
-            StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
-            Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
+            if (amicoDaBoostare.currentHP > 0)
+            {
+                amicoDaBoostare.difesa += 3;
+                amicoDaBoostare.difesa_speciale += 3;
+                string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
+                string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
+                StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
+                StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+                StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
+                StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
+            }
+            else
+            {
+                string AttaccoFallito = amicoDaBoostare.unitName + " è esausto quindi " + attaccanteUnit.unitName + " fallisce!";
+                StartCoroutine(ShowText(AttaccoFallito));
+                Debug.Log("ATTACCO FALLITO ORDINE");
+            }
         }
         else
         {
@@ -499,12 +499,27 @@ public class Mossa : MonoBehaviour
             {
                 if (personaggio.unitID == colpitoUnit.unitID)
                 {
-                    battleSystem.amici[0].attacco -= 1;
-                    battleSystem.amici[1].attacco -= 1;
-                    StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
-                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
-                    StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
-                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
+                    if (battleSystem.amici[0].currentHP > 0 && battleSystem.amici[1].currentHP > 0)
+                    {
+                        battleSystem.amici[0].attacco -= 1;
+                        battleSystem.amici[1].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
+                    }
+                    else if (battleSystem.amici[0].currentHP > 0 && battleSystem.amici[1].currentHP <= 0)
+                    {
+                        battleSystem.amici[0].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
+                    }
+                    else if (battleSystem.amici[0].currentHP <= 0 && battleSystem.amici[1].currentHP > 0)
+                    {
+                        battleSystem.amici[1].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
+                    }
                 }
                 z++;
             }
@@ -515,12 +530,27 @@ public class Mossa : MonoBehaviour
             {
                 if (personaggio.unitID == colpitoUnit.unitID)
                 {
-                    battleSystem.nemici[0].attacco -= 1;
-                    battleSystem.nemici[1].attacco -= 1;
-                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
-                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
-                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
-                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
+                    if (battleSystem.nemici[0].currentHP > 0 && battleSystem.nemici[1].currentHP > 0)
+                    {
+                        battleSystem.nemici[0].attacco -= 1;
+                        battleSystem.nemici[1].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
+                    }
+                    else if (battleSystem.nemici[0].currentHP > 0 && battleSystem.nemici[1].currentHP <= 0)
+                    {
+                        battleSystem.nemici[0].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
+                    }
+                    else if (battleSystem.nemici[0].currentHP <= 0 && battleSystem.nemici[1].currentHP > 0)
+                    {
+                        battleSystem.nemici[1].attacco -= 1;
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
+                        StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
+                    }
                 }
                 z++;
             }
@@ -562,7 +592,7 @@ public class Mossa : MonoBehaviour
         StartCoroutine(ShowText(perdeXP));
         yield return new WaitForSecondsRealtime(2);
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
-        qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+        qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
         Debug.Log(dannoEffettivo);
     }
 

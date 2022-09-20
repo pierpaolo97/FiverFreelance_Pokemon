@@ -17,9 +17,7 @@ public class AttaccoNormale : MonoBehaviour
     public static bool Successo;
 
     GameObject partitaFinita;
-
-   
-       
+    
     public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
        
@@ -78,7 +76,7 @@ public class AttaccoNormale : MonoBehaviour
 
                 yield return new WaitForSecondsRealtime(2);
 
-                qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+                qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
 
                 //Unit giocatoreNONAttaccato;
 
@@ -123,12 +121,15 @@ public class AttaccoNormale : MonoBehaviour
                     battleSystem.state = BattleState.FINISHED;
                     //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                     battleSystem.EndBattle();
-                    partitaFinita.SetActive(true);
+                    if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
+                        FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                    else
+                        FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
                 }
                 else
                 {
                     //state = BattleState.ENEMYTURN;
-                    qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+                    qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
                     //dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
 
                     //yield return new WaitForSeconds(5f);
@@ -178,5 +179,14 @@ public class AttaccoNormale : MonoBehaviour
         }
 
         //yield return new WaitForSeconds(5);
+    }
+
+    public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
+    {
+        GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
+        partitaFinita.SetActive(true);
+        partitaFinita.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
+        partitaFinita.transform.GetChild(1).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
     }
 }
