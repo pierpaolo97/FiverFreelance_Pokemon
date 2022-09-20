@@ -32,11 +32,17 @@ public class Mossa : MonoBehaviour
     int x;
     GameObject ColpitoGiusto;
 
+    public AudioSource BoosterSource;
+    public AudioSource MalusSource;
+    public AudioSource ColpitoSource;
+
     public void Start()
     {
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
         partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
-        
+        BoosterSource = GameObject.Find("PowerUp").GetComponent<AudioSource>();
+        MalusSource = GameObject.Find("PowerDown").GetComponent<AudioSource>();
+        ColpitoSource = GameObject.Find("Colpito").GetComponent<AudioSource>();
     }
 
     public void SalvaMossa(Mossa mossa) //Questa funzione viene attaccata ad ogni bottone, personalizzata a seconda della mossa eseguita. Qui salviamo la mossa che il Player dovr? eseguire.
@@ -62,31 +68,36 @@ public class Mossa : MonoBehaviour
 
     IEnumerator ColpitoLampeggiante(GameObject Colpito)
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         Colpito.GetComponent<Animator>().Play("ColpitoPg");
+        ColpitoSource.Play();
+        yield return new WaitForSeconds(1);
+        ColpitoSource.Play();
     }
 
     IEnumerator BoosterLampeggiante(GameObject Curato)
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         Curato.GetComponent<Animator>().Play("CuraPg");
+        BoosterSource.Play();
     }
 
     IEnumerator MalusLampeggiante(GameObject Malus)
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         Malus.GetComponent<Animator>().Play("MalusPg");
+        MalusSource.Play();
     }
 
     IEnumerator Paralizzato(GameObject Paralizzato)
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(5f);
         Paralizzato.GetComponent<Animator>().Play("ParalizzatoPg");
     }
 
     IEnumerator WaitAnimationMossa(Unit Colpito)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
         Destroy(MossaInstanziata, 1.5f);
     }
@@ -153,6 +164,19 @@ public class Mossa : MonoBehaviour
         else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
             ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab;
         Debug.Log(ColpitoGiusto);
+        return (ColpitoGiusto);
+    }
+
+    public GameObject FindColpitoHUD(Unit colpitoUnit)
+    {
+        if (GameObject.Find("Battle System").GetComponent<BattleSystem>().playerPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().playerHUD.gameObject;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().enemyPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().enemyHUD.gameObject;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().enemy2Prefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().enemy2HUD.gameObject;
+        else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
+            ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().friendHUD.gameObject;
         return (ColpitoGiusto);
     }
 
@@ -377,7 +401,6 @@ public class Mossa : MonoBehaviour
             StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
             StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
-
             int vita = attaccanteUnit.maxHP;
             int cura = vita / 3;
             attaccanteUnit.Heal(cura);
@@ -401,6 +424,7 @@ public class Mossa : MonoBehaviour
             StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.paralizzato = true;
+            StartCoroutine(WaitActivateParalizzato(colpitoUnit));
             Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
         }
         else
@@ -408,6 +432,12 @@ public class Mossa : MonoBehaviour
             string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
             StartCoroutine(ShowText(AttaccoFallito));
         }
+    }
+
+    IEnumerator WaitActivateParalizzato(Unit colpitoUnit)
+    {
+        yield return new WaitForSeconds(3);
+        FindColpitoHUD(colpitoUnit).transform.GetChild(4).gameObject.SetActive(true);
     }
 
 
@@ -493,7 +523,6 @@ public class Mossa : MonoBehaviour
             //StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
             StartCoroutine(ShowTextDouble(SguardoDrago, RiduciAttacco));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
-
             int z = 0;
             foreach (Unit personaggio in battleSystem.amici)
             {
@@ -584,7 +613,7 @@ public class Mossa : MonoBehaviour
     {
         Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
         //StartCoroutine(WaitAnimationMossaDiagonaleColtelli(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
-        string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
+        string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + "!";
         StartCoroutine(ShowText(UsaSuccesso));
         yield return new WaitForSecondsRealtime(5);
         int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);

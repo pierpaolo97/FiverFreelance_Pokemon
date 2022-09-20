@@ -11,7 +11,7 @@ public class AttaccoNormale : MonoBehaviour
 {
     
     Unit giocatoreNONAttaccato;
-
+    
     private float delay = 0.025f;
 
     public static bool Successo;
@@ -57,7 +57,7 @@ public class AttaccoNormale : MonoBehaviour
                 bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
 
                 //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-                string UsaConSuccesso = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
+                string UsaConSuccesso = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + "! ";
 
                 StartCoroutine(ShowText(UsaConSuccesso));
 

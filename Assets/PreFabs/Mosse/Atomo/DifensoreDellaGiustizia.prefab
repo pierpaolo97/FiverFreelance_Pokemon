@@ -55,3 +55,6 @@ MonoBehaviour:
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 1323510264394416555, guid: 2e7e29cc955e54780ac566b70158d2bc,
     type: 3}
+  AudioSource: {fileID: 0}
+  BoosterClip: {fileID: 8300000, guid: b4646db99bb084a77acde2ef9e88508a, type: 3}
+  MalusClip: {fileID: 0}

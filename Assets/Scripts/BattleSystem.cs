@@ -212,7 +212,7 @@ public class BattleSystem : MonoBehaviour
                 //playerUnit.paralizzato = false;
                 string Paralizzato = playerUnit.unitName + " è paralizzato! ";
                 StartCoroutine(ShowText(Paralizzato));
-                StartCoroutine(WaitSceltaTurno(5));
+                StartCoroutine(WaitSceltaTurno(3));
 
                 //ProssimoCheAttacca();
             }
@@ -224,7 +224,7 @@ public class BattleSystem : MonoBehaviour
             playerPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
             state = BattleState.ENEMYTURN;
-            StartCoroutine(WaitSceltaTurno(3));
+            StartCoroutine(WaitSceltaTurno(0.1f));
             //StartCoroutine(EnemyTurn());
         }
     }
@@ -479,10 +479,11 @@ public class BattleSystem : MonoBehaviour
             {
                 Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare! ");
                 friendUnit.paralizzato = false;
+                friendHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
                 string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
 
@@ -493,7 +494,7 @@ public class BattleSystem : MonoBehaviour
             string Esausto = friendUnit.unitName + " è esausto ";
             friendPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.1f);
             //StartCoroutine(Enemy2Turn());
             //ProssimoCheAttacca();
         }
@@ -537,10 +538,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 enemyUnit.paralizzato = false;
+                enemyHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
                 string ParalizzatoNoAttaccare = enemyUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
         }
@@ -550,7 +552,7 @@ public class BattleSystem : MonoBehaviour
             string Esausto = enemyUnit.unitName + " è esausto ";
             enemyPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.1f);
             //StartCoroutine(FriendTurn());
             //ProssimoCheAttacca();
         }
@@ -595,10 +597,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 enemy2Unit.paralizzato = false;
+                enemy2HUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
                 string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(5f);
+                yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
         }
@@ -608,7 +611,7 @@ public class BattleSystem : MonoBehaviour
             enemy2Prefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
             //state = BattleState.PLAYERTURN;
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(0.1f);
             //PlayerTurn();
             //ProssimoCheAttacca();
         }
@@ -727,6 +730,7 @@ public class BattleSystem : MonoBehaviour
                 else
                 {
                     playerUnit.paralizzato = false;
+                    playerHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
                     Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
                     string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
                     StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
