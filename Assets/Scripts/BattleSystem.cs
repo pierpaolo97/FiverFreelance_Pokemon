@@ -98,8 +98,8 @@ public class BattleSystem : MonoBehaviour
 
         playerPrefab.transform.position = new Vector3(-2.8f, -1.2f, 0f);
         friendPrefab.transform.position = new Vector3(-6.8f, -1.2f, 0f);
-        enemyPrefab.transform.position = new Vector3(2.25f, 2.15f, 0f);
-        enemy2Prefab.transform.position = new Vector3(5.35f, 2.15f, 0f);
+        enemyPrefab.transform.position = new Vector3(2f, 2.15f, 0f);
+        enemy2Prefab.transform.position = new Vector3(6f, 2.15f, 0f);
 
         if (enemyPrefab.name == "Atomo")
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
@@ -220,9 +220,10 @@ public class BattleSystem : MonoBehaviour
         {
             Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
             string Esausto = playerUnit.unitName + " è esausto! ";
+            playerPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
             state = BattleState.ENEMYTURN;
-            StartCoroutine(WaitSceltaTurno(5));
+            StartCoroutine(WaitSceltaTurno(3));
             //StartCoroutine(EnemyTurn());
         }
     }
@@ -489,14 +490,15 @@ public class BattleSystem : MonoBehaviour
         {
             //state = BattleState.ENEMY2TURN;
             string Esausto = friendUnit.unitName + " è esausto ";
+            friendPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(3f);
             //StartCoroutine(Enemy2Turn());
             //ProssimoCheAttacca();
         }
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(9f);
             ProssimoCheAttacca();
         }
         else
@@ -545,15 +547,16 @@ public class BattleSystem : MonoBehaviour
         {
             //state = BattleState.FRIENDTURN;
             string Esausto = enemyUnit.unitName + " è esausto ";
+            enemyPrefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             //StartCoroutine(FriendTurn());
             //ProssimoCheAttacca();
         }
 
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(9f);
             ProssimoCheAttacca();
         }
         else
@@ -601,15 +604,16 @@ public class BattleSystem : MonoBehaviour
         else
         {
             string Esausto = enemy2Unit.unitName + " è esausto ";
+            enemy2Prefab.GetComponent<Animator>().Play("EsaustoPg");
             StartCoroutine(ShowText(Esausto));
             //state = BattleState.PLAYERTURN;
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             //PlayerTurn();
             //ProssimoCheAttacca();
         }
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(9);
             ProssimoCheAttacca();
         }
         else
@@ -682,7 +686,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(10f);
+            yield return new WaitForSeconds(9f);
             ProssimoCheAttacca();
         }
         else

@@ -91,14 +91,53 @@ public class Mossa : MonoBehaviour
         Destroy(MossaInstanziata, 1.5f);
     }
 
-    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante,Unit Colpito, Quaternion Inclinazione)
+    IEnumerator WaitAnimationMossaDiagonaleColtelli(Unit Attacante, Unit Colpito, Quaternion Inclinazione)
     {
-        yield return new WaitForSeconds(3f);
-        GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
-        if (Attacante.transform.position.y > 0)
-            MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
-        MossaInstanziata.transform.DOMove(Colpito.transform.position, 1.3f);
-        Destroy(MossaInstanziata, 1.3f);
+        yield return new WaitForSeconds(1.5f);
+        for (int i = 0; i < x; i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
+            if (Attacante.transform.position.y > 0)
+                MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
+            MossaInstanziata.transform.DOMove(Colpito.transform.position, 1f);
+            Destroy(MossaInstanziata, 1.5f);
+        }
+    }
+
+    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante,Unit Colpito, Quaternion Inclinazione, Mossa mossa)
+    {
+        if (mossa.nomeMossa== "Scarica Di Coltelli")
+        {
+            yield return new WaitForSeconds(1.5f);
+            for (int i = 0; i < x; i++)
+            {
+                yield return new WaitForSeconds(0.8f);
+                GameObject MossaInstanziataColtelli = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
+                if (Attacante.transform.position.y > 0)
+                    MossaInstanziataColtelli.GetComponent<SpriteRenderer>().flipX = true;
+                MossaInstanziataColtelli.transform.DOMove(Colpito.transform.position, 1f);
+                Destroy(MossaInstanziataColtelli, 1.5f);
+            }
+        }
+        else
+        {
+            yield return new WaitForSeconds(3f);
+            GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
+            if (Attacante.transform.position.y > 0)
+                MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
+            if (mossa.nomeMossa == "Lanciafiamme")
+            {
+                yield return new WaitForSeconds(0.4f);
+                MossaInstanziata.transform.DOMove(Colpito.transform.position, 1.3f);
+                Destroy(MossaInstanziata, 1.3f);
+            }
+            else
+            {
+                MossaInstanziata.transform.DOMove(Colpito.transform.position, 1.3f);
+                Destroy(MossaInstanziata, 1.3f);
+            }
+        }
     }
 
     IEnumerator WaitMossaAttaccoFuoriPosto()
@@ -141,17 +180,17 @@ public class Mossa : MonoBehaviour
             StartCoroutine(mossa.GetComponent<AttaccoNormale>().Attacco(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
             if(mossa.nomeMossa == "Lanciafiamme" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.843391478f, 0.537299633f)));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.258819103f, 0.965925813f), mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Pioggia Di Meteoriti" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Uragano" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (AttaccoNormale.Successo == true)
@@ -254,16 +293,19 @@ public class Mossa : MonoBehaviour
 
         if (mossaHaEffetto > 0)
         {
-
+            Debug.Log("COLTELLI HA EFFETTO");
             if (AttaccoRiesce(precisione))
             {
-                x = Random.Range(0, 5);
+                Debug.Log("COLTELLI RIUSCITA");
+
+                x = Random.Range(1, 5);
                 Debug.Log("Scarica di coltelli viene usata " + x + " volte");
                 for (int i = 0; i < x; i++)
                 {
                     StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                     StartCoroutine(WaitMossaAttaccoFuoriPosto());
                     StartCoroutine(Coltelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
+                    StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa));
 
                     if (colpitoUnit.currentHP <= 0)
                     {
@@ -511,7 +553,7 @@ public class Mossa : MonoBehaviour
     public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
         Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
-        StartCoroutine(WaitAnimationMossaDiagonale(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
+        //StartCoroutine(WaitAnimationMossaDiagonaleColtelli(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
         string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
         StartCoroutine(ShowText(UsaSuccesso));
         yield return new WaitForSecondsRealtime(5);
