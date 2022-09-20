@@ -152,7 +152,7 @@ public class AttaccoNormale : MonoBehaviour
         else
         {
             Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo" + qualeNemicoAttacchi.elemento);
-            String AttaccoFallito = mossa.elemento + " non ha efficacia contro personaggi di tipo" + qualeNemicoAttacchi.elemento;
+            String AttaccoFallito = mossa.nomeMossa + " non è efficace contro " + qualeNemicoAttacchi.unitName;
             StartCoroutine(ShowText(AttaccoFallito));
             //yield return new WaitForSeconds(5);
             //battleSystem.ProssimoCheAttacca();
@@ -169,7 +169,7 @@ public class AttaccoNormale : MonoBehaviour
 
         string currentText = "";
 
-        for (int i = 0; i < textDaScrivere.Length; i++)
+        for (int i = 0; i < textDaScrivere.Length+1; i++)
         {
             currentText = textDaScrivere.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);

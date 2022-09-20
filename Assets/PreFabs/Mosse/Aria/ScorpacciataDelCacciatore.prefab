@@ -49,7 +49,7 @@ MonoBehaviour:
   danni: 0
   precisione: 100
   elemento: NESSUNO
-  tipologiaDiMosaa: SENZA_TARGET
+  tipologiaDiMosaa: CURA
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}

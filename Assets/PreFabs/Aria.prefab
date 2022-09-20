@@ -49,8 +49,8 @@ MonoBehaviour:
   unitName: Aria
   unitLevel: 100
   damage: 23
-  maxHP: 200
-  currentHP: 200
+  maxHP: 500
+  currentHP: 500
   attacco: 110
   difesa: 50
   attacco_speciale: 100

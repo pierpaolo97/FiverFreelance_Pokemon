@@ -88,7 +88,7 @@ public class Mossa : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
-        Destroy(MossaInstanziata, 1.3f);
+        Destroy(MossaInstanziata, 1.5f);
     }
 
     IEnumerator WaitAnimationMossaDiagonale(Unit Attacante,Unit Colpito, Quaternion Inclinazione)
@@ -181,66 +181,35 @@ public class Mossa : MonoBehaviour
         else if (mossa.nomeMossa == "Difensore della Giustizia")
         {
             //Aumenta di due punti la propia difesa speciale
-            string DifensoreGiustizia = attaccanteUnit.unitName + " usa Difensore della Giustizia.";
-            string AumentaDifesa = attaccanteUnit.unitName + " aumenta di 2 punti la sua difesa speciale.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-            StartCoroutine(BoosterLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
-            StartCoroutine(ShowTextDouble(DifensoreGiustizia, AumentaDifesa));
             DifensoreDellaGiustizia(mossa, attaccanteUnit);
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Scarica Di Coltelli")
         {
             //Scarica Di Coltelli ? una mossa normale, ma viene eseguita 1-5 volte:
             //string ScaricaColtelli = attaccanteUnit.unitName + " usa Scarica Di Coltelli.";
-            StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             ScaricaDiColtelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD);
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Scorpacciata Del Cacciatore")
         {
             //Cura la propria vita del 30%
-            string ScorpacciataCacciatore = attaccanteUnit.unitName + " usa Scorpacciata Del Cacciatore.";
-            string Cura = attaccanteUnit.unitName + " si cura del 30% la propria vita.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-            StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
-            StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
             ScorpacciataDelCacciatore(mossa, attaccanteUnit, attacanteHUD);
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Bacio Della Principessa")
         {
-            string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
-            string VieneParalalizzato = colpitoUnit.unitName + " viene paralizzato.";
-            StartCoroutine(WaitAnimationMossa(colpitoUnit));
-            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
-            StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
-            BacioDellaPrincipessa(mossa, colpitoUnit);
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            BacioDellaPrincipessa(mossa, colpitoUnit, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Ordine Della Futura Regina")
         {
-            //string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
-            //string AmicoBoostato = attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!";
-            //StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
-            //StartCoroutine(BoosterLampeggiante(GameObject.Find(amicoDaBoostare.unitName)));
-            //StartCoroutine(ShowText(OrdineRegina));
             OrdineDellaFuturaRegina(mossa, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
         else if (mossa.nomeMossa == "Sguardo Del Drago")
         {
-            string SguardoDrago = attaccanteUnit.unitName + " usa Sguardo Del Drago.";
-            string RiduciAttacco = attaccanteUnit.unitName + " riduce di 1 l'attacco degli avversari ";
-            //StartCoroutine(WaitAnimationMossa(colpitoUnit));
-            //StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
-            StartCoroutine(ShowTextDouble(SguardoDrago, RiduciAttacco));
-            SguardoDelDrago(mossa, colpitoUnit);
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            SguardoDelDrago(mossa, colpitoUnit, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
         }
         else
@@ -253,7 +222,19 @@ public class Mossa : MonoBehaviour
     {
         if (AttaccoRiesce(mossa.precisione))
         {
+            string DifensoreGiustizia = attaccanteUnit.unitName + " usa Difensore della Giustizia.";
+            string AumentaDifesa = attaccanteUnit.unitName + " aumenta di 2 punti la sua difesa speciale.";
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(BoosterLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
+            StartCoroutine(ShowTextDouble(DifensoreGiustizia, AumentaDifesa));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             attaccanteUnit.difesa_speciale += 2;
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            Debug.Log("ATTACCO FALLITO COLTELLI");
         }
     }
 
@@ -280,6 +261,8 @@ public class Mossa : MonoBehaviour
                 Debug.Log("Scarica di coltelli viene usata " + x + " volte");
                 for (int i = 0; i < x; i++)
                 {
+                    StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+                    StartCoroutine(WaitMossaAttaccoFuoriPosto());
                     StartCoroutine(Coltelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
 
                     if (colpitoUnit.currentHP <= 0)
@@ -337,6 +320,12 @@ public class Mossa : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+                StartCoroutine(ShowText(AttaccoFallito));
+                Debug.Log("ATTACCO FALLITO COLTELLI");
+            }
         }
         else
         {
@@ -349,20 +338,42 @@ public class Mossa : MonoBehaviour
     {
         if (AttaccoRiesce(mossa.precisione))
         {
+            string ScorpacciataCacciatore = attaccanteUnit.unitName + " usa Scorpacciata Del Cacciatore.";
+            string Cura = attaccanteUnit.unitName + " si cura del 30% la propria vita.";
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
+            StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+
             int vita = attaccanteUnit.maxHP;
             int cura = vita / 3;
             attaccanteUnit.Heal(cura);
             attacanteHUD.SetHP(attaccanteUnit.currentHP);
         }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+        }
     }
 
-
-    public void BacioDellaPrincipessa(Mossa mossa, Unit colpitoUnit)
+    public void BacioDellaPrincipessa(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
     {
         if (AttaccoRiesce(mossa.precisione))
         {
+            string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
+            string VieneParalalizzato = colpitoUnit.unitName + " viene paralizzato.";
+            StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
+            StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.paralizzato = true;
             Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
         }
     }
 
@@ -420,13 +431,27 @@ public class Mossa : MonoBehaviour
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
         }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            Debug.Log("ATTACCO FALLITO ORDINE");
+        }
     }
 
 
-    public void SguardoDelDrago(Mossa mossa, Unit colpitoUnit)
+    public void SguardoDelDrago(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
     {
         if (AttaccoRiesce(mossa.precisione))
         {
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            string SguardoDrago = attaccanteUnit.unitName + " usa Sguardo Del Drago.";
+            string RiduciAttacco = attaccanteUnit.unitName + " riduce di 1 l'attacco degli avversari ";
+            //StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            //StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
+            StartCoroutine(ShowTextDouble(SguardoDrago, RiduciAttacco));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+
             int z = 0;
             foreach (Unit personaggio in battleSystem.amici)
             {
@@ -458,13 +483,19 @@ public class Mossa : MonoBehaviour
                 z++;
             }
         }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            Debug.Log("ATTACCO FALLITO SGUARDO");
+        }
     }
 
 
     bool AttaccoRiesce(int precisione)
     {
-        int x = Random.Range(0, 100);
-        if (x <= precisione)
+        int k = Random.Range(0, 100);
+        if (k <= precisione)
         {
             Debug.Log("Attacco riuscito");
             return true;
@@ -480,17 +511,17 @@ public class Mossa : MonoBehaviour
     public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
         Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
-        int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
-        bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
-        qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-        Debug.Log(dannoEffettivo);
         StartCoroutine(WaitAnimationMossaDiagonale(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
         string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + " e ha successo! ";
         StartCoroutine(ShowText(UsaSuccesso));
         yield return new WaitForSecondsRealtime(5);
+        int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
         string perdeXP = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo*x + "HP ";
         StartCoroutine(ShowText(perdeXP));
         yield return new WaitForSecondsRealtime(2);
+        bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
+        qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+        Debug.Log(dannoEffettivo);
     }
 
     IEnumerator ShowTextDouble(string textDaScrivere, string textDaScrivere2)
@@ -506,7 +537,7 @@ public class Mossa : MonoBehaviour
         currentText = "";
         yield return new WaitForSeconds(4);
 
-        for (int i = 0; i < textDaScrivere2.Length; i++)
+        for (int i = 0; i < textDaScrivere2.Length+1; i++)
         {
             currentText = textDaScrivere2.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
@@ -517,7 +548,7 @@ public class Mossa : MonoBehaviour
 
     IEnumerator ShowText(string textDaScrivere)
     {
-        for (int i = 0; i < textDaScrivere.Length; i++)
+        for (int i = 0; i < textDaScrivere.Length +1; i++)
         {
             currentText = textDaScrivere.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);

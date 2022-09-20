@@ -49,8 +49,8 @@ MonoBehaviour:
   unitName: Nicolas
   unitLevel: 100
   damage: 37
-  maxHP: 200
-  currentHP: 200
+  maxHP: 500
+  currentHP: 500
   attacco: 100
   difesa: 70
   attacco_speciale: 90
@@ -109,14 +109,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6450721039946225802}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973862563508761831}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &453832024323124185
 SpriteRenderer:
   m_ObjectHideFlags: 0

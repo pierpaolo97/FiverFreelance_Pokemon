@@ -49,8 +49,8 @@ MonoBehaviour:
   unitName: Marzia
   unitLevel: 100
   damage: 35
-  maxHP: 200
-  currentHP: 200
+  maxHP: 500
+  currentHP: 500
   attacco: 40
   difesa: 70
   attacco_speciale: 80

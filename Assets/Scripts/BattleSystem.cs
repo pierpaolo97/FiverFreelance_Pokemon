@@ -101,6 +101,15 @@ public class BattleSystem : MonoBehaviour
         enemyPrefab.transform.position = new Vector3(2.25f, 2.15f, 0f);
         enemy2Prefab.transform.position = new Vector3(5.35f, 2.15f, 0f);
 
+        if (enemyPrefab.name == "Atomo")
+            enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+        if (enemyPrefab.name == "Nicolas")
+            enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+        if (enemy2Prefab.name == "Nicolas")
+            enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+        if (enemy2Prefab.name == "Atomo")
+            enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+
         playerUnit = playerPrefab.GetComponent<Unit>();
         friendUnit = friendPrefab.GetComponent<Unit>();
         enemyUnit = enemyPrefab.GetComponent<Unit>();
@@ -996,7 +1005,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ShowText(string textDaScrivere)
     {    
-        for (int i = 0; i < textDaScrivere.Length; i++)
+        for (int i = 0; i < textDaScrivere.Length+1; i++)
         {
             currentText = textDaScrivere.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
@@ -1009,7 +1018,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator ShowTextParalizzato(string textDaScrivere)
     {
-        for (int i = 0; i < textDaScrivere.Length; i++)
+        for (int i = 0; i < textDaScrivere.Length+1; i++)
         {
             currentText = textDaScrivere.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
