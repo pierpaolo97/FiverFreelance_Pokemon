@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class Scelta : MonoBehaviour
 {
@@ -24,6 +25,7 @@ public class Scelta : MonoBehaviour
     GameObject enemy2;
     GameObject player;
     GameObject friend;
+
 
     public void Avanza()
     {
