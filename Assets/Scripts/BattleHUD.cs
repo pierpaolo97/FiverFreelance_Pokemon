@@ -11,6 +11,8 @@ public class BattleHUD : MonoBehaviour
 	//public Text levelText;
 	public Slider hpSlider;
 	GameObject ColpitoGiusto;
+    public TextMeshProUGUI elementoText;
+    public RawImage coloreElemento;
 
     public void SetHUD(Unit unit)
 	{
@@ -19,7 +21,21 @@ public class BattleHUD : MonoBehaviour
 		hpSlider.maxValue = unit.maxHP;
 		hpSlider.value = unit.currentHP;
 		HPText.text = hpSlider.value.ToString() + "/" + hpSlider.maxValue.ToString();
-	}
+        elementoText.text = unit.elemento;
+
+        switch (unit.elemento)
+        {
+            case "VENTO": coloreElemento.color = new Color32(116, 146, 226, 255); break;
+            case "NORMALE": coloreElemento.color = new Color32(255, 255, 255, 255); break;
+            case "TERRA": coloreElemento.color = new Color32(101, 67, 33, 255); break;
+            case "SPAZIO": coloreElemento.color = new Color32(37, 40, 80, 255); break;
+            case "FUOCO": coloreElemento.color = new Color32(255, 0, 0, 255); break;
+            case "NESSUNO": coloreElemento.color = new Color32(255, 255, 102, 255); break;
+        }
+
+
+        
+    }
 
 	public void SetHP(Unit Colpito)
 	{

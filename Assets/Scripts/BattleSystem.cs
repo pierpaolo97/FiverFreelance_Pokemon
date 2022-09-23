@@ -130,10 +130,19 @@ public class BattleSystem : MonoBehaviour
         for (int i=0; i<4; i++)
         {
             bottoniMosse.transform.GetChild(i).GetChild(0).GetComponent<TextMeshProUGUI>().text = playerUnit.mosse[i].nomeMossa;
+            //var color = bottoniMosse.transform.GetChild(i).GetComponent<Button>().colors.normalColor;
+            switch (playerUnit.mosse[i].elemento)
+            {
+                case "VENTO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(116, 146, 226, 255); break;
+                case "NORMALE": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 255, 255, 255); break;
+                case "TERRA": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(101, 67, 33, 255); break;
+                case "SPAZIO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(37, 40, 80, 255); break;
+                case "FUOCO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 0, 0, 255); break;
+                case "NESSUNO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 255, 102, 255); break;
+            }
             Mossa mossa = playerUnit.mosse[i];
             bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => mossa.SalvaMossa(mossa));
             //bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => emptyMossa.EseguiMossa(playerUnit.mosse[i]));
-
         }
 
         amici[0] = playerPrefab.GetComponent<Unit>();
@@ -1024,7 +1033,7 @@ public class BattleSystem : MonoBehaviour
 
         
         float valore = matrice[riga, colonna];
-        Debug.Log("Riga: " + riga + ", colonna: " + colonna + ", valore: " + valore);
+        //Debug.Log("Riga: " + riga + ", colonna: " + colonna + ", valore: " + valore);
 
         return valore;
     }
