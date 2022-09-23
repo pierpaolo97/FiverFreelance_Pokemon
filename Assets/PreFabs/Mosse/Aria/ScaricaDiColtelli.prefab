@@ -55,6 +55,6 @@ MonoBehaviour:
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 585476551801204933, guid: b9e3e756378774081bd043b02121a76a,
     type: 3}
-  Booster: {fileID: 0}
-  Malus: {fileID: 0}
-  PowerUp: {fileID: 8300000, guid: b4646db99bb084a77acde2ef9e88508a, type: 3}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}

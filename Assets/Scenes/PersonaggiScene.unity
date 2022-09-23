@@ -1753,6 +1753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa820da2065c46d0a6f76307cd51cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transition: {fileID: 3818154881689084225, guid: 3a325d473716b4d66b97e63d962ad746,
+    type: 3}
 --- !u!1 &749902055
 GameObject:
   m_ObjectHideFlags: 0
@@ -2757,6 +2759,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: MenuOrganizer, Assembly-CSharp
         m_MethodName: GoToMenuStart
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1149944545}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

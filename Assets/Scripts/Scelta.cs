@@ -20,13 +20,18 @@ public class Scelta : MonoBehaviour
     public GameObject avanti;
     public GameObject startGame;
 
+    GameObject enemy1;
+    GameObject enemy2;
+    GameObject player;
+    GameObject friend;
+
     public void Avanza()
     {
         playercompagno.SetActive(false);
-        GameObject player = Instantiate(scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        player = Instantiate(scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer]);
         player.name = player.GetComponent<Unit>().unitName;
         player.GetComponent<Unit>().unitID = 0;
-        GameObject friend = Instantiate(scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        friend = Instantiate(scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer]);
         friend.name = friend.GetComponent<Unit>().unitName;
         friend.GetComponent<Unit>().unitID = 1;
         battleSystem.playerPrefab = player;
@@ -58,10 +63,10 @@ public class Scelta : MonoBehaviour
     public void StartGame()
     {
         ememy1e2.SetActive(false);
-        GameObject enemy1 = Instantiate(scegliEnemy1.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy1.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        enemy1 = Instantiate(scegliEnemy1.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy1.GetComponent<ScegliPersonaggi>().indexPlayer]);
         enemy1.name = enemy1.GetComponent<Unit>().unitName;
         enemy1.GetComponent<Unit>().unitID = 2;
-        GameObject enemy2 = Instantiate(scegliEnemy2.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy2.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        enemy2 = Instantiate(scegliEnemy2.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliEnemy2.GetComponent<ScegliPersonaggi>().indexPlayer]);
         enemy2.name = enemy2.GetComponent<Unit>().unitName;
         enemy2.GetComponent<Unit>().unitID = 3;
         battleSystem.enemyPrefab = enemy1;
@@ -95,6 +100,8 @@ public class Scelta : MonoBehaviour
     public void ScegliDiNuovo()
     {
         ememy1e2.SetActive(false);
+        Destroy(friend);
+        Destroy(player);
         back.SetActive(true);
         playercompagno.SetActive(true);
         avanti.SetActive(true);

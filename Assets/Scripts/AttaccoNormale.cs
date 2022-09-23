@@ -146,8 +146,6 @@ public class AttaccoNormale : MonoBehaviour
                 StartCoroutine(ShowText(AttaccoFallito));
                 //yield return new WaitForSeconds(5);
                 //battleSystem.ProssimoCheAttacca();
-                Successo = false;
-
             }
         }
         else

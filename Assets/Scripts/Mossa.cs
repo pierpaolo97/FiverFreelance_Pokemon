@@ -71,7 +71,7 @@ public class Mossa : MonoBehaviour
         yield return new WaitForSeconds(5f);
         Colpito.GetComponent<Animator>().Play("ColpitoPg");
         ColpitoSource.Play();
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.3f);
         ColpitoSource.Play();
     }
 
@@ -107,7 +107,7 @@ public class Mossa : MonoBehaviour
         if (mossa.nomeMossa== "Scarica Di Coltelli")
         {
             yield return new WaitForSeconds(1.5f);
-            for (int i = 1; i < x; i++)
+            for (int i = 0; i < x; i++)
             {
                 yield return new WaitForSeconds(0.8f);
                 GameObject MossaInstanziataColtelli = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
@@ -306,18 +306,15 @@ public class Mossa : MonoBehaviour
 
         if (mossaHaEffetto > 0)
         {
-            Debug.Log("COLTELLI HA EFFETTO");
             if (AttaccoRiesce(precisione))
             {
-                Debug.Log("COLTELLI RIUSCITA");
-
                 x = Random.Range(1, 5);
                 Debug.Log("Scarica di coltelli viene usata " + x + " volte");
                 for (int i = 0; i < x; i++)
                 {
                     StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                     StartCoroutine(WaitMossaAttaccoFuoriPosto());
-                    StartCoroutine(Coltelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
+                    StartCoroutine(Coltelli(mossa, attaccanteUnit, colpitoUnit, colpitoHUD));
                     StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa));
 
                     if (colpitoUnit.currentHP <= 0)
@@ -360,16 +357,23 @@ public class Mossa : MonoBehaviour
                         z++;
                     }
 
-                    if (attaccatoMorto && giocatoreNONAttaccato.currentHP <= 0)
+                    /*if (colpitoUnit.currentHP <= 0 && giocatoreNONAttaccato.currentHP <= 0)
                     {
                         battleSystem.state = BattleState.FINISHED;
                         //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+                        Debug.Log("MORTO CON COLTELLI");
                         battleSystem.EndBattle();
                         if (attaccanteUnit.unitID == 0 || attaccanteUnit.unitID == 1)
+                        {
                             mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                            Debug.Log("MORTO CON COLTELLI 1");
+                        }
                         else
+                        {
                             mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
-                    }
+                            Debug.Log("MORTO CON COLTELLI 2");
+                        }
+                    }*/
 
                     if (attaccatoMorto)
                     {
@@ -609,7 +613,7 @@ public class Mossa : MonoBehaviour
     }
 
 
-    public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
+    public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
         Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
         //StartCoroutine(WaitAnimationMossaDiagonaleColtelli(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
@@ -623,6 +627,24 @@ public class Mossa : MonoBehaviour
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
         qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
         Debug.Log(dannoEffettivo);
+
+        if (qualeNemicoAttacchi.currentHP <= 0 && giocatoreNONAttaccato.currentHP <= 0)
+        {
+            battleSystem.state = BattleState.FINISHED;
+            //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+            Debug.Log("MORTO CON COLTELLI");
+            battleSystem.EndBattle();
+            if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
+            {
+                FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                Debug.Log("MORTO CON COLTELLI 1");
+            }
+            else
+            {
+                FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
+                Debug.Log("MORTO CON COLTELLI 2");
+            }
+        }
     }
 
     IEnumerator ShowTextDouble(string textDaScrivere, string textDaScrivere2)
@@ -656,6 +678,15 @@ public class Mossa : MonoBehaviour
             battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
+    }
+
+    public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
+    {
+        GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
+        partitaFinita.SetActive(true);
+        partitaFinita.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
+        partitaFinita.transform.GetChild(1).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
     }
 
 }

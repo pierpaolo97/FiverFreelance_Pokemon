@@ -479,11 +479,11 @@ public class BattleSystem : MonoBehaviour
             {
                 Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare! ");
                 friendUnit.paralizzato = false;
-                friendHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
+                StartCoroutine(WaitTogliParalizzato(friendHUD));
                 string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(4f);
+                //yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
 
@@ -500,12 +500,12 @@ public class BattleSystem : MonoBehaviour
         }
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(9f);
+            yield return new WaitForSeconds(8f);
             ProssimoCheAttacca();
         }
         else
         {
-            yield return new WaitForSeconds(4f);
+            yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
 
@@ -538,11 +538,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 enemyUnit.paralizzato = false;
-                enemyHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
+                StartCoroutine(WaitTogliParalizzato(enemyHUD));
                 string ParalizzatoNoAttaccare = enemyUnit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(4f);
+                //yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
         }
@@ -559,7 +559,7 @@ public class BattleSystem : MonoBehaviour
 
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(9f);
+            yield return new WaitForSeconds(8f);
             ProssimoCheAttacca();
         }
         else
@@ -597,11 +597,11 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 enemy2Unit.paralizzato = false;
-                enemy2HUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
+                StartCoroutine(WaitTogliParalizzato(enemy2HUD));
                 string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è paralizzato, non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                yield return new WaitForSeconds(4f);
+                //yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
         }
@@ -617,7 +617,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(9);
+            yield return new WaitForSeconds(8);
             ProssimoCheAttacca();
         }
         else
@@ -625,6 +625,12 @@ public class BattleSystem : MonoBehaviour
             yield return new WaitForSeconds(3f);
             ProssimoCheAttacca();
         }
+    }
+
+    IEnumerator WaitTogliParalizzato(BattleHUD PgHUD)
+    {
+        yield return new WaitForSeconds(6);
+        PgHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
     }
 
 
@@ -680,7 +686,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator WaitPlayerTurn()
     {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
             PlayerTurn();
     }
 
@@ -689,7 +695,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(9f);
+            yield return new WaitForSeconds(8f);
             ProssimoCheAttacca();
         }
         else
@@ -730,7 +736,7 @@ public class BattleSystem : MonoBehaviour
                 else
                 {
                     playerUnit.paralizzato = false;
-                    playerHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
+                    StartCoroutine(WaitTogliParalizzato(playerHUD));
                     Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
                     string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
                     StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
