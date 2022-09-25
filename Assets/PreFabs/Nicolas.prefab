@@ -135,7 +135,7 @@ MonoBehaviour:
   unitLevel: 100
   damage: 37
   maxHP: 500
-  currentHP: 500
+  currentHP: 1
   attacco: 100
   difesa: 70
   attacco_speciale: 90

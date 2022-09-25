@@ -31,6 +31,7 @@ public class Mossa : MonoBehaviour
 
     int x;
     GameObject ColpitoGiusto;
+    Unit giocatoreAmicoONemico;
 
     public AudioSource BoosterSource;
     public AudioSource MalusSource;
@@ -224,6 +225,56 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
                 StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, attacanteHUD,danno));
+
+                int z = 0;
+                foreach (Unit personaggio in battleSystem.amici)
+                {
+                    if (personaggio.unitID == attaccanteUnit.unitID)
+                    {
+                        if (z == 0)
+                        {
+                            giocatoreAmicoONemico = battleSystem.amici[1];
+                        }
+                        else
+                        {
+                            giocatoreAmicoONemico = battleSystem.amici[0];
+                        }
+                    }
+                    z++;
+                }
+
+                z = 0;
+                foreach (Unit personaggio in battleSystem.nemici)
+                {
+                    if (personaggio.unitID == attaccanteUnit.unitID)
+                    {
+                        if (z == 0)
+                        {
+                            giocatoreAmicoONemico = battleSystem.nemici[1];
+                        }
+                        else
+                        {
+                            giocatoreAmicoONemico = battleSystem.nemici[0];
+                        }
+                    }
+                    z++;
+                }
+
+                if (attaccanteUnit.currentHP <= 0 && giocatoreAmicoONemico.currentHP <= 0)
+                {
+                    battleSystem.state = BattleState.FINISHED;
+                    //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+                    battleSystem.EndBattle();
+
+                    if (attaccanteUnit.unitID == 0 || giocatoreAmicoONemico.unitID == 1)
+                    {
+                        FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                    }
+                    else
+                    {
+                        FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
+                    }
+                }
             }
             //battleSystem.ProssimoCheAttacca();
         }
@@ -405,16 +456,22 @@ public class Mossa : MonoBehaviour
             StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
             StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
-            int vita = attaccanteUnit.maxHP;
-            int cura = vita / 3;
-            attaccanteUnit.Heal(cura);
-            attacanteHUD.SetHP(attaccanteUnit);
+            StartCoroutine(WaitVitaUp(attaccanteUnit, attacanteHUD));
         }
         else
         {
             string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
             StartCoroutine(ShowText(AttaccoFallito));
         }
+    }
+
+    IEnumerator WaitVitaUp(Unit attaccanteUnit, BattleHUD attacanteHUD)
+    {
+        yield return new WaitForSeconds(5f);
+        int vita = attaccanteUnit.maxHP;
+        int cura = vita / 3;
+        attaccanteUnit.Heal(cura);
+        attacanteHUD.SetHP(attaccanteUnit);
     }
 
     public void BacioDellaPrincipessa(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
@@ -502,7 +559,7 @@ public class Mossa : MonoBehaviour
             }
             else
             {
-                string AttaccoFallito = amicoDaBoostare.unitName + " è esausto quindi " + attaccanteUnit.unitName + " fallisce!";
+                string AttaccoFallito = /*amicoDaBoostare.unitName + " è esausto quindi " +*/ attaccanteUnit.unitName + " fallisce!";
                 StartCoroutine(ShowText(AttaccoFallito));
                 Debug.Log("ATTACCO FALLITO ORDINE");
             }
@@ -522,7 +579,7 @@ public class Mossa : MonoBehaviour
         {
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             string SguardoDrago = attaccanteUnit.unitName + " usa Sguardo Del Drago.";
-            string RiduciAttacco = attaccanteUnit.unitName + " riduce di 1 l'attacco degli avversari ";
+            string RiduciAttacco = attaccanteUnit.unitName + " riduce di 1 l'attacco degli avversari.";
             //StartCoroutine(WaitAnimationMossa(colpitoUnit));
             //StartCoroutine(MalusLampeggiante(GameObject.Find(colpitoUnit.unitName)));
             StartCoroutine(ShowTextDouble(SguardoDrago, RiduciAttacco));
@@ -621,7 +678,7 @@ public class Mossa : MonoBehaviour
         StartCoroutine(ShowText(UsaSuccesso));
         yield return new WaitForSecondsRealtime(5);
         int dannoEffettivo = battleSystem.calcolaDannoEffettivo(mossa.danni, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
-        string perdeXP = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo*x + "HP ";
+        string perdeXP = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo*x + "HP.";
         StartCoroutine(ShowText(perdeXP));
         yield return new WaitForSecondsRealtime(2);
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
@@ -632,17 +689,14 @@ public class Mossa : MonoBehaviour
         {
             battleSystem.state = BattleState.FINISHED;
             //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-            Debug.Log("MORTO CON COLTELLI");
             battleSystem.EndBattle();
             if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
             {
                 FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
-                Debug.Log("MORTO CON COLTELLI 1");
             }
             else
             {
                 FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
-                Debug.Log("MORTO CON COLTELLI 2");
             }
         }
     }
@@ -682,11 +736,11 @@ public class Mossa : MonoBehaviour
 
     public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
     {
-        GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
+        //GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
         partitaFinita.SetActive(true);
-        partitaFinita.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
-        partitaFinita.transform.GetChild(1).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
-        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
+        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
     }
 
 }

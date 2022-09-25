@@ -27,10 +27,10 @@ public class BattleHUD : MonoBehaviour
         {
             case "VENTO": coloreElemento.color = new Color32(116, 146, 226, 255); break;
             case "NORMALE": coloreElemento.color = new Color32(255, 255, 255, 255); break;
-            case "TERRA": coloreElemento.color = new Color32(101, 67, 33, 255); break;
-            case "SPAZIO": coloreElemento.color = new Color32(37, 40, 80, 255); break;
-            case "FUOCO": coloreElemento.color = new Color32(255, 0, 0, 255); break;
-            case "NESSUNO": coloreElemento.color = new Color32(255, 255, 102, 255); break;
+            case "TERRA": coloreElemento.color = new Color32(154, 104, 54, 255); break;
+            case "SPAZIO": coloreElemento.color = new Color32(57, 66, 180, 255); break;
+            case "FUOCO": coloreElemento.color = new Color32(255, 67, 67, 255); break;
+            case "NESSUNO": coloreElemento.color = new Color32(253, 237, 163, 255); break;
         }
 
 

@@ -74,6 +74,8 @@ public class AttaccoNormale : MonoBehaviour
                     StartCoroutine(ShowText(NemicoPerdeDanni));
                 }
 
+                Successo = false;
+
                 yield return new WaitForSecondsRealtime(2);
 
                 qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
@@ -157,9 +159,6 @@ public class AttaccoNormale : MonoBehaviour
             //battleSystem.ProssimoCheAttacca();
             Successo = false;
         }
-
-        Successo = false;
-
     }
 
     IEnumerator ShowText(string textDaScrivere)
@@ -181,10 +180,10 @@ public class AttaccoNormale : MonoBehaviour
 
     public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
     {
-        GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
+        //GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
         partitaFinita.SetActive(true);
-        partitaFinita.transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
-        partitaFinita.transform.GetChild(1).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
-        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
+        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
     }
 }

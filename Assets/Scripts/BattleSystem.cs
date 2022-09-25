@@ -73,6 +73,10 @@ public class BattleSystem : MonoBehaviour
     private float delay = 0.025f;
 
     string currentText = "";
+    int EsaustoPlayer=0;
+    int EsaustoFriend=0;
+    int EsaustoEnemy=0;
+    int EsaustoEnemy2=0;
 
     // Start is called before the first frame update
     void Start()
@@ -135,10 +139,10 @@ public class BattleSystem : MonoBehaviour
             {
                 case "VENTO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(116, 146, 226, 255); break;
                 case "NORMALE": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 255, 255, 255); break;
-                case "TERRA": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(101, 67, 33, 255); break;
-                case "SPAZIO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(37, 40, 80, 255); break;
-                case "FUOCO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 0, 0, 255); break;
-                case "NESSUNO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 255, 102, 255); break;
+                case "TERRA": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(154, 104, 54, 255); break;
+                case "SPAZIO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(57, 66, 180, 255); break;
+                case "FUOCO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 67, 67, 255); break;
+                case "NESSUNO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(253, 237, 163, 255); break;
             }
             Mossa mossa = playerUnit.mosse[i];
             bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => mossa.SalvaMossa(mossa));
@@ -229,12 +233,19 @@ public class BattleSystem : MonoBehaviour
         else
         {
             Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
-            string Esausto = playerUnit.unitName + " è esausto! ";
-            playerPrefab.GetComponent<Animator>().Play("EsaustoPg");
-            StartCoroutine(ShowText(Esausto));
             state = BattleState.ENEMYTURN;
-            StartCoroutine(WaitSceltaTurno(0.1f));
-            //StartCoroutine(EnemyTurn());
+
+            if (EsaustoPlayer==0)
+            {
+                string Esausto = playerUnit.unitName + " è esausto! ";
+                StartCoroutine(ShowText(Esausto));
+                StartCoroutine(WaitSceltaTurno(2f));
+            }
+            else
+            {
+                StartCoroutine(WaitSceltaTurno(0.5f));
+                EsaustoPlayer++;
+            }
         }
     }
 
@@ -496,28 +507,36 @@ public class BattleSystem : MonoBehaviour
                 //ProssimoCheAttacca();
             }
 
+            if (AttaccoNormale.Successo == true)
+            {
+                yield return new WaitForSeconds(8.5f);
+                ProssimoCheAttacca();
+            }
+            else
+            {
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+            }
+
         }
         else
         {
             //state = BattleState.ENEMY2TURN;
-            string Esausto = friendUnit.unitName + " è esausto ";
-            friendPrefab.GetComponent<Animator>().Play("EsaustoPg");
-            StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(0.1f);
-            //StartCoroutine(Enemy2Turn());
-            //ProssimoCheAttacca();
-        }
-        if (AttaccoNormale.Successo == true)
-        {
-            yield return new WaitForSeconds(8f);
-            ProssimoCheAttacca();
-        }
-        else
-        {
-            yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
-        }
+            if (EsaustoFriend==0)
+            {
+                string Esausto = friendUnit.unitName + " è esausto! ";
+                StartCoroutine(ShowText(Esausto));
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+                EsaustoFriend ++;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+                ProssimoCheAttacca();
+            }
 
+        }
     }
 
 
@@ -554,28 +573,34 @@ public class BattleSystem : MonoBehaviour
                 //yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
+            if (AttaccoNormale.Successo == true)
+            {
+                yield return new WaitForSeconds(8.5f);
+                ProssimoCheAttacca();
+            }
+            else
+            {
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+            }
         }
+
         else
         {
             //state = BattleState.FRIENDTURN;
-            string Esausto = enemyUnit.unitName + " è esausto ";
-            enemyPrefab.GetComponent<Animator>().Play("EsaustoPg");
-            StartCoroutine(ShowText(Esausto));
-            yield return new WaitForSeconds(0.1f);
-            //StartCoroutine(FriendTurn());
-            //ProssimoCheAttacca();
-        }
-
-        if (AttaccoNormale.Successo == true)
-        {
-            yield return new WaitForSeconds(8f);
-            ProssimoCheAttacca();
-        }
-        else
-        {
-            Debug.Log("HA FALLITO MA STA QUA?");
-            yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            if (EsaustoEnemy == 0)
+            {
+                string Esausto = enemyUnit.unitName + " è esausto! ";
+                StartCoroutine(ShowText(Esausto));
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+                EsaustoEnemy++;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+                ProssimoCheAttacca();
+            }
         }
     }
 
@@ -613,26 +638,32 @@ public class BattleSystem : MonoBehaviour
                 //yield return new WaitForSeconds(4f);
                 //ProssimoCheAttacca();
             }
+            if (AttaccoNormale.Successo == true)
+            {
+                yield return new WaitForSeconds(8.5f);
+                ProssimoCheAttacca();
+            }
+            else
+            {
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+            }
         }
         else
         {
-            string Esausto = enemy2Unit.unitName + " è esausto ";
-            enemy2Prefab.GetComponent<Animator>().Play("EsaustoPg");
-            StartCoroutine(ShowText(Esausto));
-            //state = BattleState.PLAYERTURN;
-            yield return new WaitForSeconds(0.1f);
-            //PlayerTurn();
-            //ProssimoCheAttacca();
-        }
-        if (AttaccoNormale.Successo == true)
-        {
-            yield return new WaitForSeconds(8);
-            ProssimoCheAttacca();
-        }
-        else
-        {
-            yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            if (EsaustoEnemy2 == 0)
+            {
+                string Esausto = enemy2Unit.unitName + " è esausto! ";
+                StartCoroutine(ShowText(Esausto));
+                yield return new WaitForSeconds(3f);
+                ProssimoCheAttacca();
+                EsaustoEnemy2++;
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.5f);
+                ProssimoCheAttacca();
+            }
         }
     }
 
@@ -695,7 +726,7 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator WaitPlayerTurn()
     {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
             PlayerTurn();
     }
 
@@ -704,7 +735,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (AttaccoNormale.Successo == true)
         {
-            yield return new WaitForSeconds(8f);
+            yield return new WaitForSeconds(8.5f);
             ProssimoCheAttacca();
         }
         else
@@ -748,7 +779,7 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(WaitTogliParalizzato(playerHUD));
                     Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
                     string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
-                    StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
+                    StartCoroutine(ShowText(PlayerParalizzato));
                     playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
 
                 }
@@ -756,8 +787,8 @@ public class BattleSystem : MonoBehaviour
             else
             {
                 Debug.Log(playerUnit.unitName + " è esausto, non può attaccare");
-                string PlayerParalizzato = playerUnit.unitName + " è esausto, non può attaccare";
-                StartCoroutine(ShowTextParalizzato(PlayerParalizzato));
+                //string PlayerParalizzato = playerUnit.unitName + " è esausto, non può attaccare";
+                //StartCoroutine(ShowText(PlayerParalizzato));
             }
 
             //ProssimoCheAttacca();
@@ -1050,18 +1081,5 @@ public class BattleSystem : MonoBehaviour
         }
 
         //yield return new WaitForSeconds(5);
-    }
-
-    IEnumerator ShowTextParalizzato(string textDaScrivere)
-    {
-        for (int i = 0; i < textDaScrivere.Length+1; i++)
-        {
-            currentText = textDaScrivere.Substring(0, i);
-            //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
-            dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
-            yield return new WaitForSeconds(delay);
-        }
-        yield return new WaitForSeconds(3);
-        //ProssimoCheAttacca();
     }
 }
