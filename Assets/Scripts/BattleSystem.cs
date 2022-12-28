@@ -18,7 +18,7 @@ public class BattleSystem : MonoBehaviour
     public GameObject enemy2Prefab;
 
     public Transform playerBattleStation; //posizione del nostro giocatore
-	public Transform enemyBattleStation; //posizione del nemico
+	public Transform enemyBattleStation;  //posizione del nemico
     public Transform friendBattleStation; //posizione del nostro giocatore
     public Transform enemy2BattleStation; //posizione del nemico
 
@@ -142,11 +142,17 @@ public class BattleSystem : MonoBehaviour
                 case "TERRA": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(154, 104, 54, 255); break;
                 case "SPAZIO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(57, 66, 180, 255); break;
                 case "FUOCO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(255, 67, 67, 255); break;
+                case "ACQUA": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(32, 136, 178, 255); break;
                 case "NESSUNO": bottoniMosse.transform.GetChild(i).GetComponent<Image>().color = new Color32(253, 237, 163, 255); break;
             }
             Mossa mossa = playerUnit.mosse[i];
             bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => mossa.SalvaMossa(mossa));
             //bottoniMosse.transform.GetChild(i).GetComponent<Button>().onClick.AddListener(() => emptyMossa.EseguiMossa(playerUnit.mosse[i]));
+            if(playerUnit.mosse[i].puoiUsarla == false)
+            {
+                bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = false;
+                playerUnit.mosse[i].puoiUsarla = true;
+            }
         }
 
         amici[0] = playerPrefab.GetComponent<Unit>();
@@ -213,11 +219,24 @@ public class BattleSystem : MonoBehaviour
         {
             if (!playerUnit.paralizzato)
             {
-
                 Debug.Log("TUTTO OK");
                 string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
                 StartCoroutine(ShowText(ScegliAzione));
                 bottoniMosse.SetActive(true);
+
+                for (int i = 0; i < 4; i++)
+                {
+                   
+                    if (playerUnit.mosse[i].puoiUsarla == false)
+                    {
+                        bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = false;
+                        playerUnit.mosse[i].puoiUsarla = true;
+                    }
+                    else
+                    {
+                        bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = true;
+                    }
+                }
             }
             else
             {
@@ -351,19 +370,33 @@ public class BattleSystem : MonoBehaviour
             // Qua si potrebbe far si che si seleziona una mossa a caso solo tra quelle di attacco o comunque non di cura. 
 
             //Se quando carichiamo le mosse, mettiamo le mosse di cura sempre per ultime nel vettore mosse, possiamo contare per ogni giocatore le mosse di CURA, 
-            //e quindi poi scegliere solo tra le altre mosse che saranno le prime 4-numeroDiMossaCura del vettore giocatoreCheDeveDecidereUnit.mosse
+            //e quindi poi scegliere solo tra le altre mosse che saranno le prime 4-numeroDiMossaCura del vettore giocatoreCheDeveDecidereUnit.mosse ///CAMBIATOOOOO
+            // Adesso è più intelligente, crea una nuova lista di mosse in cui metteremo solo le mosse di attacco (quindi escludiamo cura) e le mosse che può effettivamente usare
+            // Questo perché ad esempio la mossa Cartellino Rosso non può essere usata due volte di fila, quindi ha la booleana falsa. 
     
             int numeroDiMossaCura = 0;
+            List<Mossa> mossePossibili = new List<Mossa>();
+
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
-                if(mossa.tipologiaDiMosaa == "CURA")
+                if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false)
                 {
                     numeroDiMossaCura++;
+                    mossa.puoiUsarla = true;
+                }
+                else
+                {
+                    mossePossibili.Add(mossa);
+                    Debug.Log(mossa);
                 }
             }
 
-            int x = UnityEngine.Random.Range(0, 4-numeroDiMossaCura);
-            Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];
+            /*int x = UnityEngine.Random.Range(0, 4-numeroDiMossaCura);
+            Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];*/
+
+            int x = UnityEngine.Random.Range(0, mossePossibili.Count);
+            Mossa mossaSelezionata = mossePossibili[x];
+
             bool mossaDiAttacco;
 
             if (mossaSelezionata.tipologiaDiMosaa == "CURA")
@@ -425,16 +458,34 @@ public class BattleSystem : MonoBehaviour
             }
 
             int numeroDiMossaCura = 0;
-            foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
+            /*foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
                 if (mossa.tipologiaDiMosaa == "CURA")
                 {
                     numeroDiMossaCura++;
                 }
+            }*/
+            List<Mossa> mossePossibili = new List<Mossa>();
+            foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
+            {
+                if (mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla == false)
+                {
+                    numeroDiMossaCura++;
+                    mossa.puoiUsarla = true;
+                }
+                else
+                {
+                    mossePossibili.Add(mossa);
+                    Debug.Log(mossa);
+                }
             }
 
-            int x = UnityEngine.Random.Range(0, 4 - numeroDiMossaCura);
-            Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];
+            /*int x = UnityEngine.Random.Range(0, 4 - numeroDiMossaCura);
+            Mossa mossaSelezionata = giocatoreCheDeveDecidereUnit.mosse[x];*/
+            int x = UnityEngine.Random.Range(0, mossePossibili.Count);
+            Mossa mossaSelezionata = mossePossibili[x];
+
+
             bool mossaDiAttacco;
 
             if (mossaSelezionata.tipologiaDiMosaa == "CURA")
@@ -497,7 +548,7 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare! ");
+                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
                 friendUnit.paralizzato = false;
                 StartCoroutine(WaitTogliParalizzato(friendHUD));
                 string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
@@ -1040,13 +1091,14 @@ public class BattleSystem : MonoBehaviour
 
     public float Modificatore(Mossa mossa, Unit attaccato)
     {
-        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE
+        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE - ACQUA
 
-        float[,] matrice = { { 0.5f, 1,  1,   1,   1}, 
-                             {  2,   1,  0,   1,   1},
-                             {  1,   1,  1,   1,   1},
-                             {  1,   1,  1,  0.5f, 1},
-                             {  1,   1,  1,   1,   1}};
+        float[,] matrice = { { 0.5f, 1,  1,   1,   1, 0.5f},
+                             {  2,   1,  0,   1,   1, 1f},
+                             {  1,   1,  1,   1,   1, 1f},
+                             {  1,   1,  1,  0.5f, 1, 1f},
+                             {  1,   1,  1,   1,   1, 1f},
+                             {  2,   1,  1,   1,   1, 1f}};
 
         Dictionary<string, int> dict = new Dictionary<string, int>()
         {
@@ -1055,6 +1107,7 @@ public class BattleSystem : MonoBehaviour
             {"VENTO",   2 },
             {"SPAZIO",  3 },
             {"NORMALE", 4 },
+            {"ACQUA",   5 },
         };
 
         int riga;

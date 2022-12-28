@@ -30,11 +30,9 @@ public class BattleHUD : MonoBehaviour
             case "TERRA": coloreElemento.color = new Color32(154, 104, 54, 255); break;
             case "SPAZIO": coloreElemento.color = new Color32(57, 66, 180, 255); break;
             case "FUOCO": coloreElemento.color = new Color32(255, 67, 67, 255); break;
+            case "ACQUA": coloreElemento.color = new Color32(32, 136, 178, 255); break;
             case "NESSUNO": coloreElemento.color = new Color32(253, 237, 163, 255); break;
         }
-
-
-        
     }
 
 	public void SetHP(Unit Colpito)

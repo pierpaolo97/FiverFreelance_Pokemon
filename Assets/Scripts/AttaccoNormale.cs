@@ -185,5 +185,7 @@ public class AttaccoNormale : MonoBehaviour
         partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
         partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
         partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+
+        PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
     }
 }

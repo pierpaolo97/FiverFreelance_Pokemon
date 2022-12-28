@@ -14,6 +14,7 @@ public class Mossa : MonoBehaviour
     public int precisione;
     public string elemento;
     public string tipologiaDiMosaa;
+    public bool puoiUsarla = true;
    
 
     BattleSystem battleSystem;
@@ -204,6 +205,11 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
+            /*else if (mossa.nomeMossa == "Bomba a Prua" && AttaccoNormale.Successo == true)
+            {
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+            }*/
             else if (AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
@@ -314,6 +320,14 @@ public class Mossa : MonoBehaviour
             //-1 attacco avversari
             SguardoDelDrago(mossa, colpitoUnit, attaccanteUnit);
             //battleSystem.ProssimoCheAttacca();
+        }
+        else if (mossa.nomeMossa == "Assist al bacio")
+        {
+            AssistAlBacio(mossa, attaccanteUnit);
+        }
+        else if (mossa.nomeMossa == "Cartellino rosso")
+        {
+            CartellinoRosso(mossa, colpitoUnit, attaccanteUnit);
         }
         else
         {
@@ -441,7 +455,7 @@ public class Mossa : MonoBehaviour
         }
         else
         {
-            Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo" + colpitoUnit.elemento);
+            Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo " + colpitoUnit.elemento);
         }
     }
 
@@ -487,6 +501,28 @@ public class Mossa : MonoBehaviour
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
             Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+        }
+    }
+
+    public void CartellinoRosso(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
+    {
+        if (AttaccoRiesce(mossa.precisione))
+        {
+            string BacioPrincipessa = attaccanteUnit.unitName + " usa Cartellino rosso.";
+            string VieneParalalizzato = colpitoUnit.unitName + " viene espulso (paralizzato).";
+            mossa.puoiUsarla = false;
+            StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
+            StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            colpitoUnit.paralizzato = true;
+            StartCoroutine(WaitActivateParalizzato(colpitoUnit));
+            Debug.Log(colpitoUnit.unitName + " viene espulso.");
         }
         else
         {
@@ -556,6 +592,75 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
                 Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
+            }
+            else
+            {
+                string AttaccoFallito = /*amicoDaBoostare.unitName + " è esausto quindi " +*/ attaccanteUnit.unitName + " fallisce!";
+                StartCoroutine(ShowText(AttaccoFallito));
+                Debug.Log("ATTACCO FALLITO ORDINE");
+            }
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            Debug.Log("ATTACCO FALLITO ORDINE");
+        }
+    }
+
+    public void AssistAlBacio(Mossa mossa, Unit attaccanteUnit)
+    {
+        Debug.Log("Assist al bacio");
+
+        if (AttaccoRiesce(mossa.precisione))
+        {
+
+            int z = 0;
+
+            foreach (Unit personaggio in battleSystem.amici)
+            {
+                if (personaggio.unitID == attaccanteUnit.unitID)
+                {
+                    if (z == 0)
+                    {
+                        amicoDaBoostare = battleSystem.amici[1];
+                    }
+                    else
+                    {
+                        amicoDaBoostare = battleSystem.amici[0];
+                    }
+                }
+                z++;
+            }
+
+            z = 0;
+
+            foreach (Unit personaggio in battleSystem.nemici)
+            {
+                if (personaggio.unitID == attaccanteUnit.unitID)
+                {
+                    if (z == 0)
+                    {
+                        amicoDaBoostare = battleSystem.nemici[1];
+                    }
+                    else
+                    {
+                        amicoDaBoostare = battleSystem.nemici[0];
+                    }
+                }
+                z++;
+            }
+
+            if (amicoDaBoostare.currentHP > 0)
+            {
+                amicoDaBoostare.attacco += 5;
+                string Assist = attaccanteUnit.unitName + " usa Assist al bacio.";
+                string AmicoBoostato = "L'attacco di " + amicoDaBoostare.unitName + " aumenta di 5 punti!";
+                StartCoroutine(ShowTextDouble(Assist, AmicoBoostato));
+                StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+                StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
+                StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                Debug.Log(attaccanteUnit.unitName + " aumenta l'attacco di " + amicoDaBoostare.unitName + " 5 punti!");
             }
             else
             {
