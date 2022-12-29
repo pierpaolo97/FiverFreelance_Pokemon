@@ -50,11 +50,14 @@ MonoBehaviour:
   precisione: 100
   elemento: NESSUNO
   tipologiaDiMosaa: SENZA_TARGET
+  puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 8298996712376983900, guid: f4d449837bc2a470dafaaf96423a60b1,
     type: 3}
-  AudioSource: {fileID: 0}
-  BoosterClip: {fileID: 8300000, guid: b4646db99bb084a77acde2ef9e88508a, type: 3}
-  MalusClip: {fileID: 0}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
+  AudioMossaSpeciale: {fileID: 8300000, guid: 1fa00f1fe00dc8549bb547896d868188, type: 3}

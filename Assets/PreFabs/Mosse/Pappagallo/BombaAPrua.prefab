@@ -60,6 +60,8 @@ MonoBehaviour:
   BoosterSource: {fileID: 0}
   MalusSource: {fileID: 0}
   ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
+  AudioMossaSpeciale: {fileID: 8300000, guid: c038e71d8f103e7469711faa2fe94678, type: 3}
 --- !u!114 &-7197980753842858964
 MonoBehaviour:
   m_ObjectHideFlags: 0

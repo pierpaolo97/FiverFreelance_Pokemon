@@ -51,11 +51,17 @@ MonoBehaviour:
   precisione: 50
   elemento: VENTO
   tipologiaDiMosaa: ATTACCO NORMALE
+  puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 7638142239568140993, guid: 6f073952f95c14baab1c620a1eafed37,
     type: 3}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
+  AudioMossaSpeciale: {fileID: 8300000, guid: cad017f53bc18dc4698d737463db95fa, type: 3}
 --- !u!114 &2708670984622870497
 MonoBehaviour:
   m_ObjectHideFlags: 0

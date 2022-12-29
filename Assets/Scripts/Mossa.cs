@@ -38,13 +38,17 @@ public class Mossa : MonoBehaviour
     public AudioSource MalusSource;
     public AudioSource ColpitoSource;
 
+    public AudioSource CameraAudio;
+    public AudioClip AudioMossaSpeciale;
+
     public void Start()
-    {
+    {    
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
         partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
         BoosterSource = GameObject.Find("PowerUp").GetComponent<AudioSource>();
         MalusSource = GameObject.Find("PowerDown").GetComponent<AudioSource>();
         ColpitoSource = GameObject.Find("Colpito").GetComponent<AudioSource>();
+        CameraAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
     }
 
     public void SalvaMossa(Mossa mossa) //Questa funzione viene attaccata ad ogni bottone, personalizzata a seconda della mossa eseguita. Qui salviamo la mossa che il Player dovr? eseguire.
@@ -102,9 +106,11 @@ public class Mossa : MonoBehaviour
         yield return new WaitForSeconds(2f);
         GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
         Destroy(MossaInstanziata, 1.5f);
+        int audioRandom = UnityEngine.Random.RandomRange(0, 2);
+        CameraAudio.PlayOneShot(Colpito.audioAttacchiSubiti[audioRandom]);
     }
 
-    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante,Unit Colpito, Quaternion Inclinazione, Mossa mossa)
+    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante, Unit Colpito, Quaternion Inclinazione, Mossa mossa)
     {
         if (mossa.nomeMossa== "Scarica Di Coltelli")
         {
@@ -137,6 +143,8 @@ public class Mossa : MonoBehaviour
                 Destroy(MossaInstanziata, 1.3f);
             }
         }
+        int audioRandom = UnityEngine.Random.RandomRange(0, 2);
+        CameraAudio.PlayOneShot(Colpito.audioAttacchiSubiti[audioRandom]);
     }
 
     IEnumerator WaitMossaAttaccoFuoriPosto()
@@ -216,6 +224,8 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
             }
+
+
         }
         else if (mossa.nomeMossa == "Fusione Del Reattore")
         {

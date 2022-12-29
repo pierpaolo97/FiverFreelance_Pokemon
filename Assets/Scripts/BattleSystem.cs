@@ -78,6 +78,8 @@ public class BattleSystem : MonoBehaviour
     int EsaustoEnemy=0;
     int EsaustoEnemy2=0;
 
+    public AudioSource CameraAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -823,6 +825,7 @@ public class BattleSystem : MonoBehaviour
                         }
                     }
                     mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+                    //CameraAudio.PlayOneShot(nemicoAttaccatoDalPlayer.audioAttacchiSubiti[0]);
                 }
                 else
                 {

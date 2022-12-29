@@ -66,6 +66,9 @@ MonoBehaviour:
   - {fileID: 4202700225843859008, guid: 9d04b3309b7ce35458968c7ad05f3b4f, type: 3}
   spriteUnit: {fileID: 21300000, guid: 3977e7c6c6c0b4f609560361a5536bcb, type: 3}
   unitID: 0
+  audioAttacchiSubiti:
+  - {fileID: 8300000, guid: 74af3d4ea40f2c84a98fe57c6b0c6cd9, type: 3}
+  - {fileID: 8300000, guid: b9d00d31b4c27b34f9963d1c5f45b557, type: 3}
 --- !u!95 &4670231676307092650
 Animator:
   serializedVersion: 4
