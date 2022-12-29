@@ -153,6 +153,9 @@ MonoBehaviour:
   audioAttacchiSubiti:
   - {fileID: 8300000, guid: e60117da4d5cde04f922feda6866318f, type: 3}
   - {fileID: 8300000, guid: 1e99b79de0faa1e4787e0bddc75dea4d, type: 3}
+  audioSelezioni:
+  - {fileID: 8300000, guid: 3bf1e5048183f5443bdffd10337f969e, type: 3}
+  - {fileID: 8300000, guid: 172b271e7a4684f4bbae47ad84d93d52, type: 3}
 --- !u!95 &-3623516358728540291
 Animator:
   serializedVersion: 4

@@ -26,20 +26,18 @@ public class Scelta : MonoBehaviour
     GameObject player;
     GameObject friend;
 
+    public AudioSource cameraAudio;
+
 
     public void Avanza()
     {
-        playercompagno.SetActive(false);
+        //scegliCompagno.SetActive(true);
+        //playercompagno.SetActive(false);
         player = Instantiate(scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer]);
         player.name = player.GetComponent<Unit>().unitName;
-        player.GetComponent<Unit>().unitID = 0;
-        friend = Instantiate(scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer]);
-        friend.name = friend.GetComponent<Unit>().unitName;
-        friend.GetComponent<Unit>().unitID = 1;
+        player.GetComponent<Unit>().unitID = 0;      
         battleSystem.playerPrefab = player;
-        battleSystem.friendPrefab = friend;
-        ememy1e2.SetActive(true);
-
+       
         GameObject parentMossePlayer = new GameObject();
         parentMossePlayer.name = "Mosse_" + player.GetComponent<Unit>().unitName;
 
@@ -50,6 +48,26 @@ public class Scelta : MonoBehaviour
             player.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
 
+        StartCoroutine(example());
+    }
+
+    IEnumerator example()
+    {
+        int x = UnityEngine.Random.RandomRange(0, 2);
+        cameraAudio.PlayOneShot(scegliPlayer.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliPlayer.GetComponent<ScegliPersonaggi>().indexPlayer].GetComponent<Unit>().audioSelezioni[x]);
+        yield return new WaitWhile(() => cameraAudio.isPlaying);
+        scegliCompagno.SetActive(true);
+        scegliPlayer.SetActive(false);
+        //do something
+    }
+
+    public void Avanza_2()
+    {
+        friend = Instantiate(scegliCompagno.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegliCompagno.GetComponent<ScegliPersonaggi>().indexPlayer]);
+        friend.name = friend.GetComponent<Unit>().unitName;
+        friend.GetComponent<Unit>().unitID = 1;
+        battleSystem.friendPrefab = friend;
+        ememy1e2.SetActive(true);
         GameObject parentMosseFriend = new GameObject();
         parentMosseFriend.name = "Mosse_" + friend.GetComponent<Unit>().unitName;
 

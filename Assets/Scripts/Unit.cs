@@ -23,6 +23,7 @@ public class Unit : MonoBehaviour
     public int unitID;
 
     public List<AudioClip> audioAttacchiSubiti;
+    public List<AudioClip> audioSelezioni;
 
     public bool TakeDamage(int dmg)
 	{

@@ -11,6 +11,7 @@ public class ScegliPersonaggi : MonoBehaviour
     public TextMeshProUGUI txt;
 
     public int indexPlayer=0;
+    public AudioSource cameraAudio;
 
     private void Start()
     {

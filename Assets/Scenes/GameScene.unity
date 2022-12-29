@@ -293,7 +293,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &27067791
 RectTransform:
   m_ObjectHideFlags: 0
@@ -316,7 +316,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.200001, y: -6}
+  m_AnchoredPosition: {x: 14.200001, y: 0.4}
   m_SizeDelta: {x: 11.874753, y: 12.081893}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &27067792
@@ -340,6 +340,7 @@ MonoBehaviour:
   immaginePersonaggioScelto: {fileID: 1372337739}
   txt: {fileID: 1367618168}
   indexPlayer: 0
+  cameraAudio: {fileID: 0}
 --- !u!1 &28914504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1658,7 +1659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14.200001, y: 9}
+  m_AnchoredPosition: {x: 14.200001, y: 0.4}
   m_SizeDelta: {x: 11.874753, y: 12.081893}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &270309613
@@ -1682,6 +1683,7 @@ MonoBehaviour:
   immaginePersonaggioScelto: {fileID: 1275576573}
   txt: {fileID: 982661544}
   indexPlayer: 0
+  cameraAudio: {fileID: 519420033}
 --- !u!1 &277474519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6318,6 +6320,7 @@ MonoBehaviour:
   immaginePersonaggioScelto: {fileID: 1946570321}
   txt: {fileID: 786841481}
   indexPlayer: 0
+  cameraAudio: {fileID: 0}
 --- !u!224 &891726074
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10239,6 +10242,7 @@ MonoBehaviour:
   back: {fileID: 509436432}
   avanti: {fileID: 1384486761}
   startGame: {fileID: 88056288}
+  cameraAudio: {fileID: 519420033}
 --- !u!1 &1344720657
 GameObject:
   m_ObjectHideFlags: 0
@@ -10836,6 +10840,7 @@ MonoBehaviour:
   immaginePersonaggioScelto: {fileID: 722011296}
   txt: {fileID: 1100032972}
   indexPlayer: 0
+  cameraAudio: {fileID: 0}
 --- !u!224 &1405198248
 RectTransform:
   m_ObjectHideFlags: 0
