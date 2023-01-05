@@ -2979,8 +2979,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.300003, y: 0.5999985}
-  m_SizeDelta: {x: -76.380005, y: -27.524994}
+  m_AnchoredPosition: {x: 1.1600037, y: 0.5999985}
+  m_SizeDelta: {x: -21.66, y: -27.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &394788494
 MonoBehaviour:
@@ -3791,6 +3791,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: MenuOrganizer, Assembly-CSharp
         m_MethodName: GoToMenuStart
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 509436434}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6012,7 +6024,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00010216, y: -6.561}
+  m_AnchoredPosition: {x: -0.00010216, y: -7.49}
   m_SizeDelta: {x: 336.82, y: 28.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &786841481
@@ -6665,7 +6677,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5aa820da2065c46d0a6f76307cd51cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transition: {fileID: 3818154881689084225, guid: 3a325d473716b4d66b97e63d962ad746,
+  transitionBlog: {fileID: 3818154881689084225, guid: 3a325d473716b4d66b97e63d962ad746,
+    type: 3}
+  transitionIcona: {fileID: 3818154881689084225, guid: 36c3bfd711bf7445284209a74b5fa493,
     type: 3}
 --- !u!1 &865304428
 GameObject:
@@ -7123,7 +7137,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SELEZIONA I TUOI NEMICI:'
+  m_text: 'SELEZIONA IL TUO PRIMO NEMICO:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -8050,7 +8064,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00010216, y: -6.561}
+  m_AnchoredPosition: {x: -0.00010216, y: -7.49}
   m_SizeDelta: {x: 336.82, y: 28.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &982661544
@@ -8860,7 +8874,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00010216, y: -6.561}
+  m_AnchoredPosition: {x: -0.00010216, y: -7.49}
   m_SizeDelta: {x: 336.82, y: 28.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100032972
@@ -11104,7 +11118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00010216, y: -6.561}
+  m_AnchoredPosition: {x: -0.00010216, y: -7.49}
   m_SizeDelta: {x: 336.82, y: 28.97}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1367618168
@@ -11814,7 +11828,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1466009196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.87, y: 1.09, z: 0}
+  m_LocalPosition: {x: 3.87, y: 0.55, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.47851}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12038,7 +12052,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'SELEZIONA I TUOI NEMICI:'
+  m_text: 'SELEZIONA IL TUO SECONDO NEMICO:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -13601,7 +13615,6 @@ MonoBehaviour:
   MalusSource: {fileID: 0}
   ColpitoSource: {fileID: 0}
   CameraAudio: {fileID: 0}
-  AudioMossaSpeciale: {fileID: 0}
 --- !u!1 &1715227581
 GameObject:
   m_ObjectHideFlags: 0
@@ -15560,8 +15573,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.300003, y: 0.5999985}
-  m_SizeDelta: {x: -76.380005, y: -27.524994}
+  m_AnchoredPosition: {x: -0.83000183, y: 0.5999985}
+  m_SizeDelta: {x: -23.44, y: -27.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2060029535
 MonoBehaviour:

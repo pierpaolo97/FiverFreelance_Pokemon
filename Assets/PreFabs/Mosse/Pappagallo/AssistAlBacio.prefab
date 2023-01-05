@@ -55,11 +55,12 @@ MonoBehaviour:
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
-  MossaAnimation: {fileID: 7638142239568140993, guid: 6f073952f95c14baab1c620a1eafed37,
+  MossaAnimation: {fileID: 3536366495703187064, guid: 64b0eac5edc3d40109dcb8ed9cc4df27,
     type: 3}
   BoosterSource: {fileID: 0}
   MalusSource: {fileID: 0}
   ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
 --- !u!114 &-7197980753842858964
 MonoBehaviour:
   m_ObjectHideFlags: 0

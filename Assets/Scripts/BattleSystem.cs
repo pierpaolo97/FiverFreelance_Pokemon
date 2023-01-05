@@ -102,19 +102,25 @@ public class BattleSystem : MonoBehaviour
         GameObject enemy2GO = Instantiate(enemy2Prefab, enemy2BattleStation);
         enemy2Unit = enemy2GO.GetComponent<Unit>();*/
 
-        playerPrefab.transform.position = new Vector3(-2.8f, -1.2f, 0f);
-        friendPrefab.transform.position = new Vector3(-6.8f, -1.2f, 0f);
-        enemyPrefab.transform.position = new Vector3(2f, 2.15f, 0f);
-        enemy2Prefab.transform.position = new Vector3(6f, 2.15f, 0f);
+        playerPrefab.transform.position = new Vector3(-2.8f, -1.7f, 0f);
+        friendPrefab.transform.position = new Vector3(-6.8f, -1.7f, 0f);
+        enemyPrefab.transform.position = new Vector3(2f, 2.5f, 0f);
+        enemyPrefab.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+        enemy2Prefab.transform.position = new Vector3(6f, 2.5f, 0f);
+        enemy2Prefab.transform.localScale = new Vector3(0.85f, 0.85f, 1);
 
         if (enemyPrefab.name == "Atomo")
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemyPrefab.name == "Nicolas")
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+        if (playerPrefab.name == "Pappagallo")
+            playerPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemy2Prefab.name == "Nicolas")
             enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemy2Prefab.name == "Atomo")
             enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+        if (friendPrefab.name == "Pappagallo")
+            friendPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
 
         playerUnit = playerPrefab.GetComponent<Unit>();
         friendUnit = friendPrefab.GetComponent<Unit>();
@@ -227,8 +233,7 @@ public class BattleSystem : MonoBehaviour
                 bottoniMosse.SetActive(true);
 
                 for (int i = 0; i < 4; i++)
-                {
-                   
+                {                   
                     if (playerUnit.mosse[i].puoiUsarla == false)
                     {
                         bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = false;

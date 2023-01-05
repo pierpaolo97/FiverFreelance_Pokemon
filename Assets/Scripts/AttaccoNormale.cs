@@ -11,18 +11,19 @@ public class AttaccoNormale : MonoBehaviour
 {
     
     Unit giocatoreNONAttaccato;
-    
     private float delay = 0.025f;
-
     public static bool Successo;
+    public GameObject partitaFinita;
 
-    GameObject partitaFinita;
-    
+    public void Start()
+    {
+        partitaFinita = GameObject.Find("Fine").transform.GetChild(0).gameObject;
+    }
+
     public IEnumerator Attacco(Mossa mossa, Unit giocatoreCheAttacca, BattleHUD giocatoreCheAttaccaoHUD, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
        
         BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
-        partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
         battleSystem.bottoniMosse.SetActive(false);
 
         string tipo = mossa.tipo;
@@ -139,7 +140,6 @@ public class AttaccoNormale : MonoBehaviour
                     //battleSystem.ProssimoCheAttacca();
                     //StartCoroutine(EnemyTurn());
                 }
-
             }
             else
             {
@@ -183,8 +183,9 @@ public class AttaccoNormale : MonoBehaviour
         //GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
         partitaFinita.SetActive(true);
         partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
-        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
-        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+        StartCoroutine(gameObject.GetComponent<Mossa>().WaitAudioEsultanza(Vincitore1, Vincitore2));
 
         PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
     }

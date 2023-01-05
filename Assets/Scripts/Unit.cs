@@ -24,8 +24,10 @@ public class Unit : MonoBehaviour
 
     public List<AudioClip> audioAttacchiSubiti;
     public List<AudioClip> audioSelezioni;
+	public AudioClip AudioMossaSpeciale;
+	public AudioClip AudioEsultanza;
 
-    public bool TakeDamage(int dmg)
+	public bool TakeDamage(int dmg)
 	{
 		currentHP -= dmg;
 

@@ -51,11 +51,17 @@ MonoBehaviour:
   precisione: 70
   elemento: TERRA
   tipologiaDiMosaa: ATTACCO NORMALE
+  puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 3683271316917867741, guid: e6b31b4c0f0f445c6a36ab7185bf9536,
     type: 3}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
+  AudioMossaSpeciale: {fileID: 8300000, guid: 9bde67d05e774b44699318dd4335e74d, type: 3}
 --- !u!114 &-2813902288043099124
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -39,7 +39,6 @@ public class Mossa : MonoBehaviour
     public AudioSource ColpitoSource;
 
     public AudioSource CameraAudio;
-    public AudioClip AudioMossaSpeciale;
 
     public void Start()
     {    
@@ -105,9 +104,11 @@ public class Mossa : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
+        if (Colpito.gameObject.transform.position.y < 0)
+        {
+            MossaInstanziata.transform.position = new Vector3(-2.8f, -0.94f, 0);
+        }
         Destroy(MossaInstanziata, 1.5f);
-        int audioRandom = UnityEngine.Random.RandomRange(0, 2);
-        CameraAudio.PlayOneShot(Colpito.audioAttacchiSubiti[audioRandom]);
     }
 
     IEnumerator WaitAnimationMossaDiagonale(Unit Attacante, Unit Colpito, Quaternion Inclinazione, Mossa mossa)
@@ -137,14 +138,25 @@ public class Mossa : MonoBehaviour
                 MossaInstanziata.transform.DOMove(Colpito.transform.position, 1.3f);
                 Destroy(MossaInstanziata, 1.3f);
             }
+            else if(mossa.nomeMossa == "Bomba a prua" || mossa.nomeMossa == "Il sinistro magico del numero 7")
+            {
+                yield return new WaitForSeconds(0.6f);
+                MossaInstanziata.transform.DOMove(Colpito.transform.position, 0.7f);
+                Destroy(MossaInstanziata, 1.3f);
+            }
             else
             {
                 MossaInstanziata.transform.DOMove(Colpito.transform.position, 1.3f);
                 Destroy(MossaInstanziata, 1.3f);
             }
         }
-        int audioRandom = UnityEngine.Random.RandomRange(0, 2);
-        CameraAudio.PlayOneShot(Colpito.audioAttacchiSubiti[audioRandom]);
+
+        /*int audioRandom = UnityEngine.Random.RandomRange(0, 2);
+        if (mossa.tipo == "SPECIALE" || mossa.tipo == "FISICO")
+        {
+            yield return new WaitForSeconds(1f);
+            CameraAudio.PlayOneShot(Colpito.audioAttacchiSubiti[audioRandom]);
+        }*/
     }
 
     IEnumerator WaitMossaAttaccoFuoriPosto()
@@ -160,7 +172,6 @@ public class Mossa : MonoBehaviour
         yield return new WaitForSeconds(6f);
         Attacante.TakeDamage(danno);
         attacanteHUD.SetHP(Attacante);
-
     }
 
     public GameObject FindColpito(Unit colpitoUnit)
@@ -213,19 +224,33 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
-            /*else if (mossa.nomeMossa == "Bomba a Prua" && AttaccoNormale.Successo == true)
+            else if (mossa.nomeMossa == "Bomba a prua" && AttaccoNormale.Successo == true)
+            {
+                CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+            }
+            else if (mossa.nomeMossa == "Il sinistro magico del numero 7" && AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
-            }*/
+            }
             else if (AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
+
+                if (mossa.nomeMossa == "Leggendaria Spada del Vento")
+                {
+                    CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
+                }
+                else if (mossa.nomeMossa == "Pugno Radioattivo")
+                {
+                    CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
+
+                }
             }
-
-
         }
         else if (mossa.nomeMossa == "Fusione Del Reattore")
         {
@@ -343,7 +368,21 @@ public class Mossa : MonoBehaviour
         {
             Debug.Log("Mossa ancora non programmata: " + mossa.nomeMossa);
         }
+
+        StartCoroutine(WaitAudioAttaccoSubito(mossa, colpitoUnit));
     }
+
+    IEnumerator WaitAudioAttaccoSubito(Mossa mossa,Unit colpitoUnit)
+    {
+        int audioRandom = UnityEngine.Random.RandomRange(0, 2);
+        if (mossa.tipologiaDiMosaa == "ATTACCO NORMALE")
+        {
+            yield return new WaitForSeconds(4f);
+            CameraAudio.PlayOneShot(colpitoUnit.audioAttacchiSubiti[audioRandom]);
+        }
+    }
+
+
 
     public void DifensoreDellaGiustizia(Mossa mossa, Unit attaccanteUnit)
     {
@@ -352,7 +391,10 @@ public class Mossa : MonoBehaviour
             string DifensoreGiustizia = attaccanteUnit.unitName + " usa Difensore della Giustizia.";
             string AumentaDifesa = attaccanteUnit.unitName + " aumenta di 2 punti la sua difesa speciale.";
             StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-            StartCoroutine(BoosterLampeggiante(GameObject.Find(attaccanteUnit.unitName)));
+            StartCoroutine(BoosterLampeggiante(
+
+
+                (attaccanteUnit).gameObject)); /////DSHALKDJHLSABDJHKVDSKJHSDAVKDJHSAVKDJSAHVD
             StartCoroutine(ShowTextDouble(DifensoreGiustizia, AumentaDifesa));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             attaccanteUnit.difesa_speciale += 2;
@@ -556,6 +598,7 @@ public class Mossa : MonoBehaviour
         {
 
             int z = 0;
+            CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
 
             foreach (Unit personaggio in battleSystem.amici)
             {
@@ -676,14 +719,12 @@ public class Mossa : MonoBehaviour
             {
                 string AttaccoFallito = /*amicoDaBoostare.unitName + " è esausto quindi " +*/ attaccanteUnit.unitName + " fallisce!";
                 StartCoroutine(ShowText(AttaccoFallito));
-                Debug.Log("ATTACCO FALLITO ORDINE");
             }
         }
         else
         {
             string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
             StartCoroutine(ShowText(AttaccoFallito));
-            Debug.Log("ATTACCO FALLITO ORDINE");
         }
     }
 
@@ -856,6 +897,16 @@ public class Mossa : MonoBehaviour
         partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
         partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
         partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
+        StartCoroutine(WaitAudioEsultanza(Vincitore1, Vincitore2));
+
+        PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
     }
 
+    public IEnumerator WaitAudioEsultanza(GameObject Vincitore1, GameObject Vincitore2)
+    {
+        yield return new WaitForSeconds(1);
+        CameraAudio.PlayOneShot(Vincitore1.GetComponent<Unit>().AudioEsultanza);
+        yield return new WaitForSeconds(Vincitore1.GetComponent<Unit>().AudioEsultanza.length);
+        CameraAudio.PlayOneShot(Vincitore2.GetComponent<Unit>().AudioEsultanza);
+    }
 }

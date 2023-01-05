@@ -27,8 +27,8 @@ public class Aggiornamento : MonoBehaviour
         url = urlAndroid;
 #endif
 
-#if UNITY_IOS
-        var status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
+#if UNITY_IOS //DA ERRORE
+        /*var status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
 
         if (status == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED)
         {
@@ -40,7 +40,7 @@ public class Aggiornamento : MonoBehaviour
         {
             Debug.Log("DENIED PUBBLICITA");
             PlayerPrefs.SetString("PERSONALIZZATE", "NO");
-        }
+        }*/
 #endif
 
         if (!PlayerPrefs.HasKey("PRIVACYPOLICY"))
@@ -128,7 +128,7 @@ public class Aggiornamento : MonoBehaviour
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai già l'ultima versione";
+            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gi? l'ultima versione";
         }
 
 
@@ -234,7 +234,7 @@ public class Aggiornamento : MonoBehaviour
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai già l'ultima versione";
+            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gi? l'ultima versione";
         }
     }
 
