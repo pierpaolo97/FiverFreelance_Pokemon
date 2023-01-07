@@ -106,7 +106,7 @@ public class Mossa : MonoBehaviour
         GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
         if (Colpito.gameObject.transform.position.y < 0)
         {
-            MossaInstanziata.transform.position = new Vector3(-2.8f, -0.94f, 0);
+            MossaInstanziata.transform.position = new Vector3(Colpito.transform.position.x, -0.94f, Colpito.transform.position.z);
         }
         Destroy(MossaInstanziata, 1.5f);
     }
@@ -140,8 +140,8 @@ public class Mossa : MonoBehaviour
             }
             else if(mossa.nomeMossa == "Bomba a prua" || mossa.nomeMossa == "Il sinistro magico del numero 7")
             {
-                yield return new WaitForSeconds(0.6f);
-                MossaInstanziata.transform.DOMove(Colpito.transform.position, 0.7f);
+                yield return new WaitForSeconds(0.7f);
+                MossaInstanziata.transform.DOMove(Colpito.transform.position, 0.6f);
                 Destroy(MossaInstanziata, 1.3f);
             }
             else

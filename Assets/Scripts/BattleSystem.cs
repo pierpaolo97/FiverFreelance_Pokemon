@@ -107,8 +107,12 @@ public class BattleSystem : MonoBehaviour
         enemyPrefab.transform.position = new Vector3(2f, 2.5f, 0f);
         enemyPrefab.transform.localScale = new Vector3(0.85f, 0.85f, 1);
         enemy2Prefab.transform.position = new Vector3(6f, 2.5f, 0f);
-        enemy2Prefab.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+        enemy2Prefab.transform.localScale = new Vector3(0.75f, 0.75f, 1);
 
+        if (enemyPrefab.name == "Aria")
+            enemyPrefab.transform.position = new Vector3(2f, 1.8f, 0f);
+        if (enemy2Prefab.name == "Aria")
+            enemy2Prefab.transform.position = new Vector3(6f, 1.8f, 0f);
         if (enemyPrefab.name == "Atomo")
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemyPrefab.name == "Nicolas")
