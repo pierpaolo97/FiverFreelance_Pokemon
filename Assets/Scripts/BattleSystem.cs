@@ -991,6 +991,7 @@ public class BattleSystem : MonoBehaviour
         }
 
         chiVuoiAttaccare.SetActive(false);
+        bottoniMosse.SetActive(false);
 
         Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
         SceltaTurno();

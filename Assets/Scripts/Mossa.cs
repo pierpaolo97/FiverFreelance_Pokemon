@@ -553,6 +553,7 @@ public class Mossa : MonoBehaviour
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
             Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+            //combactButtons.SetActive(false);
         }
         else
         {
@@ -575,6 +576,7 @@ public class Mossa : MonoBehaviour
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
             Debug.Log(colpitoUnit.unitName + " viene espulso.");
+            //combactButtons.SetActive(false);
         }
         else
         {
