@@ -105,7 +105,7 @@ public class BattleSystem : MonoBehaviour
         playerPrefab.transform.position = new Vector3(-2.8f, -1.7f, 0f);
         friendPrefab.transform.position = new Vector3(-6.8f, -1.7f, 0f);
         enemyPrefab.transform.position = new Vector3(2f, 2.5f, 0f);
-        enemyPrefab.transform.localScale = new Vector3(0.85f, 0.85f, 1);
+        enemyPrefab.transform.localScale = new Vector3(0.75f, 0.75f, 1);
         enemy2Prefab.transform.position = new Vector3(6f, 2.5f, 0f);
         enemy2Prefab.transform.localScale = new Vector3(0.75f, 0.75f, 1);
 
@@ -117,14 +117,20 @@ public class BattleSystem : MonoBehaviour
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemyPrefab.name == "Nicolas")
             enemyPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
-        if (playerPrefab.name == "Pappagallo")
-            playerPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemy2Prefab.name == "Nicolas")
             enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (enemy2Prefab.name == "Atomo")
             enemy2Prefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
         if (friendPrefab.name == "Pappagallo")
+        {
             friendPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+            friendPrefab.transform.position = new Vector3(-6.8f, -1.2f, 0f);
+        }
+        if (playerPrefab.name == "Pappagallo")
+        {
+            playerPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().flipX = true;
+            playerPrefab.transform.position = new Vector3(-2.8f, -1.2f, 0f);
+        }
 
         playerUnit = playerPrefab.GetComponent<Unit>();
         friendUnit = friendPrefab.GetComponent<Unit>();

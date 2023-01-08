@@ -377,8 +377,14 @@ public class Mossa : MonoBehaviour
         int audioRandom = UnityEngine.Random.RandomRange(0, 2);
         if (mossa.tipologiaDiMosaa == "ATTACCO NORMALE")
         {
+            float a = Random.Range(0, 100);
+            Debug.Log("numero" + a);
+
             yield return new WaitForSeconds(4f);
-            CameraAudio.PlayOneShot(colpitoUnit.audioAttacchiSubiti[audioRandom]);
+            if (a > 30f)
+            {
+                CameraAudio.PlayOneShot(colpitoUnit.audioAttacchiSubiti[audioRandom]);
+            }
         }
     }
 
