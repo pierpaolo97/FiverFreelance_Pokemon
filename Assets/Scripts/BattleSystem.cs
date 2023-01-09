@@ -404,7 +404,7 @@ public class BattleSystem : MonoBehaviour
                 else
                 {
                     mossePossibili.Add(mossa);
-                    Debug.Log(mossa);
+                    Debug.Log("Nome Mossa " + mossa);
                 }
             }
 
@@ -424,7 +424,6 @@ public class BattleSystem : MonoBehaviour
             {
                 mossaDiAttacco = true;
             }
-
 
             int y = UnityEngine.Random.Range(0, 2); //se y=0, cerco di attaccare prima il primo se è vivo, altrimenti attacco il secondo.
                                                     //se y=1, cerco di attaccare prima il secondo se è vivo, altrimenti attacco il primo.

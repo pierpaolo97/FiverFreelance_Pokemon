@@ -57,11 +57,12 @@ MonoBehaviour:
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 6338354219492765917, guid: a3e7f95e8da934166904493c4de8adde,
     type: 3}
+  MossaAnimationUp: {fileID: 6338354219492765917, guid: b42bbd7f398f94cf48e8690a229dc8e6,
+    type: 3}
   BoosterSource: {fileID: 0}
   MalusSource: {fileID: 0}
   ColpitoSource: {fileID: 0}
   CameraAudio: {fileID: 0}
-  AudioMossaSpeciale: {fileID: 8300000, guid: c038e71d8f103e7469711faa2fe94678, type: 3}
 --- !u!114 &-7197980753842858964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74,3 +75,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partitaFinita: {fileID: 0}

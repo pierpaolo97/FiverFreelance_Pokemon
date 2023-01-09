@@ -27,6 +27,8 @@ public class Mossa : MonoBehaviour
     string currentText = "";
 
     public GameObject MossaAnimation;
+    public GameObject MossaAnimationUp;
+
     GameObject partitaFinita;
     GameObject combactButtons;
 
@@ -130,7 +132,7 @@ public class Mossa : MonoBehaviour
         {
             yield return new WaitForSeconds(3f);
             GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
-            if (Attacante.transform.position.y > 0)
+            if (Attacante.transform.position.y > 0 && mossa.nomeMossa != "Bomba a prua" && mossa.nomeMossa != "Il sinistro magico del numero 7")
                 MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
             if (mossa.nomeMossa == "Lanciafiamme")
             {
@@ -140,9 +142,20 @@ public class Mossa : MonoBehaviour
             }
             else if(mossa.nomeMossa == "Bomba a prua" || mossa.nomeMossa == "Il sinistro magico del numero 7")
             {
-                yield return new WaitForSeconds(0.7f);
-                MossaInstanziata.transform.DOMove(Colpito.transform.position, 0.6f);
-                Destroy(MossaInstanziata, 1.3f);
+                if (Attacante.transform.position.y > 0)
+                {
+                    Destroy(MossaInstanziata);
+                    GameObject MossaInstanziataUp = Instantiate(MossaAnimationUp, Attacante.transform.position, new Quaternion(0, 1, 0, 0));
+                    yield return new WaitForSeconds(0.7f);
+                    MossaInstanziataUp.transform.DOMove(Colpito.transform.position, 0.7f);
+                    Destroy(MossaInstanziataUp, 1.3f);
+                }
+                else
+                {
+                    yield return new WaitForSeconds(0.7f);
+                    MossaInstanziata.transform.DOMove(Colpito.transform.position, 0.7f);
+                    Destroy(MossaInstanziata, 1.3f);
+                }
             }
             else
             {
@@ -369,7 +382,10 @@ public class Mossa : MonoBehaviour
             Debug.Log("Mossa ancora non programmata: " + mossa.nomeMossa);
         }
 
-        StartCoroutine(WaitAudioAttaccoSubito(mossa, colpitoUnit));
+        if (AttaccoNormale.Successo == true && battleSystem.state != BattleState.FINISHED)
+        {
+            StartCoroutine(WaitAudioAttaccoSubito(mossa, colpitoUnit));
+        }
     }
 
     IEnumerator WaitAudioAttaccoSubito(Mossa mossa,Unit colpitoUnit)
