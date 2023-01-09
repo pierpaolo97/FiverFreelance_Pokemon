@@ -58,14 +58,14 @@ public class Mossa : MonoBehaviour
         {
             battleSystem.ScegliChiAttaccare();
             battleSystem.mossaDaEseguire = mossa;
-            Debug.Log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+            //Debug.Log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         }
         else
         {
             //battleSystem.ChiAttacchi(bottoneDefaultPerMosseCura);
             combactButtons = GameObject.FindGameObjectWithTag("CombactButtons");
             combactButtons.SetActive(false);
-            Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAA");
+            //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAA");
             battleSystem.nemicoAttaccatoDalPlayer = battleSystem.enemyUnit;
             battleSystem.nemicoAttaccatoDalPlayerHUD = battleSystem.enemyHUD;
             battleSystem.mossaDaEseguire = mossa;      
@@ -197,7 +197,7 @@ public class Mossa : MonoBehaviour
             ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().enemy2Prefab;
         else if (GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab.GetComponent<Unit>().unitID == colpitoUnit.GetComponent<Unit>().unitID)
             ColpitoGiusto = GameObject.Find("Battle System").GetComponent<BattleSystem>().friendPrefab;
-        Debug.Log(ColpitoGiusto);
+        //Debug.Log(ColpitoGiusto);
         return (ColpitoGiusto);
     }
 
@@ -216,7 +216,7 @@ public class Mossa : MonoBehaviour
 
     public void Esegui(Mossa mossa, Unit attaccanteUnit, BattleHUD attacanteHUD, Unit colpitoUnit, BattleHUD colpitoHUD) //Quando viene eseguita questa funzione, la mossa viene realmente lanciata. 
     {
-        Debug.Log(attaccanteUnit.unitName + " prova ad usare " + mossa.nomeMossa);
+        //Debug.Log(attaccanteUnit.unitName + " prova ad usare " + mossa.nomeMossa);
 
         if (mossa.tipologiaDiMosaa == "ATTACCO NORMALE")
         {
@@ -394,7 +394,7 @@ public class Mossa : MonoBehaviour
         if (mossa.tipologiaDiMosaa == "ATTACCO NORMALE")
         {
             float a = Random.Range(0, 100);
-            Debug.Log("numero" + a);
+            //Debug.Log("numero" + a);
 
             yield return new WaitForSeconds(4f);
             if (a > 30f)

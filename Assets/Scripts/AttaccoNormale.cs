@@ -35,7 +35,7 @@ public class AttaccoNormale : MonoBehaviour
 
         int x = UnityEngine.Random.Range(0, 100);
         int mossaHaEffetto = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
-        Debug.Log(mossaHaEffetto);
+        //Debug.Log(mossaHaEffetto);
 
         if (mossaHaEffetto > 0)
         {
@@ -52,7 +52,7 @@ public class AttaccoNormale : MonoBehaviour
                     sequence.Append(giocatoreCheAttacca.transform.DOLocalMoveX(0.4f, 0.25f));
                 }*/
 
-                Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
+                //Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
                 int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
 
                 bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);

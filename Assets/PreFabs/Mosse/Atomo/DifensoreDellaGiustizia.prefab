@@ -46,15 +46,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeMossa: Difensore della Giustizia
   tipo: SPECIALE
-  danni: 200
+  danni: 0
   precisione: 100
   elemento: NESSUNO
   tipologiaDiMosaa: SENZA_TARGET
+  puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 1323510264394416555, guid: 2e7e29cc955e54780ac566b70158d2bc,
     type: 3}
-  AudioSource: {fileID: 0}
-  BoosterClip: {fileID: 8300000, guid: b4646db99bb084a77acde2ef9e88508a, type: 3}
-  MalusClip: {fileID: 0}
+  MossaAnimationUp: {fileID: 0}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}

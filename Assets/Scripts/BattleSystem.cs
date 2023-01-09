@@ -396,7 +396,7 @@ public class BattleSystem : MonoBehaviour
 
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
-                if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false || mossa.tipologiaDiMosaa == "SENZA_TARGET")
+                if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false) // || mossa.tipologiaDiMosaa == "SENZA_TARGET")
                 {
                     numeroDiMossaCura++;
                     mossa.puoiUsarla = true;
@@ -818,7 +818,7 @@ public class BattleSystem : MonoBehaviour
 
         if (turnoDiGameobject.GetComponent<Unit>().unitID == playerPrefab.GetComponent<Unit>().unitID)
         {
-            Debug.Log("SCELTA TURNO Player, turnoDiGameobject.name: " + turnoDiGameobject.name + ", playerPrefab.gameObject.name: " + playerPrefab.gameObject.name);
+            //Debug.Log("SCELTA TURNO Player, turnoDiGameobject.name: " + turnoDiGameobject.name + ", playerPrefab.gameObject.name: " + playerPrefab.gameObject.name);
 
             if (playerUnit.currentHP > 0)
             {
@@ -998,7 +998,7 @@ public class BattleSystem : MonoBehaviour
         chiVuoiAttaccare.SetActive(false);
         bottoniMosse.SetActive(false);
 
-        Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
+        //Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
         SceltaTurno();
     }
 

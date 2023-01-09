@@ -46,15 +46,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nomeMossa: Sguardo Del Drago
   tipo: SPECIALE
-  danni: 70
+  danni: 0
   precisione: 100
   elemento: NORMALE
   tipologiaDiMosaa: SENZA_TARGET
+  puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
   MossaAnimation: {fileID: 8160970752698086109, guid: 6352c68c953444deaa5532f3e72a489b,
     type: 3}
-  AudioSource: {fileID: 0}
-  BoosterClip: {fileID: 0}
-  MalusClip: {fileID: 8300000, guid: 8220ba6c5bf9842f89b876528824dbd0, type: 3}
+  MossaAnimationUp: {fileID: 0}
+  BoosterSource: {fileID: 0}
+  MalusSource: {fileID: 0}
+  ColpitoSource: {fileID: 0}
+  CameraAudio: {fileID: 0}
