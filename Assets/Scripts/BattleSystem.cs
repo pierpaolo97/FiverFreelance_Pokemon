@@ -396,7 +396,7 @@ public class BattleSystem : MonoBehaviour
 
             foreach (Mossa mossa in giocatoreCheDeveDecidereUnit.mosse)
             {
-                if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false)
+                if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false || mossa.tipologiaDiMosaa == "SENZA_TARGET")
                 {
                     numeroDiMossaCura++;
                     mossa.puoiUsarla = true;
