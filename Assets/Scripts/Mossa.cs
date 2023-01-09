@@ -622,7 +622,6 @@ public class Mossa : MonoBehaviour
         {
 
             int z = 0;
-            CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
 
             foreach (Unit personaggio in battleSystem.amici)
             {
@@ -660,6 +659,8 @@ public class Mossa : MonoBehaviour
 
             if (amicoDaBoostare.currentHP > 0)
             {
+                CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
+
                 amicoDaBoostare.difesa += 3;
                 amicoDaBoostare.difesa_speciale += 3;
                 string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
