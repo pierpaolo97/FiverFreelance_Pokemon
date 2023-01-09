@@ -33,23 +33,25 @@ public class Mossa : MonoBehaviour
     GameObject combactButtons;
 
     int x;
+    int z =0;
     GameObject ColpitoGiusto;
     Unit giocatoreAmicoONemico;
 
     public AudioSource BoosterSource;
     public AudioSource MalusSource;
     public AudioSource ColpitoSource;
-
+    public TextMeshProUGUI Dialogue;
     public AudioSource CameraAudio;
 
     public void Start()
     {    
         battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
-        partitaFinita = GameObject.FindGameObjectWithTag("PartitaFinita").transform.GetChild(0).gameObject;
+        partitaFinita = GameObject.Find("Fine").transform.GetChild(0).gameObject;
         BoosterSource = GameObject.Find("PowerUp").GetComponent<AudioSource>();
         MalusSource = GameObject.Find("PowerDown").GetComponent<AudioSource>();
         ColpitoSource = GameObject.Find("Colpito").GetComponent<AudioSource>();
         CameraAudio = GameObject.Find("Main Camera").GetComponent<AudioSource>();
+        Dialogue = GameObject.Find("DialogueText").GetComponent<TextMeshProUGUI>();
     }
 
     public void SalvaMossa(Mossa mossa) //Questa funzione viene attaccata ad ogni bottone, personalizzata a seconda della mossa eseguita. Qui salviamo la mossa che il Player dovr? eseguire.
@@ -316,17 +318,19 @@ public class Mossa : MonoBehaviour
 
                 if (attaccanteUnit.currentHP <= 0 && giocatoreAmicoONemico.currentHP <= 0)
                 {
+                    Debug.Log("FINE Mossa");
+
                     battleSystem.state = BattleState.FINISHED;
                     //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                     battleSystem.EndBattle();
 
                     if (attaccanteUnit.unitID == 0 || giocatoreAmicoONemico.unitID == 1)
                     {
-                        FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                        StartCoroutine(FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
                     }
                     else
                     {
-                        FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
+                        StartCoroutine(FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
                     }
                 }
             }
@@ -664,7 +668,7 @@ public class Mossa : MonoBehaviour
                 amicoDaBoostare.difesa += 3;
                 amicoDaBoostare.difesa_speciale += 3;
                 string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
-                string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumentano di 3 punti!";
+                string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
                 StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
                 StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
                 StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
@@ -871,13 +875,15 @@ public class Mossa : MonoBehaviour
             battleSystem.state = BattleState.FINISHED;
             //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
             battleSystem.EndBattle();
+            Debug.Log("FINE MOSSa");
+
             if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
             {
-                FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                StartCoroutine( FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
             }
             else
             {
-                FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
+                StartCoroutine(FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
             }
         }
     }
@@ -915,16 +921,21 @@ public class Mossa : MonoBehaviour
         }
     }
 
-    public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
+    public IEnumerator FinePartita(GameObject Vincitore1, GameObject Vincitore2)
     {
-        //GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
-        partitaFinita.SetActive(true);
-        partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
-        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
-        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(1).GetComponent<SpriteRenderer>().sprite;
-        StartCoroutine(WaitAudioEsultanza(Vincitore1, Vincitore2));
+        if (z == 0)
+        {
+            z = 1;
+            Dialogue.enabled = false;
+            yield return new WaitForSeconds(2.5f);
+            partitaFinita.SetActive(true);
+            partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
+            partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+            partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
+            StartCoroutine(WaitAudioEsultanza(Vincitore1, Vincitore2));
 
-        PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
+            PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
+        }
     }
 
     public IEnumerator WaitAudioEsultanza(GameObject Vincitore1, GameObject Vincitore2)

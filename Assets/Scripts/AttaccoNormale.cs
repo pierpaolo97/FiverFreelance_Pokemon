@@ -121,13 +121,14 @@ public class AttaccoNormale : MonoBehaviour
 
                 if (isDead && giocatoreNONAttaccato.currentHP <= 0)
                 {
+                    Debug.Log("FINE ATTACCO");
                     battleSystem.state = BattleState.FINISHED;
                     //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
                     battleSystem.EndBattle();
                     if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
-                        FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
+                        StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
                     else
-                        FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
+                        StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
                 }
                 else
                 {
@@ -174,19 +175,5 @@ public class AttaccoNormale : MonoBehaviour
             battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
-
-        //yield return new WaitForSeconds(5);
-    }
-
-    public void FinePartita(GameObject Vincitore1, GameObject Vincitore2)
-    {
-        //GameObject.FindGameObjectWithTag("BattleSystem").SetActive(false);
-        partitaFinita.SetActive(true);
-        partitaFinita.transform.GetChild(5).GetComponent<TextMeshProUGUI>().text = Vincitore1.name + " e " + Vincitore2.name + " vincono la battaglia!";
-        partitaFinita.transform.GetChild(2).GetComponent<Image>().sprite = Vincitore1.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-        partitaFinita.transform.GetChild(3).GetComponent<Image>().sprite = Vincitore2.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite;
-        StartCoroutine(gameObject.GetComponent<Mossa>().WaitAudioEsultanza(Vincitore1, Vincitore2));
-
-        PlayerPrefs.SetInt("MONETE", PlayerPrefs.GetInt("MONETE", 0) + 50);
     }
 }

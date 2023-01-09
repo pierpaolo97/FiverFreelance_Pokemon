@@ -13615,6 +13615,7 @@ MonoBehaviour:
   BoosterSource: {fileID: 0}
   MalusSource: {fileID: 0}
   ColpitoSource: {fileID: 0}
+  Dialogue: {fileID: 0}
   CameraAudio: {fileID: 0}
 --- !u!1 &1715227581
 GameObject:
