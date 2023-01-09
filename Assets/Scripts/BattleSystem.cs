@@ -231,13 +231,13 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.PLAYERTURN;
         BotSalvaMossa();
 
-        Debug.Log("IL GIOCATORE DEVE SCEGLIEREEEEEEEEEEEEEEEEEEEEEEEEE");
+        //Debug.Log("IL GIOCATORE DEVE SCEGLIEREEEEEEEEEEEEEEEEEEEEEEEEE");
         
         if (playerUnit.currentHP > 0)
         {
             if (!playerUnit.paralizzato)
             {
-                Debug.Log("TUTTO OK");
+                //Debug.Log("TUTTO OK");
                 string ScegliAzione = playerUnit.unitName + " scegli un'azione! ";
                 StartCoroutine(ShowText(ScegliAzione));
                 bottoniMosse.SetActive(true);
@@ -773,7 +773,7 @@ public class BattleSystem : MonoBehaviour
     public void ProssimoCheAttacca() //Dopo aver ordinato i giocatori per velocità, vedo chi sarà il prossimo ad attaccare. Se sta attaccando l'ultimo (index=3) ricomincio il giro.
     {
         int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
-        Debug.Log(index);
+        //Debug.Log(index);
         //Debug.Log(index);
 
         if (index == 3)

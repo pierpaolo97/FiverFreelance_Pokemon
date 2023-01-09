@@ -664,7 +664,7 @@ public class Mossa : MonoBehaviour
                 amicoDaBoostare.difesa += 3;
                 amicoDaBoostare.difesa_speciale += 3;
                 string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
-                string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
+                string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumentano di 3 punti!";
                 StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
                 StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
                 StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));

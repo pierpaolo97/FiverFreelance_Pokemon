@@ -234,7 +234,7 @@ public class Aggiornamento : MonoBehaviour
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gi? l'ultima versione";
+            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai già l'ultima versione";
         }
     }
 
