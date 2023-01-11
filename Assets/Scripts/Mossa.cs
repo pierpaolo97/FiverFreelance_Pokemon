@@ -571,14 +571,25 @@ public class Mossa : MonoBehaviour
         if (AttaccoRiesce(mossa.precisione))
         {
             string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
-            string VieneParalalizzato = colpitoUnit.unitName + " viene paralizzato.";
+
+            string dipendeDalSesso;
+            if (colpitoUnit.maschio)
+            {
+                dipendeDalSesso = "paralizzato";
+            }
+            else
+            {
+                dipendeDalSesso = "paralizzata";
+            }
+
+            string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
             StartCoroutine(WaitAnimationMossa(colpitoUnit));
             StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
             StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
-            Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+            //Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
             //combactButtons.SetActive(false);
         }
         else
@@ -593,7 +604,16 @@ public class Mossa : MonoBehaviour
         if (AttaccoRiesce(mossa.precisione))
         {
             string BacioPrincipessa = attaccanteUnit.unitName + " usa Cartellino rosso.";
-            string VieneParalalizzato = colpitoUnit.unitName + " viene espulso (paralizzato).";
+            string dipendeDalSesso;
+            if (colpitoUnit.maschio)
+            {
+                dipendeDalSesso = "espulso (paralizzato)";
+            }
+            else
+            {
+                dipendeDalSesso = "espulsa (paralizzata)";
+            }
+            string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + ".";
             mossa.puoiUsarla = false;
             StartCoroutine(WaitAnimationMossa(colpitoUnit));
             StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
@@ -601,7 +621,7 @@ public class Mossa : MonoBehaviour
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
-            Debug.Log(colpitoUnit.unitName + " viene espulso.");
+            //Debug.Log(colpitoUnit.unitName + " viene espulso.");
             //combactButtons.SetActive(false);
         }
         else

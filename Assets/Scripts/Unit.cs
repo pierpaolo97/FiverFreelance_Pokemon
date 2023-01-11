@@ -21,6 +21,7 @@ public class Unit : MonoBehaviour
     public List<Mossa> mosse;
     public Sprite spriteUnit;
     public int unitID;
+    public bool maschio;
 
     public List<AudioClip> audioAttacchiSubiti;
     public List<AudioClip> audioSelezioni;

@@ -144,7 +144,7 @@ public class AttaccoNormale : MonoBehaviour
             }
             else
             {
-                Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco! ");
+                //Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco! ");
                 String AttaccoFallito = giocatoreCheAttacca.unitName + " prova ad attaccare ma fallisce! ";
                 StartCoroutine(ShowText(AttaccoFallito));
                 //yield return new WaitForSeconds(5);
@@ -153,7 +153,7 @@ public class AttaccoNormale : MonoBehaviour
         }
         else
         {
-            Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo" + qualeNemicoAttacchi.elemento);
+            //Debug.Log(mossa.elemento + " non ha efficacia contro personaggi di tipo" + qualeNemicoAttacchi.elemento);
             String AttaccoFallito = mossa.nomeMossa + " non è efficace contro " + qualeNemicoAttacchi.unitName;
             StartCoroutine(ShowText(AttaccoFallito));
             //yield return new WaitForSeconds(5);

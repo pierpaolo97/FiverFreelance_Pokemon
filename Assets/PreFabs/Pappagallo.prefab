@@ -65,6 +65,7 @@ MonoBehaviour:
   - {fileID: 3136023489529557631, guid: 10294cc3a58ebf045b7dac41e33e0694, type: 3}
   spriteUnit: {fileID: 21300000, guid: a313ea3e334ed4591ad3fc15604c8403, type: 3}
   unitID: 0
+  maschio: 1
   audioAttacchiSubiti:
   - {fileID: 8300000, guid: e60117da4d5cde04f922feda6866318f, type: 3}
   - {fileID: 8300000, guid: 1e99b79de0faa1e4787e0bddc75dea4d, type: 3}

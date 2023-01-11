@@ -52,19 +52,22 @@ public class Scelta : MonoBehaviour
             player.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
 
-        StartCoroutine(example(scegliPlayer, gameobjectDaDisattivare_uno, scegliCompagno, scegliPlayer, 0));
+        StartCoroutine(example(scegliPlayer, gameobjectDaDisattivare_uno, scegliCompagno, scegliPlayer, 0, true));
     }
 
-    IEnumerator example(GameObject scegli, List<GameObject> lista, GameObject daAttivare, GameObject daDisattivare, int ultimo)
+    IEnumerator example(GameObject scegli, List<GameObject> lista, GameObject daAttivare, GameObject daDisattivare, int ultimo, bool faiAudio)
     {
-        int x = UnityEngine.Random.RandomRange(0, 2);
-        cameraAudio.PlayOneShot(scegli.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegli.GetComponent<ScegliPersonaggi>().indexPlayer].GetComponent<Unit>().audioSelezioni[x]);
-        foreach(GameObject g in lista)
+        if (faiAudio)
         {
-            g.GetComponent<Button>().interactable = false;
+            int x = UnityEngine.Random.RandomRange(0, 2);
+            cameraAudio.PlayOneShot(scegli.GetComponent<ScegliPersonaggi>().personaggiDisponibili[scegli.GetComponent<ScegliPersonaggi>().indexPlayer].GetComponent<Unit>().audioSelezioni[x]);
+            foreach (GameObject g in lista)
+            {
+                g.GetComponent<Button>().interactable = false;
+            }
+            yield return new WaitWhile(() => cameraAudio.isPlaying);
         }
-        yield return new WaitWhile(() => cameraAudio.isPlaying);
-
+        
         daDisattivare.SetActive(false);
         daAttivare.SetActive(true);
 
@@ -76,6 +79,7 @@ public class Scelta : MonoBehaviour
         {
             disattivaUltimo();
         }
+        
     }
 
     public void Back1()
@@ -103,7 +107,7 @@ public class Scelta : MonoBehaviour
             friend.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
         back.SetActive(false);
-        StartCoroutine(example(scegliCompagno, gameobjectDaDisattivare_due, scegliEnemy1, scegliCompagno, 0));
+        StartCoroutine(example(scegliCompagno, gameobjectDaDisattivare_due, scegliEnemy1, scegliCompagno, 0, true));
     }
 
     public void Back2()
@@ -129,7 +133,7 @@ public class Scelta : MonoBehaviour
             mossa_da_istanziare.name = enemy1.GetComponent<Unit>().mosse[i].GetComponent<Mossa>().nomeMossa;
             enemy1.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
-        StartCoroutine(example(scegliEnemy1, gameobjectDaDisattivare_tre, scegliEnemy2, scegliEnemy1, 0));
+        StartCoroutine(example(scegliEnemy1, gameobjectDaDisattivare_tre, scegliEnemy2, scegliEnemy1, 0, false));
     }
 
     public void Back3()
@@ -159,7 +163,7 @@ public class Scelta : MonoBehaviour
             enemy2.GetComponent<Unit>().mosse[i] = mossa_da_istanziare;
         }
 
-        StartCoroutine(example(scegliEnemy2, gameobjectDaDisattivare_quattro, scegliEnemy2, scegliEnemy2, 1));
+        StartCoroutine(example(scegliEnemy2, gameobjectDaDisattivare_quattro, scegliEnemy2, scegliEnemy2, 1, false));
        
     }
 

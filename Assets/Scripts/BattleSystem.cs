@@ -257,9 +257,19 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                Debug.Log(playerUnit.unitName + " è paralizzatooooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
+                //Debug.Log(playerUnit.unitName + " è paralizzatooooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
                 //playerUnit.paralizzato = false;
-                string Paralizzato = playerUnit.unitName + " è paralizzato! ";
+                string dipendeDalSesso;
+                if (playerUnit.maschio)
+                {
+                    dipendeDalSesso = "paralizzato";
+                }
+                else
+                {
+                    dipendeDalSesso = "paralizzata";
+                }
+
+                string Paralizzato = playerUnit.unitName + " è " + dipendeDalSesso + "! "; //paralizzato! ";
                 StartCoroutine(ShowText(Paralizzato));
                 StartCoroutine(WaitSceltaTurno(3));
 
@@ -268,12 +278,21 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
-            Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
+            //Debug.Log(playerUnit.unitName + " è esaustooooooooooooooooooooooooooooooooo PASSA AL PROSSIMO!");
             state = BattleState.ENEMYTURN;
 
             if (EsaustoPlayer==0)
             {
-                string Esausto = playerUnit.unitName + " è esausto! ";
+                string dipendeDalSesso;
+                if (playerUnit.maschio)
+                {
+                    dipendeDalSesso = "esausto";
+                }
+                else
+                {
+                    dipendeDalSesso = "esausta";
+                }
+                string Esausto = playerUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
                 StartCoroutine(ShowText(Esausto));
                 StartCoroutine(WaitSceltaTurno(2f));
             }
@@ -564,10 +583,21 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
+                //Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
                 friendUnit.paralizzato = false;
                 StartCoroutine(WaitTogliParalizzato(friendHUD));
-                string ParalizzatoNoAttaccare = friendUnit.unitName + " è paralizzato, non può attaccare! ";
+
+                string dipendeDalSesso;
+                if (friendUnit.maschio)
+                {
+                    dipendeDalSesso = "paralizzato";
+                }
+                else
+                {
+                    dipendeDalSesso = "paralizzata";
+                }
+
+                string ParalizzatoNoAttaccare = friendUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 //yield return new WaitForSeconds(4f);
@@ -591,7 +621,16 @@ public class BattleSystem : MonoBehaviour
             //state = BattleState.ENEMY2TURN;
             if (EsaustoFriend==0)
             {
-                string Esausto = friendUnit.unitName + " è esausto! ";
+                string dipendeDalSesso;
+                if (friendUnit.maschio)
+                {
+                    dipendeDalSesso = "esausto";
+                }
+                else
+                {
+                    dipendeDalSesso = "esausta";
+                }
+                string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
                 StartCoroutine(ShowText(Esausto));
                 yield return new WaitForSeconds(3f);
                 ProssimoCheAttacca();
@@ -634,7 +673,18 @@ public class BattleSystem : MonoBehaviour
             {
                 enemyUnit.paralizzato = false;
                 StartCoroutine(WaitTogliParalizzato(enemyHUD));
-                string ParalizzatoNoAttaccare = enemyUnit.unitName + " è paralizzato, non può attaccare! ";
+
+                string dipendeDalSesso;
+                if (enemyUnit.maschio)
+                {
+                    dipendeDalSesso = "paralizzato";
+                }
+                else
+                {
+                    dipendeDalSesso = "paralizzata";
+                }
+
+                string ParalizzatoNoAttaccare = enemyUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 //yield return new WaitForSeconds(4f);
@@ -657,7 +707,16 @@ public class BattleSystem : MonoBehaviour
             //state = BattleState.FRIENDTURN;
             if (EsaustoEnemy == 0)
             {
-                string Esausto = enemyUnit.unitName + " è esausto! ";
+                string dipendeDalSesso;
+                if (enemyUnit.maschio)
+                {
+                    dipendeDalSesso = "esausto";
+                }
+                else
+                {
+                    dipendeDalSesso = "esausta";
+                }
+                string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
                 StartCoroutine(ShowText(Esausto));
                 yield return new WaitForSeconds(3f);
                 ProssimoCheAttacca();
@@ -699,7 +758,18 @@ public class BattleSystem : MonoBehaviour
             {
                 enemy2Unit.paralizzato = false;
                 StartCoroutine(WaitTogliParalizzato(enemy2HUD));
-                string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è paralizzato, non può attaccare! ";
+
+                string dipendeDalSesso;
+                if (enemy2Unit.maschio)
+                {
+                    dipendeDalSesso = "paralizzato";
+                }
+                else
+                {
+                    dipendeDalSesso = "paralizzata";
+                }
+
+                string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
                 StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                 enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                 //yield return new WaitForSeconds(4f);
@@ -720,7 +790,16 @@ public class BattleSystem : MonoBehaviour
         {
             if (EsaustoEnemy2 == 0)
             {
-                string Esausto = enemy2Unit.unitName + " è esausto! ";
+                string dipendeDalSesso;
+                if (enemy2Unit.maschio)
+                {
+                    dipendeDalSesso = "esausto";
+                }
+                else
+                {
+                    dipendeDalSesso = "esausta";
+                }
+                string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
                 StartCoroutine(ShowText(Esausto));
                 yield return new WaitForSeconds(3f);
                 ProssimoCheAttacca();
@@ -845,8 +924,19 @@ public class BattleSystem : MonoBehaviour
                 {
                     playerUnit.paralizzato = false;
                     StartCoroutine(WaitTogliParalizzato(playerHUD));
-                    Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
-                    string PlayerParalizzato = playerUnit.unitName + " è paralizzato, non può attaccare";
+                    //Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+
+                    string dipendeDalSesso;
+                    if (playerUnit.maschio)
+                    {
+                        dipendeDalSesso = "paralizzato";
+                    }
+                    else
+                    {
+                        dipendeDalSesso = "paralizzata";
+                    }
+
+                    string PlayerParalizzato = playerUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare";
                     StartCoroutine(ShowText(PlayerParalizzato));
                     playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
 
@@ -854,7 +944,7 @@ public class BattleSystem : MonoBehaviour
             }
             else
             {
-                Debug.Log(playerUnit.unitName + " è esausto, non può attaccare");
+                //Debug.Log(playerUnit.unitName + " è esausto, non può attaccare");
                 //string PlayerParalizzato = playerUnit.unitName + " è esausto, non può attaccare";
                 //StartCoroutine(ShowText(PlayerParalizzato));
             }
