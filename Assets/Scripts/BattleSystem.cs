@@ -1199,7 +1199,8 @@ public class BattleSystem : MonoBehaviour
 
     public float Modificatore(Mossa mossa, Unit attaccato)
     {
-        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE - ACQUA
+        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE - ACQUA 
+        // La riga è chi attacca, colonna chi subisce. Quindi ad esempio riga 6, colonna 1 vuol dire che acqua attacca su fuoco. 
 
         float[,] matrice = { { 0.5f, 1,  1,   1,   1, 0.5f},
                              {  2,   1,  0,   1,   1, 1f},

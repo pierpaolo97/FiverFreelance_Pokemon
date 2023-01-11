@@ -854,7 +854,7 @@ public class Mossa : MonoBehaviour
         {
             string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
             StartCoroutine(ShowText(AttaccoFallito));
-            Debug.Log("ATTACCO FALLITO SGUARDO");
+            //Debug.Log("ATTACCO FALLITO SGUARDO");
         }
     }
 
@@ -869,7 +869,7 @@ public class Mossa : MonoBehaviour
         }
         else
         {
-            Debug.Log("Attacco fallito");
+            //Debug.Log("Attacco fallito");
             return false;
         }
     }
@@ -877,7 +877,7 @@ public class Mossa : MonoBehaviour
 
     public IEnumerator Coltelli(Mossa mossa, Unit giocatoreCheAttacca, Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
     {
-        Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
+        //Debug.Log(giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
         //StartCoroutine(WaitAnimationMossaDiagonaleColtelli(giocatoreCheAttacca, qualeNemicoAttacchi, new Quaternion(0, 0, 0.216439605f, 0.976296067f)));
         string UsaSuccesso = giocatoreCheAttacca.unitName + " usa " + mossa.nomeMossa + " contro " + qualeNemicoAttacchi.unitName + "!";
         StartCoroutine(ShowText(UsaSuccesso));
@@ -888,7 +888,7 @@ public class Mossa : MonoBehaviour
         yield return new WaitForSecondsRealtime(2);
         bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
         qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
-        Debug.Log(dannoEffettivo);
+        //Debug.Log(dannoEffettivo);
 
         if (qualeNemicoAttacchi.currentHP <= 0 && giocatoreNONAttaccato.currentHP <= 0)
         {

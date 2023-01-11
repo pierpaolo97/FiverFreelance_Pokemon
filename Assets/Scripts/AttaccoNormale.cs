@@ -37,6 +37,18 @@ public class AttaccoNormale : MonoBehaviour
         int mossaHaEffetto = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
         //Debug.Log(mossaHaEffetto);
 
+        string superEfficace;
+
+        if(battleSystem.Modificatore(mossa, qualeNemicoAttacchi) == 2)
+        {
+            superEfficace = " È superefficace!";
+        }
+        else
+        {
+            superEfficace = "";
+        }
+
+
         if (mossaHaEffetto > 0)
         {
             if (x <= precisione)
@@ -66,12 +78,12 @@ public class AttaccoNormale : MonoBehaviour
 
                 if (this.gameObject.GetComponent<Mossa>().nomeMossa == "Fusione Del Reattore")
                 {
-                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP, ma anche Atomo perde 1/3 dei propri HP ";
+                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP, ma anche Atomo perde 1/3 dei propri HP." + superEfficace;
                     StartCoroutine(ShowText(NemicoPerdeDanni));
                 }
                 else
                 {
-                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP ";
+                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP." + superEfficace;
                     StartCoroutine(ShowText(NemicoPerdeDanni));
                 }
 
