@@ -28,6 +28,12 @@ public class MenuOrganizer : MonoBehaviour
         StartCoroutine(LoadSceneTrans("PersonaggiScene"));
     }
 
+
+    public void GoToFirtScene()
+    {
+        StartCoroutine(LoadSceneTrans("FirstScene"));
+    }
+
     public void PauseGame()
     {
         Time.timeScale = 0;

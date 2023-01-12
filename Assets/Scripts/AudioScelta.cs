@@ -50,6 +50,7 @@ public class AudioScelta : MonoBehaviour
 
     public void Riproduci()
     {
+        cameraAudio.Stop();
         cameraAudio.PlayOneShot(listaAudio[indexPlayer]);
     }
 }

@@ -401,7 +401,7 @@ public class Mossa : MonoBehaviour
             //Debug.Log("numero" + a);
 
             yield return new WaitForSeconds(4f);
-            if (a > 30f)
+            if (a < 30f)
             {
                 CameraAudio.PlayOneShot(colpitoUnit.audioAttacchiSubiti[audioRandom]);
             }
@@ -910,7 +910,7 @@ public class Mossa : MonoBehaviour
 
     IEnumerator ShowTextDouble(string textDaScrivere, string textDaScrivere2)
     {
-        for (int i = 0; i < textDaScrivere.Length; i++)
+        for (int i = 0; i < textDaScrivere.Length +1; i++)
         {
             currentText = textDaScrivere.Substring(0, i);
             //Debug.Log(Bird.transform.GetChild(0).transform.GetChild(1).name);
