@@ -10,6 +10,7 @@ using TMPro;
 
 public class Aggiornamento : MonoBehaviour
 {
+    public GameObject menuAggiornamentoBottone;
     public GameObject menuAggiornamento;
     //public GameObject menuPersonalizzate;
     public GameObject menuPrivacyPolicy;
@@ -123,18 +124,18 @@ public class Aggiornamento : MonoBehaviour
             aggiornamento.name = "CanvasAggiornamento";
             aggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;*/
             menuAggiornamento.SetActive(true);
-            //menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
+            menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
             menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Vai allo store";
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gi? l'ultima versione";
+            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gia' l'ultima versione";
         }
     }
 
     public void apriMenuAgg()
     {
-        menuAggiornamento.SetActive(true);
+        menuAggiornamentoBottone.SetActive(true);
         StartCoroutine(apriMenuAggiornamento());
     }
 
@@ -221,18 +222,15 @@ public class Aggiornamento : MonoBehaviour
 
         float intVersion = float.Parse(version);
         float currentVersion = float.Parse(Application.version);
-        //menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
+        //menuAggiornamentoBottone.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
 
         if (currentVersion != intVersion)
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Vai allo store";
+            menuAggiornamentoBottone.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Vai allo store";
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gia' l'ultima versione";
+            menuAggiornamentoBottone.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gia' l'ultima versione";
         }
     }
-
-
-
 }
