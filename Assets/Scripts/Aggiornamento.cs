@@ -12,7 +12,7 @@ public class Aggiornamento : MonoBehaviour
 {
     public GameObject menuAggiornamento;
     //public GameObject menuPersonalizzate;
-    //public GameObject menuPrivacyPolicy;
+    public GameObject menuPrivacyPolicy;
     string url;
     string urlAndroid = "https://pastebin.com/raw/CQJknyxT";
     string urlIOS = "https://pastebin.com/raw/CQJknyxT";
@@ -45,7 +45,7 @@ public class Aggiornamento : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("PRIVACYPOLICY"))
         {
-            //menuPrivacyPolicy.SetActive(true);
+            menuPrivacyPolicy.SetActive(true);
         }
 
         GameObject agg = GameObject.Find("CanvasAggiornamento");
@@ -70,7 +70,7 @@ public class Aggiornamento : MonoBehaviour
     public void privacySI()
     {
         PlayerPrefs.SetString("PRIVACYPOLICY", "SI");
-        //menuPrivacyPolicy.SetActive(false);
+        menuPrivacyPolicy.SetActive(false);
     }
 
 
@@ -123,16 +123,13 @@ public class Aggiornamento : MonoBehaviour
             aggiornamento.name = "CanvasAggiornamento";
             aggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;*/
             menuAggiornamento.SetActive(true);
-            menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
+            //menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
             menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Vai allo store";
         }
         else
         {
             menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gi? l'ultima versione";
         }
-
-
-
     }
 
     public void apriMenuAgg()
@@ -198,7 +195,6 @@ public class Aggiornamento : MonoBehaviour
         linkStore = linkIOS;
 #endif
 
-
     }
 
     IEnumerator premiBottoneAggiornamento(string url)
@@ -220,13 +216,12 @@ public class Aggiornamento : MonoBehaviour
                 break;
         }
 
-
         Debug.Log(version);
         Debug.Log(text);
 
         float intVersion = float.Parse(version);
         float currentVersion = float.Parse(Application.version);
-        menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
+        //menuAggiornamento.gameObject.transform.Find("Carta").GetChild(0).GetComponent<TextMeshProUGUI>().text = text;
 
         if (currentVersion != intVersion)
         {
@@ -234,7 +229,7 @@ public class Aggiornamento : MonoBehaviour
         }
         else
         {
-            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai già l'ultima versione";
+            menuAggiornamento.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gia' l'ultima versione";
         }
     }
 
