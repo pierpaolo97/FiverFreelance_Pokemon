@@ -5438,6 +5438,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1374329475}
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: VaiAllaPrivacy
+      objectReference: {fileID: 0}
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Aggiornamento, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 281762440048623179, guid: 958df94e1dcf042eea0c7f0ddca23d20,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 397500057469003907, guid: 958df94e1dcf042eea0c7f0ddca23d20,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

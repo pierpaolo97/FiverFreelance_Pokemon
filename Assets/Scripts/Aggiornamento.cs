@@ -233,4 +233,9 @@ public class Aggiornamento : MonoBehaviour
             menuAggiornamentoBottone.gameObject.transform.Find("VaiAlloStore").GetChild(0).GetComponent<TextMeshProUGUI>().text = "Hai gia' l'ultima versione";
         }
     }
+
+    public void VaiAllaPrivacy()
+    {
+        Application.OpenURL("https://sites.google.com/view/mymangauniverse/home-page");
+    }
 }
