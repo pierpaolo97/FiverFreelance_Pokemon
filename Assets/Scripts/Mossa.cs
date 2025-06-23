@@ -417,6 +417,11 @@ public class Mossa : MonoBehaviour
             //Cura la propria vita di 30ps
             PowerOfLove(mossa, attaccanteUnit, attacanteHUD);
         }
+        else if (mossa.nomeMossa == "Licantropia")
+        {
+            //buff di 2 all’attacco per 3 turni
+            Licantropia(mossa, attaccanteUnit);
+        }
         else
         {
             Debug.Log("Mossa ancora non programmata: " + mossa.nomeMossa);
