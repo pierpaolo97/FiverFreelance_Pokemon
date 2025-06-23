@@ -18,6 +18,7 @@ public class Unit : MonoBehaviour
     public int velocita;
     public string elemento;
     public bool paralizzato = false;
+    public bool avvelenato = false;
     public List<Mossa> mosse;
     public Sprite spriteUnit;
     public int unitID;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+//using System.Diagnostics;
 
 public class Mossa : MonoBehaviour
 {
@@ -96,6 +97,12 @@ public class Mossa : MonoBehaviour
         yield return new WaitForSeconds(5f);
         Malus.GetComponent<Animator>().Play("MalusPg");
         MalusSource.Play();
+    }
+
+    IEnumerator Avvelenato(GameObject avvelenato)
+    {
+        yield return new WaitForSeconds(5f);
+        avvelenato.GetComponent<Animator>().Play("AvvelenatoPg");
     }
 
     IEnumerator Paralizzato(GameObject Paralizzato)
@@ -250,6 +257,26 @@ public class Mossa : MonoBehaviour
                 StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
+            else if (mossa.nomeMossa == "Lama a forma di croce" && AttaccoNormale.Successo == true)
+            {
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+            }
+            else if (mossa.nomeMossa == "Lancio di un gavettone" && AttaccoNormale.Successo == true)
+            {
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+            }
+            else if (mossa.nomeMossa == "Il maiale Ooink" && AttaccoNormale.Successo == true) 
+            {   // questa è una mossa particolare perché ha sia una componente "normale" sia una particolare. Quindi la inserisco qui in modo che 
+                // faccia il suo attacco normale, successivamente vedo se paralizzare o meno l'avversario.
+                //Attacco che può paralizzare avversari di tipo TERRA
+                MaialeOoink(mossa, colpitoUnit, attaccanteUnit);
+            }
+            else if (mossa.nomeMossa == "Bomba aglio" && AttaccoNormale.Successo == true)
+            {
+                BombaAglio(mossa, colpitoUnit, attaccanteUnit);
+            }
             else if (AttaccoNormale.Successo == true)
             {
                 StartCoroutine(WaitAnimationMossa(colpitoUnit));
@@ -381,6 +408,15 @@ public class Mossa : MonoBehaviour
         {
             CartellinoRosso(mossa, colpitoUnit, attaccanteUnit);
         }
+        else if (mossa.nomeMossa == "Lancio cioccolato")
+        {
+            LancioCioccolato(mossa, colpitoUnit, attaccanteUnit);
+        }
+        else if (mossa.nomeMossa == "Power of love")
+        {
+            //Cura la propria vita di 30ps
+            PowerOfLove(mossa, attaccanteUnit, attacanteHUD);
+        }
         else
         {
             Debug.Log("Mossa ancora non programmata: " + mossa.nomeMossa);
@@ -417,10 +453,7 @@ public class Mossa : MonoBehaviour
             string DifensoreGiustizia = attaccanteUnit.unitName + " usa Difensore della Giustizia.";
             string AumentaDifesa = attaccanteUnit.unitName + " aumenta di 2 punti la sua difesa speciale.";
             StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-            StartCoroutine(BoosterLampeggiante(
-
-
-                (attaccanteUnit).gameObject)); /////DSHALKDJHLSABDJHKVDSKJHSDAVKDJHSAVKDJSAHVD
+            StartCoroutine(BoosterLampeggiante((attaccanteUnit).gameObject)); /////DSHALKDJHLSABDJHKVDSKJHSDAVKDJHSAVKDJSAHVD
             StartCoroutine(ShowTextDouble(DifensoreGiustizia, AumentaDifesa));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             attaccanteUnit.difesa_speciale += 2;
@@ -430,6 +463,27 @@ public class Mossa : MonoBehaviour
             string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
             StartCoroutine(ShowText(AttaccoFallito));
             Debug.Log("ATTACCO FALLITO COLTELLI");
+        }
+    }
+
+
+    public void Licantropia(Mossa mossa, Unit attaccanteUnit)
+    {
+        if (AttaccoRiesce(mossa.precisione))
+        {
+            string Licantropia = attaccanteUnit.unitName + " usa Licantropia";
+            string AumentaAttacco = attaccanteUnit.unitName + " aumenta di 2 punti il suo attacco.";
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(BoosterLampeggiante((attaccanteUnit).gameObject)); 
+            StartCoroutine(ShowTextDouble(Licantropia, AumentaAttacco));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            attaccanteUnit.attacco += 2;
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            Debug.Log("ATTACCO FALLITO Licantropia");
         }
     }
 
@@ -557,6 +611,7 @@ public class Mossa : MonoBehaviour
         }
     }
 
+
     IEnumerator WaitVitaUp(Unit attaccanteUnit, BattleHUD attacanteHUD)
     {
         yield return new WaitForSeconds(5f);
@@ -564,6 +619,90 @@ public class Mossa : MonoBehaviour
         int cura = vita / 3;
         attaccanteUnit.Heal(cura);
         attacanteHUD.SetHP(attaccanteUnit);
+    }
+
+
+    public void BombaAglio(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
+    {
+        if (AttaccoRiesce(mossa.precisione))
+        {
+            string bombaAglio = attaccanteUnit.unitName + " usa Bomba aglio.";
+            string dipendeDalSesso;
+            if (colpitoUnit.maschio)
+            {
+                dipendeDalSesso = "avvelenato";
+            }
+            else
+            {
+                dipendeDalSesso = "avvelenata";
+            }
+
+            string vieneAvvelenato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
+            StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            StartCoroutine(Avvelenato(FindColpito(colpitoUnit)));
+            StartCoroutine(ShowTextDouble(bombaAglio, vieneAvvelenato));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            colpitoUnit.avvelenato = true;
+            StartCoroutine(WaitActivateAvvelenato(colpitoUnit));
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+        }
+    }
+
+
+    public void PowerOfLove(Mossa mossa, Unit attaccanteUnit, BattleHUD attacanteHUD)
+    {
+        if (AttaccoRiesce(mossa.precisione))
+        {
+            string powerOfLove = attaccanteUnit.unitName + " usa Power of love.";
+            string Cura = attaccanteUnit.unitName + " si cura di 30 ps.";
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
+            StartCoroutine(ShowTextDouble(powerOfLove, Cura));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            StartCoroutine(WaitVitaUp_30ps(attaccanteUnit, attacanteHUD));
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+        }
+    }
+
+    IEnumerator WaitVitaUp_30ps(Unit attaccanteUnit, BattleHUD attacanteHUD)
+    {
+        yield return new WaitForSeconds(5f);
+        int cura = 30;
+        attaccanteUnit.Heal(cura);
+        attacanteHUD.SetHP(attaccanteUnit);
+    }
+
+    public void MaialeOoink(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
+    {
+        
+        string dipendeDalSesso;
+        if (colpitoUnit.maschio)
+        {
+            dipendeDalSesso = "paralizzato";
+        }
+        else
+        {
+            dipendeDalSesso = "paralizzata";
+        }
+
+        string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
+        StartCoroutine(WaitAnimationMossa(colpitoUnit));
+        StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
+        StartCoroutine(ShowText(vieneParalizzato));
+        StartCoroutine(WaitMossaAttaccoFuoriPosto());
+        colpitoUnit.paralizzato = true;
+        StartCoroutine(WaitActivateParalizzato(colpitoUnit));
+        //Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+        //combactButtons.SetActive(false);
+        
     }
 
     public void BacioDellaPrincipessa(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
@@ -582,10 +721,10 @@ public class Mossa : MonoBehaviour
                 dipendeDalSesso = "paralizzata";
             }
 
-            string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
+            string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
             StartCoroutine(WaitAnimationMossa(colpitoUnit));
             StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
-            StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
+            StartCoroutine(ShowTextDouble(BacioPrincipessa, vieneParalizzato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.paralizzato = true;
             StartCoroutine(WaitActivateParalizzato(colpitoUnit));
@@ -630,6 +769,47 @@ public class Mossa : MonoBehaviour
             StartCoroutine(ShowText(AttaccoFallito));
         }
     }
+
+
+    public void LancioCioccolato(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
+    {
+        if (AttaccoRiesce(mossa.precisione))
+        {
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            string lancioCioccolato = attaccanteUnit.unitName + " usa Lancio Cioccolato.";
+            string RiduciAttacco = attaccanteUnit.unitName + " attacca e riduce di 1 l'attacco degli avversari.";
+            StartCoroutine(ShowTextDouble(lancioCioccolato, RiduciAttacco));
+            StartCoroutine(WaitMossaAttaccoFuoriPosto());
+            int z = 0;
+
+            attaccanteUnit.attacco_speciale += 30;
+
+            foreach (Unit personaggio in battleSystem.nemici)
+            {
+                if (personaggio.unitID == colpitoUnit.unitID)
+                {
+                    personaggio.attacco -= 1;
+                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[z]));
+                    StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
+                }
+                z++;
+            }
+        }
+        else
+        {
+            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+            StartCoroutine(ShowText(AttaccoFallito));
+            //Debug.Log("ATTACCO FALLITO SGUARDO");
+        }
+    }
+
+
+    IEnumerator WaitActivateAvvelenato(Unit colpitoUnit)
+    {
+        yield return new WaitForSeconds(3);
+        FindColpitoHUD(colpitoUnit).transform.GetChild(5).gameObject.SetActive(true);
+    }
+
 
     IEnumerator WaitActivateParalizzato(Unit colpitoUnit)
     {
