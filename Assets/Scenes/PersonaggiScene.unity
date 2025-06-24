@@ -1760,7 +1760,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1725497040}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: 
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2408,7 +2408,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -169.01657, y: -175.91374}
+  m_AnchoredPosition: {x: -169.01657, y: -141.99147}
   m_SizeDelta: {x: 382.58, y: 83.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &266144167
@@ -3991,7 +3991,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "Diego \xE8 il responsabile del club d\u2019allevamento della scuola. Spesso
+    per\xF2 si ritrova nei guai a causa del maialino Ooink, che odia star chiuso
+    nel proprio recinto."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -4137,7 +4139,7 @@ RectTransform:
   m_GameObject: {fileID: 408485194}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3544615, y: 3.0077503, z: 1.0632317}
+  m_LocalScale: {x: 0.37014368, y: 3.14082, z: 1.1102715}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449641986}
@@ -4145,7 +4147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: 174.58}
+  m_AnchoredPosition: {x: 2, y: 215.3}
   m_SizeDelta: {x: 145.81, y: 155.73}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &408485196
@@ -4700,7 +4702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -169.01657, y: -136.91371}
+  m_AnchoredPosition: {x: -169.01657, y: -102.99144}
   m_SizeDelta: {x: 382.58, y: 83.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &468481823
@@ -4988,7 +4990,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -169.01657, y: -175.91374}
+  m_AnchoredPosition: {x: -169.01657, y: -131.99149}
   m_SizeDelta: {x: 382.58, y: 83.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &496466570
@@ -5942,7 +5944,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430.86343, y: -136.92227}
+  m_AnchoredPosition: {x: 430.86343, y: -103}
   m_SizeDelta: {x: 801.81, y: 83.781}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &546831356
@@ -8540,7 +8542,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 396169755}
   m_HandleRect: {fileID: 396169754}
   m_Direction: 0
-  m_Value: 0.000000099468956
+  m_Value: 0.00000009946898
   m_Size: 0.5404152
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -9722,7 +9724,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430.86343, y: -175.92227}
+  m_AnchoredPosition: {x: 430.86343, y: -132}
   m_SizeDelta: {x: 801.81, y: 83.781}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &912093077
@@ -9745,7 +9747,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Tommaso Sadini\xF9"
+  m_text: Tommaso Sadini
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -13331,7 +13333,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430.86343, y: -136.92227}
+  m_AnchoredPosition: {x: 430.86343, y: -93.00001}
   m_SizeDelta: {x: 801.81, y: 83.781}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1305654689
@@ -13490,7 +13492,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "Mary \xE8 una cacciatrice di mostri scozzese della potentissima famiglia
+    Von Heaven. Nonostante abbia appena cominciato il lavoro la ragazza ha gi\xE0
+    avuto il suo bel da farsi"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 97c3be83fb8f147568eb29ddc204ca99, type: 2}
   m_sharedMaterial: {fileID: 7219239008772029471, guid: 97c3be83fb8f147568eb29ddc204ca99,
@@ -17524,12 +17528,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listaAudio:
-  - {fileID: 8300000, guid: e60117da4d5cde04f922feda6866318f, type: 3}
-  - {fileID: 8300000, guid: 1e99b79de0faa1e4787e0bddc75dea4d, type: 3}
-  - {fileID: 8300000, guid: 7f74f3c211b71b64cb938fe972e1318c, type: 3}
-  - {fileID: 8300000, guid: 172b271e7a4684f4bbae47ad84d93d52, type: 3}
-  - {fileID: 8300000, guid: 3bf1e5048183f5443bdffd10337f969e, type: 3}
-  - {fileID: 8300000, guid: c038e71d8f103e7469711faa2fe94678, type: 3}
+  - {fileID: 8300000, guid: af112c3c293244f0eabca328621e0489, type: 3}
+  - {fileID: 8300000, guid: e0b6e6d83aff4458f8c908bec027b7d9, type: 3}
+  - {fileID: 8300000, guid: 3ddbd6695a05b404d84ef79ad9d76ce1, type: 3}
+  - {fileID: 8300000, guid: 7d32dff90281a45b3ab495a7502b829f, type: 3}
+  - {fileID: 8300000, guid: 5eef9e8b8739b428eaf0444012399049, type: 3}
+  - {fileID: 8300000, guid: c925eda17972748ecb33528fc7b40899, type: 3}
   txt: {fileID: 1516725610}
   indexPlayer: 0
   cameraAudio: {fileID: 512748177}
@@ -18126,12 +18130,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   listaAudio:
-  - {fileID: 8300000, guid: e60117da4d5cde04f922feda6866318f, type: 3}
-  - {fileID: 8300000, guid: 1e99b79de0faa1e4787e0bddc75dea4d, type: 3}
-  - {fileID: 8300000, guid: 7f74f3c211b71b64cb938fe972e1318c, type: 3}
-  - {fileID: 8300000, guid: 172b271e7a4684f4bbae47ad84d93d52, type: 3}
-  - {fileID: 8300000, guid: 3bf1e5048183f5443bdffd10337f969e, type: 3}
-  - {fileID: 8300000, guid: c038e71d8f103e7469711faa2fe94678, type: 3}
+  - {fileID: 8300000, guid: 33bd069474fc54b1e980cb1588f770a9, type: 3}
+  - {fileID: 8300000, guid: f02d8bb539d0847f69561c1673e23f1c, type: 3}
+  - {fileID: 8300000, guid: d2ac1b269506243859e0ba47914bb7df, type: 3}
+  - {fileID: 8300000, guid: e54376a614092457cbe4d3fda6085572, type: 3}
+  - {fileID: 8300000, guid: 263c9717620fc4df58d3ff7ad7be7d79, type: 3}
+  - {fileID: 8300000, guid: 84653a1629a134358981f21ec8d7885d, type: 3}
   txt: {fileID: 896668749}
   indexPlayer: 0
   cameraAudio: {fileID: 512748177}
@@ -18317,7 +18321,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -169.01657, y: -136.91371}
+  m_AnchoredPosition: {x: -169.01657, y: -92.99145}
   m_SizeDelta: {x: 382.58, y: 83.78}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1826487437
@@ -19957,7 +19961,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 430.86343, y: -175.92227}
+  m_AnchoredPosition: {x: 430.86343, y: -142}
   m_SizeDelta: {x: 801.81, y: 83.781}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2011747107
