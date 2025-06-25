@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.Linq;
+using System.CodeDom;
+
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, FRIENDTURN, ENEMY2TURN, WON, LOST, FINISHED}
 
@@ -557,91 +559,299 @@ public class BattleSystem : MonoBehaviour
     }
 
 
+    public bool manageAvvelenamento(Unit objectUnit, BattleHUD objectHUD)
+    {
+        if (objectUnit.avvelenato)
+        {
+            // Questo blocco di codice è equivalente a quello in AttaccoNormale, public IEnumerator Attacco
+            bool isDead = objectUnit.TakeDamage(30);
+            BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
+
+            int z = 0;
+            Unit giocatoreNONAttaccato = null;
+            foreach (Unit personaggio in battleSystem.amici)
+            {
+                if (personaggio.unitID == objectUnit.unitID)
+                {
+                    if (z == 0)
+                    {
+                        giocatoreNONAttaccato = battleSystem.amici[1];
+                    }
+                    else
+                    {
+                        giocatoreNONAttaccato = battleSystem.amici[0];
+                    }
+                }
+                z++;
+            }
+
+            z = 0;
+
+            foreach (Unit personaggio in battleSystem.nemici)
+            {
+                if (personaggio.unitID == objectUnit.unitID)
+                {
+                    if (z == 0)
+                    {
+                        giocatoreNONAttaccato = battleSystem.nemici[1];
+                    }
+                    else
+                    {
+                        giocatoreNONAttaccato = battleSystem.nemici[0];
+                    }
+                }
+                z++;
+            }
+
+            if (isDead && giocatoreNONAttaccato.currentHP <= 0)
+            {
+                Debug.Log("FINE ATTACCO");
+                battleSystem.state = BattleState.FINISHED;
+                battleSystem.EndBattle();
+                if (objectUnit.unitID == 0 || objectUnit.unitID == 1)
+                    StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
+                else
+                    StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
+            }
+            else
+            {
+                objectHUD.SetHP(objectUnit);
+            }
+
+            objectUnit.turniAvvelenamento -= 1;
+            if (objectUnit.turniAvvelenamento <= 0)
+            {
+                objectUnit.avvelenato = false;
+                StartCoroutine(WaitTogliAvvelenato(objectHUD));
+            }
+
+            return isDead;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public void ManageBoost(Unit objectUnit)
+    {
+        Debug.Log($"Checking boost for {objectUnit.unitName}");
+        if (objectUnit.nTurniBoost > 0)
+        {
+            objectUnit.nTurniBoost--;
+
+            // If the boost duration has ended, remove the boost
+            if (objectUnit.nTurniBoost == 0)
+            {
+                Debug.Log("è ora di rimuovere il boost");
+                switch (objectUnit.whichBoost)
+                {
+                    case "attacco":
+                        Debug.Log("Case Attacco");
+                        objectUnit.attacco -= Mathf.RoundToInt(objectUnit.boost);
+                        Debug.Log(objectUnit.attacco);
+                        break;
+                    case "difesa":
+                        objectUnit.difesa -= Mathf.RoundToInt(objectUnit.boost);
+                        break;
+                    case "attacco_speciale":
+                        objectUnit.attacco_speciale -= Mathf.RoundToInt(objectUnit.boost);
+                        break;
+                    case "difesa_speciale":
+                        objectUnit.difesa_speciale -= Mathf.RoundToInt(objectUnit.boost);
+                        break;
+                    case "velocita":
+                        objectUnit.velocita -= Mathf.RoundToInt(objectUnit.boost);
+                        break;
+                    // Add more cases if needed
+                    default:
+                        Debug.LogWarning("Boost type not recognized: " + objectUnit.whichBoost);
+                        break;
+                }
+
+                // Reset boost values
+                objectUnit.boost = 0;
+                objectUnit.whichBoost = "";
+            }
+        }
+    }
+
+
     IEnumerator FriendTurn()
     {
         bottoniMosse.SetActive(false);
         if (friendUnit.currentHP > 0)
         {
-            if (!friendUnit.paralizzato)
+            bool isDeadAvvelenamento = manageAvvelenamento(friendUnit, friendHUD);
+            if (!isDeadAvvelenamento)
             {
-                if (giocatoreDaAttaccareFRIEND.currentHP <= 0)
+                ManageBoost(friendUnit);
+                if (!friendUnit.paralizzato)
                 {
-                    if(giocatoreDaAttaccareFRIEND.unitID == enemyUnit.unitID)
+                    if (giocatoreDaAttaccareFRIEND.currentHP <= 0)
                     {
-                        giocatoreDaAttaccareFRIEND = enemy2Unit;
-                        giocatoreDaAttaccareFRIEND_HUD = enemy2HUD;
+                        if (giocatoreDaAttaccareFRIEND.unitID == enemyUnit.unitID)
+                        {
+                            giocatoreDaAttaccareFRIEND = enemy2Unit;
+                            giocatoreDaAttaccareFRIEND_HUD = enemy2HUD;
+                        }
+                        else
+                        {
+                            giocatoreDaAttaccareFRIEND = enemyUnit;
+                            giocatoreDaAttaccareFRIEND_HUD = enemyHUD;
+                        }
                     }
-                    else
-                    {
-                        giocatoreDaAttaccareFRIEND = enemyUnit;
-                        giocatoreDaAttaccareFRIEND_HUD = enemyHUD;
-                    }                                             
-                }
-                
-                friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
-                
-            }
-            else
-            {
-                //Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
-                friendUnit.paralizzato = false;
-                StartCoroutine(WaitTogliParalizzato(friendHUD));
 
-                string dipendeDalSesso;
-                if (friendUnit.maschio)
-                {
-                    dipendeDalSesso = "paralizzato";
+                    friendMossaDaEseguire.GetComponent<Mossa>().Esegui(friendMossaDaEseguire, friendUnit, friendHUD, giocatoreDaAttaccareFRIEND, giocatoreDaAttaccareFRIEND_HUD);
+
                 }
                 else
                 {
-                    dipendeDalSesso = "paralizzata";
+                    //Debug.Log(friendUnit.unitName + " è paralizzato, non può attaccare!");
+                    friendUnit.paralizzato = false;
+                    StartCoroutine(WaitTogliParalizzato(friendHUD));
+
+                    string dipendeDalSesso;
+                    if (friendUnit.maschio)
+                    {
+                        dipendeDalSesso = "paralizzato";
+                    }
+                    else
+                    {
+                        dipendeDalSesso = "paralizzata";
+                    }
+
+                    string ParalizzatoNoAttaccare = friendUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
+                    StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                    friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+                    //yield return new WaitForSeconds(4f);
+                    //ProssimoCheAttacca();
                 }
 
-                string ParalizzatoNoAttaccare = friendUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
-                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
-                friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                //yield return new WaitForSeconds(4f);
-                //ProssimoCheAttacca();
-            }
-
-            if (AttaccoNormale.Successo == true)
-            {
-                yield return new WaitForSeconds(8.5f);
-                ProssimoCheAttacca();
+                if (AttaccoNormale.Successo == true)
+                {
+                    yield return new WaitForSeconds(8.5f);
+                    ProssimoCheAttacca();
+                }
+                else
+                {
+                    yield return new WaitForSeconds(3f);
+                    ProssimoCheAttacca();
+                }
             }
             else
             {
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
+                StartCoroutine(FriendDead());
             }
 
         }
         else
         {
-            //state = BattleState.ENEMY2TURN;
-            if (EsaustoFriend==0)
+            StartCoroutine(FriendDead());
+            //if (EsaustoFriend==0)
+            //{
+            //    string dipendeDalSesso;
+            //    if (friendUnit.maschio)
+            //    {
+            //        dipendeDalSesso = "esausto";
+            //    }
+            //    else
+            //    {
+            //        dipendeDalSesso = "esausta";
+            //    }
+            //    string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
+            //    StartCoroutine(ShowText(Esausto));
+            //    yield return new WaitForSeconds(3f);
+            //    ProssimoCheAttacca();
+            //    EsaustoFriend ++;
+            //}
+            //else
+            //{
+            //    yield return new WaitForSeconds(0.5f);
+            //    ProssimoCheAttacca();
+            //}
+
+        }
+    }
+
+
+    IEnumerator FriendDead()
+    {
+        //state = BattleState.ENEMY2TURN;
+        if (EsaustoFriend == 0)
+        {
+            string dipendeDalSesso;
+            if (friendUnit.maschio)
             {
-                string dipendeDalSesso;
-                if (friendUnit.maschio)
-                {
-                    dipendeDalSesso = "esausto";
-                }
-                else
-                {
-                    dipendeDalSesso = "esausta";
-                }
-                string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
-                StartCoroutine(ShowText(Esausto));
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
-                EsaustoFriend ++;
+                dipendeDalSesso = "esausto";
             }
             else
             {
-                yield return new WaitForSeconds(0.5f);
-                ProssimoCheAttacca();
+                dipendeDalSesso = "esausta";
             }
+            string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
+            StartCoroutine(ShowText(Esausto));
+            yield return new WaitForSeconds(3f);
+            ProssimoCheAttacca();
+            EsaustoFriend++;
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            ProssimoCheAttacca();
+        }
+    }
 
+    IEnumerator EnemyDead()
+    {
+        if (EsaustoEnemy == 0)
+        {
+            string dipendeDalSesso;
+            if (enemyUnit.maschio)
+            {
+                dipendeDalSesso = "esausto";
+            }
+            else
+            {
+                dipendeDalSesso = "esausta";
+            }
+            string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
+            StartCoroutine(ShowText(Esausto));
+            yield return new WaitForSeconds(3f);
+            ProssimoCheAttacca();
+            EsaustoEnemy++;
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            ProssimoCheAttacca();
+        }
+    }
+
+    IEnumerator Enemy2Dead()
+    {
+        if (EsaustoEnemy2 == 0)
+        {
+            string dipendeDalSesso;
+            if (enemy2Unit.maschio)
+            {
+                dipendeDalSesso = "esausto";
+            }
+            else
+            {
+                dipendeDalSesso = "esausta";
+            }
+            string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
+            StartCoroutine(ShowText(Esausto));
+            yield return new WaitForSeconds(3f);
+            ProssimoCheAttacca();
+            EsaustoEnemy2++;
+        }
+        else
+        {
+            yield return new WaitForSeconds(0.5f);
+            ProssimoCheAttacca();
         }
     }
 
@@ -651,84 +861,96 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemyUnit.currentHP > 0)
         {
-            if (!enemyUnit.paralizzato)
+            bool isDeadAvvelenamento = manageAvvelenamento(enemyUnit, enemyHUD);
+            if (!isDeadAvvelenamento)
             {
-                if (giocatoreDaAttaccareENEMY.currentHP <= 0)
+                ManageBoost(enemyUnit);
+                if (!enemyUnit.paralizzato)
                 {
-                    if (giocatoreDaAttaccareENEMY.unitID == playerUnit.unitID)
+                    if (giocatoreDaAttaccareENEMY.currentHP <= 0)
                     {
-                        giocatoreDaAttaccareENEMY = friendUnit;
-                        giocatoreDaAttaccareENEMY_HUD = friendHUD;
+                        if (giocatoreDaAttaccareENEMY.unitID == playerUnit.unitID)
+                        {
+                            giocatoreDaAttaccareENEMY = friendUnit;
+                            giocatoreDaAttaccareENEMY_HUD = friendHUD;
+                        }
+                        else
+                        {
+                            giocatoreDaAttaccareENEMY = playerUnit;
+                            giocatoreDaAttaccareENEMY_HUD = playerHUD;
+                        }
                     }
-                    else
-                    {
-                        giocatoreDaAttaccareENEMY = playerUnit;
-                        giocatoreDaAttaccareENEMY_HUD = playerHUD;
-                    }
-                }
 
-                enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
-            }
-            else
-            {
-                enemyUnit.paralizzato = false;
-                StartCoroutine(WaitTogliParalizzato(enemyHUD));
-
-                string dipendeDalSesso;
-                if (enemyUnit.maschio)
-                {
-                    dipendeDalSesso = "paralizzato";
+                    enemyMossaDaEseguire.GetComponent<Mossa>().Esegui(enemyMossaDaEseguire, enemyUnit, enemyHUD, giocatoreDaAttaccareENEMY, giocatoreDaAttaccareENEMY_HUD);
                 }
                 else
                 {
-                    dipendeDalSesso = "paralizzata";
-                }
+                    enemyUnit.paralizzato = false;
+                    StartCoroutine(WaitTogliParalizzato(enemyHUD));
 
-                string ParalizzatoNoAttaccare = enemyUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
-                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
-                enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                //yield return new WaitForSeconds(4f);
-                //ProssimoCheAttacca();
-            }
-            if (AttaccoNormale.Successo == true)
-            {
-                yield return new WaitForSeconds(8.5f);
-                ProssimoCheAttacca();
+                    string dipendeDalSesso;
+                    if (enemyUnit.maschio)
+                    {
+                        dipendeDalSesso = "paralizzato";
+                    }
+                    else
+                    {
+                        dipendeDalSesso = "paralizzata";
+                    }
+
+                    string ParalizzatoNoAttaccare = enemyUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
+                    StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                    enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+                    //yield return new WaitForSeconds(4f);
+                    //ProssimoCheAttacca();
+                }
+                if (AttaccoNormale.Successo == true)
+                {
+                    yield return new WaitForSeconds(8.5f);
+                    ProssimoCheAttacca();
+                }
+                else
+                {
+                    yield return new WaitForSeconds(3f);
+                    ProssimoCheAttacca();
+                }
             }
             else
             {
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
+                StartCoroutine(EnemyDead());
             }
         }
 
         else
         {
-            //state = BattleState.FRIENDTURN;
-            if (EsaustoEnemy == 0)
-            {
-                string dipendeDalSesso;
-                if (enemyUnit.maschio)
-                {
-                    dipendeDalSesso = "esausto";
-                }
-                else
-                {
-                    dipendeDalSesso = "esausta";
-                }
-                string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
-                StartCoroutine(ShowText(Esausto));
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
-                EsaustoEnemy++;
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.5f);
-                ProssimoCheAttacca();
-            }
+            StartCoroutine(EnemyDead());
+            //if (EsaustoEnemy == 0)
+            //{
+            //    string dipendeDalSesso;
+            //    if (enemyUnit.maschio)
+            //    {
+            //        dipendeDalSesso = "esausto";
+            //    }
+            //    else
+            //    {
+            //        dipendeDalSesso = "esausta";
+            //    }
+            //    string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
+            //    StartCoroutine(ShowText(Esausto));
+            //    yield return new WaitForSeconds(3f);
+            //    ProssimoCheAttacca();
+            //    EsaustoEnemy++;
+            //}
+            //else
+            //{
+            //    yield return new WaitForSeconds(0.5f);
+            //    ProssimoCheAttacca();
+            //}
         }
     }
+
+
+    
 
 
     IEnumerator Enemy2Turn()
@@ -736,80 +958,90 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemy2Unit.currentHP > 0)
         {
-            if (!enemy2Unit.paralizzato)
+            bool isDeadAvvelenamento = manageAvvelenamento(enemy2Unit, enemy2HUD);
+            if (!isDeadAvvelenamento)
             {
-                if (giocatoreDaAttaccareENEMY2.currentHP <= 0)
+                ManageBoost(enemy2Unit);
+                if (!enemy2Unit.paralizzato)
                 {
-                    if (giocatoreDaAttaccareENEMY2.unitID == playerUnit.unitID)
+                    if (giocatoreDaAttaccareENEMY2.currentHP <= 0)
                     {
-                        giocatoreDaAttaccareENEMY2 = friendUnit;
-                        giocatoreDaAttaccareENEMY2_HUD = friendHUD;
+                        if (giocatoreDaAttaccareENEMY2.unitID == playerUnit.unitID)
+                        {
+                            giocatoreDaAttaccareENEMY2 = friendUnit;
+                            giocatoreDaAttaccareENEMY2_HUD = friendHUD;
+                        }
+                        else
+                        {
+                            giocatoreDaAttaccareENEMY2 = playerUnit;
+                            giocatoreDaAttaccareENEMY2_HUD = playerHUD;
+                        }
                     }
-                    else
-                    {
-                        giocatoreDaAttaccareENEMY2 = playerUnit;
-                        giocatoreDaAttaccareENEMY2_HUD = playerHUD;
-                    }
-                }
 
-                enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
-            }
-            else
-            {
-                enemy2Unit.paralizzato = false;
-                StartCoroutine(WaitTogliParalizzato(enemy2HUD));
-
-                string dipendeDalSesso;
-                if (enemy2Unit.maschio)
-                {
-                    dipendeDalSesso = "paralizzato";
+                    enemy2MossaDaEseguire.GetComponent<Mossa>().Esegui(enemy2MossaDaEseguire, enemy2Unit, enemy2HUD, giocatoreDaAttaccareENEMY2, giocatoreDaAttaccareENEMY2_HUD);
                 }
                 else
                 {
-                    dipendeDalSesso = "paralizzata";
-                }
+                    enemy2Unit.paralizzato = false;
+                    StartCoroutine(WaitTogliParalizzato(enemy2HUD));
 
-                string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
-                StartCoroutine(ShowText(ParalizzatoNoAttaccare));
-                enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-                //yield return new WaitForSeconds(4f);
-                //ProssimoCheAttacca();
-            }
-            if (AttaccoNormale.Successo == true)
-            {
-                yield return new WaitForSeconds(8.5f);
-                ProssimoCheAttacca();
+                    string dipendeDalSesso;
+                    if (enemy2Unit.maschio)
+                    {
+                        dipendeDalSesso = "paralizzato";
+                    }
+                    else
+                    {
+                        dipendeDalSesso = "paralizzata";
+                    }
+
+                    string ParalizzatoNoAttaccare = enemy2Unit.unitName + " è " + dipendeDalSesso + ", non può attaccare! ";
+                    StartCoroutine(ShowText(ParalizzatoNoAttaccare));
+                    enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+                    //yield return new WaitForSeconds(4f);
+                    //ProssimoCheAttacca();
+                }
+                if (AttaccoNormale.Successo == true)
+                {
+                    yield return new WaitForSeconds(8.5f);
+                    ProssimoCheAttacca();
+                }
+                else
+                {
+                    yield return new WaitForSeconds(3f);
+                    ProssimoCheAttacca();
+                }
             }
             else
             {
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
+                StartCoroutine(Enemy2Dead());
             }
         }
         else
         {
-            if (EsaustoEnemy2 == 0)
-            {
-                string dipendeDalSesso;
-                if (enemy2Unit.maschio)
-                {
-                    dipendeDalSesso = "esausto";
-                }
-                else
-                {
-                    dipendeDalSesso = "esausta";
-                }
-                string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
-                StartCoroutine(ShowText(Esausto));
-                yield return new WaitForSeconds(3f);
-                ProssimoCheAttacca();
-                EsaustoEnemy2++;
-            }
-            else
-            {
-                yield return new WaitForSeconds(0.5f);
-                ProssimoCheAttacca();
-            }
+            StartCoroutine(Enemy2Dead());
+            //if (EsaustoEnemy2 == 0)
+            //{
+            //    string dipendeDalSesso;
+            //    if (enemy2Unit.maschio)
+            //    {
+            //        dipendeDalSesso = "esausto";
+            //    }
+            //    else
+            //    {
+            //        dipendeDalSesso = "esausta";
+            //    }
+            //    string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
+            //    StartCoroutine(ShowText(Esausto));
+            //    yield return new WaitForSeconds(3f);
+            //    ProssimoCheAttacca();
+            //    EsaustoEnemy2++;
+            //}
+            //else
+            //{
+            //    yield return new WaitForSeconds(0.5f);
+            //    ProssimoCheAttacca();
+            //}
         }
     }
 
@@ -817,6 +1049,12 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(6);
         PgHUD.gameObject.transform.GetChild(4).gameObject.SetActive(false);
+    }
+
+    IEnumerator WaitTogliAvvelenato(BattleHUD PgHUD)
+    {
+        yield return new WaitForSeconds(6);
+        PgHUD.gameObject.transform.GetChild(5).gameObject.SetActive(false);
     }
 
 
@@ -872,8 +1110,8 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator WaitPlayerTurn()
     {
-            yield return new WaitForSeconds(1.5f);
-            PlayerTurn();
+        yield return new WaitForSeconds(1.5f);
+        PlayerTurn();
     }
 
 
@@ -901,45 +1139,50 @@ public class BattleSystem : MonoBehaviour
 
             if (playerUnit.currentHP > 0)
             {
-                //state = BattleState.PLAYERTURN;
-                if (!playerUnit.paralizzato)
+                bool isDeadAvvelenamento = manageAvvelenamento(playerUnit, playerHUD);
+                if (!isDeadAvvelenamento)
                 {
-                    if (nemicoAttaccatoDalPlayer.currentHP <= 0)
-                    {
-                        if (nemicoAttaccatoDalPlayer.unitID == enemyUnit.unitID)
-                        {
-                            nemicoAttaccatoDalPlayer = enemy2Unit;
-                            nemicoAttaccatoDalPlayerHUD = enemy2HUD;
-                        }
-                        else
-                        {
-                            nemicoAttaccatoDalPlayer = enemyUnit;
-                            nemicoAttaccatoDalPlayerHUD = enemyHUD;
-                        }
-                    }
-                    mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
-                    //CameraAudio.PlayOneShot(nemicoAttaccatoDalPlayer.audioAttacchiSubiti[0]);
-                }
-                else
-                {
-                    playerUnit.paralizzato = false;
-                    StartCoroutine(WaitTogliParalizzato(playerHUD));
-                    //Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+                    ManageBoost(playerUnit);
 
-                    string dipendeDalSesso;
-                    if (playerUnit.maschio)
+                    if (!playerUnit.paralizzato)
                     {
-                        dipendeDalSesso = "paralizzato";
+                        if (nemicoAttaccatoDalPlayer.currentHP <= 0)
+                        {
+                            if (nemicoAttaccatoDalPlayer.unitID == enemyUnit.unitID)
+                            {
+                                nemicoAttaccatoDalPlayer = enemy2Unit;
+                                nemicoAttaccatoDalPlayerHUD = enemy2HUD;
+                            }
+                            else
+                            {
+                                nemicoAttaccatoDalPlayer = enemyUnit;
+                                nemicoAttaccatoDalPlayerHUD = enemyHUD;
+                            }
+                        }
+                        mossaDaEseguire.GetComponent<Mossa>().Esegui(mossaDaEseguire, playerUnit, playerHUD, nemicoAttaccatoDalPlayer, nemicoAttaccatoDalPlayerHUD);
+                        //CameraAudio.PlayOneShot(nemicoAttaccatoDalPlayer.audioAttacchiSubiti[0]);
                     }
                     else
                     {
-                        dipendeDalSesso = "paralizzata";
+                        playerUnit.paralizzato = false;
+                        StartCoroutine(WaitTogliParalizzato(playerHUD));
+                        //Debug.Log(playerUnit.unitName + " è paralizzato, non può attaccare");
+
+                        string dipendeDalSesso;
+                        if (playerUnit.maschio)
+                        {
+                            dipendeDalSesso = "paralizzato";
+                        }
+                        else
+                        {
+                            dipendeDalSesso = "paralizzata";
+                        }
+
+                        string PlayerParalizzato = playerUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare";
+                        StartCoroutine(ShowText(PlayerParalizzato));
+                        playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
+
                     }
-
-                    string PlayerParalizzato = playerUnit.unitName + " è " + dipendeDalSesso + ", non può attaccare";
-                    StartCoroutine(ShowText(PlayerParalizzato));
-                    playerPrefab.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
-
                 }
             }
             else

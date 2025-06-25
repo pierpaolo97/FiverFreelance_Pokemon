@@ -45,10 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nomeMossa: Lancio cioccolato
-  tipo: NORMALE
-  danni: 0
-  precisione: 0
-  elemento: 
+  tipo: SPECIALE
+  danni: 30
+  precisione: 70
+  elemento: NORMALE
   tipologiaDiMosaa: 
   puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}

@@ -339,6 +339,8 @@ MonoBehaviour:
   - {fileID: 3617099212306526063, guid: 98ff83b503f71ce4abbf86913c6dc8b0, type: 3}
   - {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
   - {fileID: 5674484368629161613, guid: 8fb0b182752149148b64e5e7a142be5a, type: 3}
+  - {fileID: 5674484368629161613, guid: e4f5c44df55f346e1b75e2f30878b766, type: 3}
+  - {fileID: 5674484368629161613, guid: 05cee62d7e8304eaf9bdbbb96d2bc07f, type: 3}
   immaginePersonaggioScelto: {fileID: 1372337739}
   txt: {fileID: 1367618168}
   indexPlayer: 0
@@ -1836,6 +1838,8 @@ MonoBehaviour:
   - {fileID: 3617099212306526063, guid: 98ff83b503f71ce4abbf86913c6dc8b0, type: 3}
   - {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
   - {fileID: 5674484368629161613, guid: 8fb0b182752149148b64e5e7a142be5a, type: 3}
+  - {fileID: 5674484368629161613, guid: e4f5c44df55f346e1b75e2f30878b766, type: 3}
+  - {fileID: 5674484368629161613, guid: 05cee62d7e8304eaf9bdbbb96d2bc07f, type: 3}
   immaginePersonaggioScelto: {fileID: 1275576573}
   txt: {fileID: 982661544}
   indexPlayer: 0
@@ -7310,6 +7314,8 @@ MonoBehaviour:
   - {fileID: 3617099212306526063, guid: 98ff83b503f71ce4abbf86913c6dc8b0, type: 3}
   - {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
   - {fileID: 5674484368629161613, guid: 8fb0b182752149148b64e5e7a142be5a, type: 3}
+  - {fileID: 5674484368629161613, guid: e4f5c44df55f346e1b75e2f30878b766, type: 3}
+  - {fileID: 5674484368629161613, guid: 05cee62d7e8304eaf9bdbbb96d2bc07f, type: 3}
   immaginePersonaggioScelto: {fileID: 1946570321}
   txt: {fileID: 786841481}
   indexPlayer: 0
@@ -12088,6 +12094,8 @@ MonoBehaviour:
   - {fileID: 3617099212306526063, guid: 98ff83b503f71ce4abbf86913c6dc8b0, type: 3}
   - {fileID: 5674484368629161613, guid: 10021f1ffb851ee42a2f9e2ce33428b7, type: 3}
   - {fileID: 5674484368629161613, guid: 8fb0b182752149148b64e5e7a142be5a, type: 3}
+  - {fileID: 5674484368629161613, guid: e4f5c44df55f346e1b75e2f30878b766, type: 3}
+  - {fileID: 5674484368629161613, guid: 05cee62d7e8304eaf9bdbbb96d2bc07f, type: 3}
   immaginePersonaggioScelto: {fileID: 722011296}
   txt: {fileID: 1100032972}
   indexPlayer: 0

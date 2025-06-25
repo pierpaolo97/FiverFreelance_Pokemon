@@ -47,9 +47,9 @@ MonoBehaviour:
   nomeMossa: Licantropia
   tipo: SPECIALE
   danni: 0
-  precisione: 0
-  elemento: 
-  tipologiaDiMosaa: 
+  precisione: 200
+  elemento: NORMALE
+  tipologiaDiMosaa: SENZA_TARGET
   puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

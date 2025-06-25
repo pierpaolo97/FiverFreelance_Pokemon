@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 706985199927943182}
   - component: {fileID: 4335958221497668165}
+  - component: {fileID: 180207200919838578}
   m_Layer: 0
   m_Name: Il maiale Ooink
   m_TagString: Untagged
@@ -45,11 +46,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nomeMossa: Il maiale Ooink
-  tipo: TERRA
+  tipo: SPECIALE
   danni: 100
   precisione: 50
-  elemento: 
-  tipologiaDiMosaa: 
+  elemento: TERRA
+  tipologiaDiMosaa: ATTACCO NORMALE
   puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
@@ -61,3 +62,16 @@ MonoBehaviour:
   ColpitoSource: {fileID: 0}
   Dialogue: {fileID: 0}
   CameraAudio: {fileID: 0}
+--- !u!114 &180207200919838578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228115776592750683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9e4efcc0b78fea4182c94c9ea639f40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  partitaFinita: {fileID: 0}
