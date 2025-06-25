@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4363536997099518543}
   - component: {fileID: -3623516358728540291}
   m_Layer: 0
-  m_Name: Pappagallo
+  m_Name: Diego_cattivo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,17 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 475d8d7ed9646504888a5702b5d7ed33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Pappagallo
+  unitName: Diego
   unitLevel: 100
   damage: 37
   maxHP: 500
   currentHP: 500
-  attacco: 50
-  difesa: 60
-  attacco_speciale: 70
-  difesa_speciale: 50
-  velocita: 70
-  elemento: ACQUA
+  attacco: 30
+  difesa: 50
+  attacco_speciale: 80
+  difesa_speciale: 70
+  velocita: 50
+  elemento: NORMALE
   paralizzato: 0
   avvelenato: 0
   boost: 0
@@ -64,21 +64,21 @@ MonoBehaviour:
   whichBoost: 
   turniAvvelenamento: 0
   mosse:
-  - {fileID: 3136023489529557631, guid: 62782caab3c6939408584040e3a35e5d, type: 3}
-  - {fileID: 3136023489529557631, guid: e81bb6aed866daa42b208bc287acbe82, type: 3}
-  - {fileID: 3136023489529557631, guid: 8140418643a5f394985a33bced96303d, type: 3}
-  - {fileID: 3136023489529557631, guid: 10294cc3a58ebf045b7dac41e33e0694, type: 3}
-  spriteUnit: {fileID: 21300000, guid: a313ea3e334ed4591ad3fc15604c8403, type: 3}
+  - {fileID: 4335958221497668165, guid: 5737d43c1830c524f9f7134b8858ef2b, type: 3}
+  - {fileID: 4335958221497668165, guid: def16aa7d6a2d8343bde43e6994d9d8e, type: 3}
+  - {fileID: 4335958221497668165, guid: db2591731a914404199ae4e7367beb87, type: 3}
+  - {fileID: 4335958221497668165, guid: 7844047857e423a449cf8282faa56987, type: 3}
+  spriteUnit: {fileID: 21300000, guid: 0b034e363c19f4b37a1350eadb2c63c7, type: 3}
   unitID: 0
   maschio: 1
   audioAttacchiSubiti:
-  - {fileID: 8300000, guid: e60117da4d5cde04f922feda6866318f, type: 3}
-  - {fileID: 8300000, guid: 1e99b79de0faa1e4787e0bddc75dea4d, type: 3}
+  - {fileID: 8300000, guid: f02d8bb539d0847f69561c1673e23f1c, type: 3}
+  - {fileID: 8300000, guid: d2ac1b269506243859e0ba47914bb7df, type: 3}
   audioSelezioni:
-  - {fileID: 8300000, guid: 3bf1e5048183f5443bdffd10337f969e, type: 3}
-  - {fileID: 8300000, guid: 172b271e7a4684f4bbae47ad84d93d52, type: 3}
-  AudioMossaSpeciale: {fileID: 8300000, guid: c038e71d8f103e7469711faa2fe94678, type: 3}
-  AudioEsultanza: {fileID: 8300000, guid: 7f74f3c211b71b64cb938fe972e1318c, type: 3}
+  - {fileID: 8300000, guid: 263c9717620fc4df58d3ff7ad7be7d79, type: 3}
+  - {fileID: 8300000, guid: 84653a1629a134358981f21ec8d7885d, type: 3}
+  AudioMossaSpeciale: {fileID: 8300000, guid: 33bd069474fc54b1e980cb1588f770a9, type: 3}
+  AudioEsultanza: {fileID: 8300000, guid: e54376a614092457cbe4d3fda6085572, type: 3}
 --- !u!95 &-3623516358728540291
 Animator:
   serializedVersion: 4
@@ -125,7 +125,7 @@ Transform:
   m_GameObject: {fileID: 6450721039946225802}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.75378, y: 0.75378, z: 0.50252}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973862563508761831}
@@ -172,8 +172,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: a313ea3e334ed4591ad3fc15604c8403, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 0b034e363c19f4b37a1350eadb2c63c7, type: 3}
+  m_Color: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
