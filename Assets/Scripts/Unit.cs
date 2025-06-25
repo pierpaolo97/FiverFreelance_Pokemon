@@ -19,6 +19,13 @@ public class Unit : MonoBehaviour
     public string elemento;
     public bool paralizzato = false;
     public bool avvelenato = false;
+
+	public float boost; //setto boost, che può essere sia positivo che negativo. Se una mossa ha un boost momentaneo, ad esempio 2 turni, faccio un check su nTurni;
+	public int nTurniBoost;
+	public string whichBoost;
+
+	public int turniAvvelenamento;
+
     public List<Mossa> mosse;
     public Sprite spriteUnit;
     public int unitID;

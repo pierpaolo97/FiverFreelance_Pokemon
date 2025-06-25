@@ -483,6 +483,9 @@ public class Mossa : MonoBehaviour
             StartCoroutine(ShowTextDouble(Licantropia, AumentaAttacco));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             attaccanteUnit.attacco += 2;
+            attaccanteUnit.whichBoost = "attacco";
+            attaccanteUnit.nTurniBoost = 2;
+            attaccanteUnit.boost = 2;
         }
         else
         {
@@ -648,6 +651,7 @@ public class Mossa : MonoBehaviour
             StartCoroutine(ShowTextDouble(bombaAglio, vieneAvvelenato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
             colpitoUnit.avvelenato = true;
+            colpitoUnit.turniAvvelenamento = 2;
             StartCoroutine(WaitActivateAvvelenato(colpitoUnit));
         }
         else
