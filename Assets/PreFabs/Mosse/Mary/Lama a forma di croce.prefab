@@ -55,7 +55,8 @@ MonoBehaviour:
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}
   bottoneDefaultPerMosseCura: {fileID: 0}
-  MossaAnimation: {fileID: 0}
+  MossaAnimation: {fileID: 7638142239568140993, guid: 278fd89b31ec649ddb08b234bfae157f,
+    type: 3}
   MossaAnimationUp: {fileID: 0}
   BoosterSource: {fileID: 0}
   MalusSource: {fileID: 0}
