@@ -49,7 +49,7 @@ MonoBehaviour:
   danni: 0
   precisione: 100
   elemento: 
-  tipologiaDiMosaa: 
+  tipologiaDiMosaa: SENZA_TARGET
   puoiUsarla: 1
   amicoDaBoostare: {fileID: 0}
   giocatoreNONAttaccato: {fileID: 0}

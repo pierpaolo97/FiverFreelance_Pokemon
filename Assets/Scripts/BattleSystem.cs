@@ -47,7 +47,10 @@ public class BattleSystem : MonoBehaviour
 
     public List<Tuple<GameObject, int>> valoriVelocita = new List<Tuple<GameObject, int>>();
     public GameObject[] gameobjectInOrdine;
+    public GameObject[] gameobjectInOrdineDefault;
     public GameObject turnoDiGameobject;
+    public GameObject priorityAttacker; // The character using priority move
+    public bool isPriorityMove = false;
 
     public Unit nemicoAttaccatoDalPlayer;
     public BattleHUD nemicoAttaccatoDalPlayerHUD;
@@ -191,41 +194,74 @@ public class BattleSystem : MonoBehaviour
 	}
 
 
-    /*IEnumerator PlayerAttackMIO(Unit qualeNemicoAttacchi, BattleHUD qualeNemicoHUD)
+    public void CheckForArthurMove()
     {
-        bool isDead = qualeNemicoAttacchi.TakeDamage(playerUnit.damage);
-
-        qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-        dialogueText.text = "The attack is successful!";
-
-        Unit giocatoreNONAttaccato;
-
-        if (qualeNemicoAttacchi.unitName == enemyUnit.unitName)
+        // Check if any move is "Arthur" and set Mary (friendPrefab) as priority
+        if ((mossaDaEseguire != null && mossaDaEseguire.nomeMossa == "Arthur") ||
+            (friendMossaDaEseguire != null && friendMossaDaEseguire.nomeMossa == "Arthur") ||
+            (enemyMossaDaEseguire != null && enemyMossaDaEseguire.nomeMossa == "Arthur") ||
+            (enemy2MossaDaEseguire != null && enemy2MossaDaEseguire.nomeMossa == "Arthur"))
         {
-            giocatoreNONAttaccato = enemy2Unit;
+            Debug.Log("Trovata mossa arthur");
+            SetMaryFirst();
         }
         else
         {
-            giocatoreNONAttaccato = enemyUnit;
+            Debug.Log("NON Trovata mossa arthur");
+        }
+    }
+
+    public void SetMaryFirst()
+    {
+        // Find which character is Mary by checking unitName
+        GameObject maryGameObject = null;
+
+        if (playerUnit.unitName == "Mary")
+            maryGameObject = playerPrefab;
+        else if (friendUnit.unitName == "Mary")
+            maryGameObject = friendPrefab;
+        else if (enemyUnit.unitName == "Mary")
+            maryGameObject = enemyPrefab;
+        else if (enemy2Unit.unitName == "Mary")
+            maryGameObject = enemy2Prefab;
+
+        if (maryGameObject == null)
+        {
+            // Mary not found, don't modify order
+            return;
         }
 
-        if (isDead && giocatoreNONAttaccato.currentHP <= 0)
-        {
-            state = BattleState.WON;
-            qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-            EndBattle();
-        }
-        else
-        {
-            //state = BattleState.ENEMYTURN;
-            qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-            dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
+        // Set Mary as priority attacker
+        isPriorityMove = true;
 
-            yield return new WaitForSeconds(2f);
-            ProssimoCheAttacca();
-            //StartCoroutine(EnemyTurn());
+        // Create modified order with Mary first
+        gameobjectInOrdine = new GameObject[4];
+        gameobjectInOrdine[0] = maryGameObject; // Mary goes first
+
+        int index = 1;
+        foreach (GameObject go in gameobjectInOrdineDefault)
+        {
+            if (go != maryGameObject) // Skip Mary since she's already first
+            {
+                gameobjectInOrdine[index] = go;
+                index++;
+            }
         }
-    }*/
+
+        turnoDiGameobject = gameobjectInOrdine[0]; // Set turn to Mary
+    }
+
+    public void ResetToDefaultOrder()
+    {
+        // Restore default speed-based order
+        isPriorityMove = false;
+
+        // Copy default order back
+        for (int i = 0; i < gameobjectInOrdineDefault.Length; i++)
+        {
+            gameobjectInOrdine[i] = gameobjectInOrdineDefault[i];
+        }
+    }
 
 
     void PlayerTurn() //Qui il giocatore sceglie la mossa, che non viene eseguita qui ma dopo quando sarà il suo turno di gioco. Se sei morto esce che sei esausto.
@@ -275,7 +311,7 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(ShowText(Paralizzato));
                 StartCoroutine(WaitSceltaTurno(3));
 
-                //ProssimoCheAttacca();
+                //StartCoroutine(ProssimoCheAttacca());
             }
         }
         else
@@ -311,7 +347,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(delayInSecs);
         Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
-        ProssimoCheAttacca();
+        StartCoroutine(ProssimoCheAttacca());
     }
 
 
@@ -326,7 +362,7 @@ public class BattleSystem : MonoBehaviour
     {
         yield return new WaitForSeconds(delayInSecs);
         Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
-        SceltaTurno();
+        StartCoroutine(SceltaTurno());
     }
 
 
@@ -559,16 +595,115 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public bool manageAvvelenamento(Unit objectUnit, BattleHUD objectHUD)
+    //public bool manageAvvelenamento(Unit objectUnit, BattleHUD objectHUD)
+    //{
+    //    if (objectUnit.avvelenato)
+    //    {
+    //        // Questo blocco di codice è equivalente a quello in AttaccoNormale, public IEnumerator Attacco
+    //        string dipendeDalSesso;
+    //        if (objectUnit.maschio)
+    //        {
+    //            dipendeDalSesso = "avvenelato";
+    //        }
+    //        else
+    //        {
+    //            dipendeDalSesso = "avvenelata";
+    //        }
+    //        string avvenelatoPerdeVita = objectUnit.unitName + " è " + dipendeDalSesso + ", perde 30 ps!";
+    //        StartCoroutine(ShowText(avvenelatoPerdeVita));
+    //        bool isDead = objectUnit.TakeDamage(30);
+
+    //        BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
+
+    //        int z = 0;
+    //        Unit giocatoreNONAttaccato = null;
+    //        foreach (Unit personaggio in battleSystem.amici)
+    //        {
+    //            if (personaggio.unitID == objectUnit.unitID)
+    //            {
+    //                if (z == 0)
+    //                {
+    //                    giocatoreNONAttaccato = battleSystem.amici[1];
+    //                }
+    //                else
+    //                {
+    //                    giocatoreNONAttaccato = battleSystem.amici[0];
+    //                }
+    //            }
+    //            z++;
+    //        }
+
+    //        z = 0;
+
+    //        foreach (Unit personaggio in battleSystem.nemici)
+    //        {
+    //            if (personaggio.unitID == objectUnit.unitID)
+    //            {
+    //                if (z == 0)
+    //                {
+    //                    giocatoreNONAttaccato = battleSystem.nemici[1];
+    //                }
+    //                else
+    //                {
+    //                    giocatoreNONAttaccato = battleSystem.nemici[0];
+    //                }
+    //            }
+    //            z++;
+    //        }
+
+    //        if (isDead && giocatoreNONAttaccato.currentHP <= 0)
+    //        {
+    //            Debug.Log("FINE ATTACCO");
+    //            battleSystem.state = BattleState.FINISHED;
+    //            battleSystem.EndBattle();
+    //            if (objectUnit.unitID == 0 || objectUnit.unitID == 1)
+    //                StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
+    //            else
+    //                StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
+    //        }
+    //        else
+    //        {
+    //            objectHUD.SetHP(objectUnit);
+    //        }
+
+    //        objectUnit.turniAvvelenamento -= 1;
+    //        if (objectUnit.turniAvvelenamento <= 0)
+    //        {
+    //            objectUnit.avvelenato = false;
+    //            StartCoroutine(WaitTogliAvvelenato(objectHUD));
+    //        }
+
+    //        return isDead;
+    //    }
+    //    else
+    //    {
+    //        return false;
+    //    }
+    //}
+
+    public void StartManageAvvelenamento(Unit objectUnit, BattleHUD objectHUD, Action<bool> onComplete)
     {
+        StartCoroutine(ManageAvvelenamentoCoroutine(objectUnit, objectHUD, onComplete));
+    }
+
+    private IEnumerator ManageAvvelenamentoCoroutine(Unit objectUnit, BattleHUD objectHUD, Action<bool> onComplete)
+    {
+        bool isDead = false;
+
         if (objectUnit.avvelenato)
         {
-            // Questo blocco di codice è equivalente a quello in AttaccoNormale, public IEnumerator Attacco
-            bool isDead = objectUnit.TakeDamage(30);
+            string dipendeDalSesso = objectUnit.maschio ? "avvenelato" : "avvenelata";
+            string avvenelatoPerdeVita = objectUnit.unitName + " è " + dipendeDalSesso + ", perde 30 ps!";
+            yield return StartCoroutine(ShowText(avvenelatoPerdeVita));
+            yield return new WaitForSeconds(3f);
+
+            isDead = objectUnit.TakeDamage(30);
+
             BattleSystem battleSystem = GameObject.FindGameObjectWithTag("BattleSystem").GetComponent<BattleSystem>();
 
-            int z = 0;
             Unit giocatoreNONAttaccato = null;
+
+            int z = 0;
             foreach (Unit personaggio in battleSystem.amici)
             {
                 if (personaggio.unitID == objectUnit.unitID)
@@ -608,10 +743,11 @@ public class BattleSystem : MonoBehaviour
                 Debug.Log("FINE ATTACCO");
                 battleSystem.state = BattleState.FINISHED;
                 battleSystem.EndBattle();
+
                 if (objectUnit.unitID == 0 || objectUnit.unitID == 1)
-                    StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
+                    yield return StartCoroutine(GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
                 else
-                    StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
+                    yield return StartCoroutine(GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
             }
             else
             {
@@ -622,15 +758,11 @@ public class BattleSystem : MonoBehaviour
             if (objectUnit.turniAvvelenamento <= 0)
             {
                 objectUnit.avvelenato = false;
-                StartCoroutine(WaitTogliAvvelenato(objectHUD));
+                yield return StartCoroutine(WaitTogliAvvelenato(objectHUD));
             }
+        }
 
-            return isDead;
-        }
-        else
-        {
-            return false;
-        }
+        onComplete?.Invoke(isDead);
     }
 
 
@@ -683,7 +815,10 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (friendUnit.currentHP > 0)
         {
-            bool isDeadAvvelenamento = manageAvvelenamento(friendUnit, friendHUD);
+            //bool isDeadAvvelenamento = manageAvvelenamento(friendUnit, friendHUD);
+            bool isDeadAvvelenamento = false;
+            yield return StartCoroutine(ManageAvvelenamentoCoroutine(friendUnit, friendHUD, result => isDeadAvvelenamento = result));
+
             if (!isDeadAvvelenamento)
             {
                 ManageBoost(friendUnit);
@@ -726,18 +861,18 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                     friendUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                     //yield return new WaitForSeconds(4f);
-                    //ProssimoCheAttacca();
+                    //StartCoroutine(ProssimoCheAttacca());
                 }
 
                 if (AttaccoNormale.Successo == true)
                 {
                     yield return new WaitForSeconds(8.5f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
                 else
                 {
                     yield return new WaitForSeconds(3f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
             }
             else
@@ -763,13 +898,13 @@ public class BattleSystem : MonoBehaviour
             //    string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
             //    StartCoroutine(ShowText(Esausto));
             //    yield return new WaitForSeconds(3f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //    EsaustoFriend ++;
             //}
             //else
             //{
             //    yield return new WaitForSeconds(0.5f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //}
 
         }
@@ -793,13 +928,13 @@ public class BattleSystem : MonoBehaviour
             string Esausto = friendUnit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
             StartCoroutine(ShowText(Esausto));
             yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
             EsaustoFriend++;
         }
         else
         {
             yield return new WaitForSeconds(0.5f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
         }
     }
 
@@ -819,13 +954,13 @@ public class BattleSystem : MonoBehaviour
             string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
             StartCoroutine(ShowText(Esausto));
             yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
             EsaustoEnemy++;
         }
         else
         {
             yield return new WaitForSeconds(0.5f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
         }
     }
 
@@ -845,13 +980,13 @@ public class BattleSystem : MonoBehaviour
             string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
             StartCoroutine(ShowText(Esausto));
             yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
             EsaustoEnemy2++;
         }
         else
         {
             yield return new WaitForSeconds(0.5f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
         }
     }
 
@@ -861,7 +996,9 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemyUnit.currentHP > 0)
         {
-            bool isDeadAvvelenamento = manageAvvelenamento(enemyUnit, enemyHUD);
+            //bool isDeadAvvelenamento = manageAvvelenamento(enemyUnit, enemyHUD);
+            bool isDeadAvvelenamento = false;
+            yield return StartCoroutine(ManageAvvelenamentoCoroutine(enemyUnit, enemyHUD, result => isDeadAvvelenamento = result));
             if (!isDeadAvvelenamento)
             {
                 ManageBoost(enemyUnit);
@@ -902,17 +1039,17 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                     enemyUnit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                     //yield return new WaitForSeconds(4f);
-                    //ProssimoCheAttacca();
+                    //StartCoroutine(ProssimoCheAttacca());
                 }
                 if (AttaccoNormale.Successo == true)
                 {
                     yield return new WaitForSeconds(8.5f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
                 else
                 {
                     yield return new WaitForSeconds(3f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
             }
             else
@@ -938,13 +1075,13 @@ public class BattleSystem : MonoBehaviour
             //    string Esausto = enemyUnit.unitName + " è " + dipendeDalSesso + "! "; // esausto! ";
             //    StartCoroutine(ShowText(Esausto));
             //    yield return new WaitForSeconds(3f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //    EsaustoEnemy++;
             //}
             //else
             //{
             //    yield return new WaitForSeconds(0.5f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //}
         }
     }
@@ -958,7 +1095,9 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
         if (enemy2Unit.currentHP > 0)
         {
-            bool isDeadAvvelenamento = manageAvvelenamento(enemy2Unit, enemy2HUD);
+            //bool isDeadAvvelenamento = manageAvvelenamento(enemy2Unit, enemy2HUD);
+            bool isDeadAvvelenamento = false;
+            yield return StartCoroutine(ManageAvvelenamentoCoroutine(enemy2Unit, enemy2HUD, result => isDeadAvvelenamento = result));
             if (!isDeadAvvelenamento)
             {
                 ManageBoost(enemy2Unit);
@@ -999,17 +1138,17 @@ public class BattleSystem : MonoBehaviour
                     StartCoroutine(ShowText(ParalizzatoNoAttaccare));
                     enemy2Unit.gameObject.GetComponent<Animator>().Play("ParalizzatoPg");
                     //yield return new WaitForSeconds(4f);
-                    //ProssimoCheAttacca();
+                    //StartCoroutine(ProssimoCheAttacca());
                 }
                 if (AttaccoNormale.Successo == true)
                 {
                     yield return new WaitForSeconds(8.5f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
                 else
                 {
                     yield return new WaitForSeconds(3f);
-                    ProssimoCheAttacca();
+                    StartCoroutine(ProssimoCheAttacca());
                 }
             }
             else
@@ -1034,13 +1173,13 @@ public class BattleSystem : MonoBehaviour
             //    string Esausto = enemy2Unit.unitName + " è " + dipendeDalSesso + "! "; //esausto! ";
             //    StartCoroutine(ShowText(Esausto));
             //    yield return new WaitForSeconds(3f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //    EsaustoEnemy2++;
             //}
             //else
             //{
             //    yield return new WaitForSeconds(0.5f);
-            //    ProssimoCheAttacca();
+            //    StartCoroutine(ProssimoCheAttacca());
             //}
         }
     }
@@ -1076,34 +1215,48 @@ public class BattleSystem : MonoBehaviour
             k++;       
         }
 
+        gameobjectInOrdineDefault = gameobjectInOrdine;
+
         turnoDiGameobject = gameobjectInOrdine[0];
-
-        //PlayerTurn();         //Ho messo in ordine i giocatori per velocità. A questo punto però deve comunque fare la prima mossa il Player. Quindi richiamo questa funzione. 
-                              //In PlayerTurn() attivo i bottoni per fargli fare la scelta. 
-                              //Nelle funzioni attaccate ai bottoni devo salvare la mossa da qualche parte, per poterla usare quando sarà il turno.
-                              //Sarà lì che richiamo SceltaTurno(), 
-
-        //SceltaTurno();
     }
 
 
-    public void ProssimoCheAttacca() //Dopo aver ordinato i giocatori per velocità, vedo chi sarà il prossimo ad attaccare. Se sta attaccando l'ultimo (index=3) ricomincio il giro.
-    {
-        int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
-        //Debug.Log(index);
-        //Debug.Log(index);
+    //public IEnumerator ProssimoCheAttacca() //Dopo aver ordinato i giocatori per velocità, vedo chi sarà il prossimo ad attaccare. Se sta attaccando l'ultimo (index=3) ricomincio il giro.
+    //{
+    //    int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
+    //    //Debug.Log(index);
+    //    //Debug.Log(index);
 
-        if (index == 3)
+    //    if (index == 3)
+    //    {
+    //        index = 0;
+    //        turnoDiGameobject = gameobjectInOrdine[index];
+    //        yield return StartCoroutine(WaitPlayerTurn());
+    //    }
+    //    else
+    //    {
+    //        index++;
+    //        turnoDiGameobject = gameobjectInOrdine[index];
+    //        yield return StartCoroutine(SceltaTurno());
+    //    }
+    //}
+
+    public IEnumerator ProssimoCheAttacca()
+    {
+        Debug.Log("Prossimo che attacca");
+        int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
+
+        if (index == 3) // Last attacker in current order
         {
             index = 0;
             turnoDiGameobject = gameobjectInOrdine[index];
-            StartCoroutine(WaitPlayerTurn());
+            yield return StartCoroutine(WaitPlayerTurn());
         }
         else
         {
             index++;
             turnoDiGameobject = gameobjectInOrdine[index];
-            SceltaTurno();
+            yield return StartCoroutine(SceltaTurno());
         }
     }
 
@@ -1120,18 +1273,31 @@ public class BattleSystem : MonoBehaviour
         if (AttaccoNormale.Successo == true)
         {
             yield return new WaitForSeconds(8.5f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
         }
         else
         {
             yield return new WaitForSeconds(3f);
-            ProssimoCheAttacca();
+            StartCoroutine(ProssimoCheAttacca());
         }
     }
 
 
-    public void SceltaTurno() //Qui è il momento vero in cui il giocatore esegue la mossa. Prima la salva e basta, poi a questo punto viene realmente eseguita.
+    public IEnumerator SceltaTurno() //Qui è il momento vero in cui il giocatore esegue la mossa. Prima la salva e basta, poi a questo punto viene realmente eseguita.
     {
+
+        int index = Array.IndexOf(gameobjectInOrdine, turnoDiGameobject);
+        if (index == 0)
+        {
+            Debug.Log("Index = 0");
+            // Check for Arthur move before starting new round
+            CheckForArthurMove();
+            // Reset to default order for next round if we were using priority
+            if (!isPriorityMove)
+            {
+                ResetToDefaultOrder();
+            }
+        }
 
         if (turnoDiGameobject.GetComponent<Unit>().unitID == playerPrefab.GetComponent<Unit>().unitID)
         {
@@ -1139,7 +1305,10 @@ public class BattleSystem : MonoBehaviour
 
             if (playerUnit.currentHP > 0)
             {
-                bool isDeadAvvelenamento = manageAvvelenamento(playerUnit, playerHUD);
+                //bool isDeadAvvelenamento = manageAvvelenamento(playerUnit, playerHUD);
+                bool isDeadAvvelenamento = false;
+                yield return StartCoroutine(ManageAvvelenamentoCoroutine(playerUnit, playerHUD, result => isDeadAvvelenamento = result));
+
                 if (!isDeadAvvelenamento)
                 {
                     ManageBoost(playerUnit);
@@ -1192,7 +1361,7 @@ public class BattleSystem : MonoBehaviour
                 //StartCoroutine(ShowText(PlayerParalizzato));
             }
 
-            //ProssimoCheAttacca();
+            //StartCoroutine(ProssimoCheAttacca());
 
             StartCoroutine(WaitProssimoAttaccaIfSuccesso());
 
@@ -1332,7 +1501,7 @@ public class BattleSystem : MonoBehaviour
         bottoniMosse.SetActive(false);
 
         //Debug.Log("INIZIA IL GIRO DI ATTACCHI OOOOOOOOOOOOOOOOOO");
-        SceltaTurno();
+        StartCoroutine(SceltaTurno());
     }
 
 

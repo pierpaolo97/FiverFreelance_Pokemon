@@ -140,7 +140,7 @@ public class AttaccoNormale : MonoBehaviour
 
                     //yield return new WaitForSeconds(5f);
 
-                    //battleSystem.ProssimoCheAttacca();
+                    //battleSystem.StartCoroutine(ProssimoCheAttacca());
                     //StartCoroutine(EnemyTurn());
                 }
             }
@@ -150,7 +150,7 @@ public class AttaccoNormale : MonoBehaviour
                 String AttaccoFallito = giocatoreCheAttacca.unitName + " prova ad attaccare ma fallisce! ";
                 StartCoroutine(ShowText(AttaccoFallito));
                 //yield return new WaitForSeconds(5);
-                //battleSystem.ProssimoCheAttacca();
+                //battleSystem.StartCoroutine(ProssimoCheAttacca());
             }
         }
         else
@@ -159,7 +159,7 @@ public class AttaccoNormale : MonoBehaviour
             String AttaccoFallito = mossa.nomeMossa + " non è efficace contro " + qualeNemicoAttacchi.unitName;
             StartCoroutine(ShowText(AttaccoFallito));
             //yield return new WaitForSeconds(5);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
             Successo = false;
         }
     }

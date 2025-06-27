@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System.Diagnostics;
 //using System.Diagnostics;
 
 public class Mossa : MonoBehaviour
@@ -71,8 +72,8 @@ public class Mossa : MonoBehaviour
             //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAA");
             battleSystem.nemicoAttaccatoDalPlayer = battleSystem.enemyUnit;
             battleSystem.nemicoAttaccatoDalPlayerHUD = battleSystem.enemyHUD;
-            battleSystem.mossaDaEseguire = mossa;      
-            battleSystem.SceltaTurno();
+            battleSystem.mossaDaEseguire = mossa;
+            StartCoroutine(battleSystem.SceltaTurno());
         }
     }
 
@@ -361,44 +362,44 @@ public class Mossa : MonoBehaviour
                     }
                 }
             }
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Difensore della Giustizia")
         {
             //Aumenta di due punti la propia difesa speciale
             DifensoreDellaGiustizia(mossa, attaccanteUnit);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Scarica Di Coltelli")
         {
             //Scarica Di Coltelli ? una mossa normale, ma viene eseguita 1-5 volte:
             //string ScaricaColtelli = attaccanteUnit.unitName + " usa Scarica Di Coltelli.";
             ScaricaDiColtelli(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Scorpacciata Del Cacciatore")
         {
             //Cura la propria vita del 30%
             ScorpacciataDelCacciatore(mossa, attaccanteUnit, attacanteHUD);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Bacio Della Principessa")
         {
             //paralizza qualcu0
             BacioDellaPrincipessa(mossa, colpitoUnit, attaccanteUnit);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Ordine Della Futura Regina")
         {
             //Il suo compagno di squadra riceve un boost di 3 punti alla difesa e alla difesa speciale.
             OrdineDellaFuturaRegina(mossa, attaccanteUnit);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Sguardo Del Drago")
         {
             //-1 attacco avversari
             SguardoDelDrago(mossa, colpitoUnit, attaccanteUnit);
-            //battleSystem.ProssimoCheAttacca();
+            //battleSystem.StartCoroutine(ProssimoCheAttacca());
         }
         else if (mossa.nomeMossa == "Assist al bacio")
         {
@@ -421,6 +422,11 @@ public class Mossa : MonoBehaviour
         {
             //buff di 2 all’attacco per 3 turni
             Licantropia(mossa, attaccanteUnit);
+        }
+        else if (mossa.nomeMossa == "Arthur")
+        {
+            //Switcha personaggio e non subisce danni
+            Arthur(mossa, attaccanteUnit);
         }
         else
         {
@@ -493,6 +499,16 @@ public class Mossa : MonoBehaviour
             StartCoroutine(ShowText(AttaccoFallito));
             Debug.Log("ATTACCO FALLITO Licantropia");
         }
+    }
+
+
+    public void Arthur(Mossa mossa, Unit attaccanteUnit)
+    {
+        
+        string arthurSub = "Arthur si sostituisce a " + attaccanteUnit.unitName;
+        StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+        StartCoroutine(ShowText(arthurSub);
+            
     }
 
 
@@ -632,33 +648,36 @@ public class Mossa : MonoBehaviour
 
     public void BombaAglio(Mossa mossa, Unit colpitoUnit, Unit attaccanteUnit)
     {
-        if (AttaccoRiesce(mossa.precisione))
+        // essendo BombaAglio un attacco normale, ho già verificato prima che l'attacco riesca (in AttaccoNormale.Attacco().
+        // Quindi non devo verificarlo nuovamente.
+        //if (AttaccoRiesce(mossa.precisione))
+        //{
+        string bombaAglio = attaccanteUnit.unitName + " usa Bomba aglio.";
+        string dipendeDalSesso;
+        if (colpitoUnit.maschio)
         {
-            string bombaAglio = attaccanteUnit.unitName + " usa Bomba aglio.";
-            string dipendeDalSesso;
-            if (colpitoUnit.maschio)
-            {
-                dipendeDalSesso = "avvelenato";
-            }
-            else
-            {
-                dipendeDalSesso = "avvelenata";
-            }
-
-            string vieneAvvelenato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
-            StartCoroutine(WaitAnimationMossa(colpitoUnit));
-            StartCoroutine(Avvelenato(FindColpito(colpitoUnit)));
-            StartCoroutine(ShowTextDouble(bombaAglio, vieneAvvelenato));
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
-            colpitoUnit.avvelenato = true;
-            colpitoUnit.turniAvvelenamento = 2;
-            StartCoroutine(WaitActivateAvvelenato(colpitoUnit));
+            dipendeDalSesso = "avvelenato";
         }
         else
         {
-            string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
-            StartCoroutine(ShowText(AttaccoFallito));
+            dipendeDalSesso = "avvelenata";
         }
+
+        string vieneAvvelenato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
+        StartCoroutine(WaitAnimationMossa(colpitoUnit));
+        StartCoroutine(Avvelenato(FindColpito(colpitoUnit)));
+        StartCoroutine(ShowTextDouble(bombaAglio, vieneAvvelenato));
+
+        StartCoroutine(WaitMossaAttaccoFuoriPosto());
+        colpitoUnit.avvelenato = true;
+        colpitoUnit.turniAvvelenamento = 2;
+        StartCoroutine(WaitActivateAvvelenato(colpitoUnit));
+        //}
+        //else
+        //{
+        //    string AttaccoFallito = attaccanteUnit.unitName + " prova ad attaccare ma fallisce!";
+        //    StartCoroutine(ShowText(AttaccoFallito));
+        //}
     }
 
 
@@ -1117,6 +1136,8 @@ public class Mossa : MonoBehaviour
             battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
+
+        yield return new WaitForSeconds(2f);
     }
 
     IEnumerator ShowText(string textDaScrivere)
