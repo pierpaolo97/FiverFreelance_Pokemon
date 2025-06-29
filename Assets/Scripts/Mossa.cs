@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using System.Diagnostics;
 //using System.Diagnostics;
 
 public class Mossa : MonoBehaviour
@@ -112,10 +111,10 @@ public class Mossa : MonoBehaviour
         Paralizzato.GetComponent<Animator>().Play("ParalizzatoPg");
     }
 
-    IEnumerator WaitAnimationMossa(Unit Colpito)
+    IEnumerator WaitAnimationMossa(Unit Colpito, GameObject Mossa)
     {
         yield return new WaitForSeconds(2f);
-        GameObject MossaInstanziata = Instantiate(MossaAnimation, Colpito.transform.position, transform.rotation);
+        GameObject MossaInstanziata = Instantiate(Mossa, Colpito.transform.position, transform.rotation);
         if (Colpito.gameObject.transform.position.y < 0)
         {
             MossaInstanziata.transform.position = new Vector3(Colpito.transform.position.x, -0.94f, Colpito.transform.position.z);
@@ -123,7 +122,7 @@ public class Mossa : MonoBehaviour
         Destroy(MossaInstanziata, 1.5f);
     }
 
-    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante, Unit Colpito, Quaternion Inclinazione, Mossa mossa)
+    IEnumerator WaitAnimationMossaDiagonale(Unit Attacante, Unit Colpito, Quaternion Inclinazione, Mossa mossa, GameObject directionMossa)
     {
         if (mossa.nomeMossa== "Scarica Di Coltelli")
         {
@@ -131,7 +130,7 @@ public class Mossa : MonoBehaviour
             for (int i = 0; i < x; i++)
             {
                 yield return new WaitForSeconds(0.8f);
-                GameObject MossaInstanziataColtelli = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
+                GameObject MossaInstanziataColtelli = Instantiate(directionMossa, Attacante.transform.position, Inclinazione);
                 if (Attacante.transform.position.y > 0)
                     MossaInstanziataColtelli.GetComponent<SpriteRenderer>().flipX = true;
                 MossaInstanziataColtelli.transform.DOMove(Colpito.transform.position, 1f);
@@ -141,7 +140,7 @@ public class Mossa : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(3f);
-            GameObject MossaInstanziata = Instantiate(MossaAnimation, Attacante.transform.position, Inclinazione);
+            GameObject MossaInstanziata = Instantiate(directionMossa, Attacante.transform.position, Inclinazione);
             if (Attacante.transform.position.y > 0 && mossa.nomeMossa != "Bomba a prua" && mossa.nomeMossa != "Il sinistro magico del numero 7")
                 MossaInstanziata.GetComponent<SpriteRenderer>().flipX = true;
             if (mossa.nomeMossa == "Lanciafiamme")
@@ -234,38 +233,38 @@ public class Mossa : MonoBehaviour
             StartCoroutine(mossa.GetComponent<AttaccoNormale>().Attacco(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
             if(mossa.nomeMossa == "Lanciafiamme" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.258819103f, 0.965925813f), mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.258819103f, 0.965925813f), mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Pioggia Di Meteoriti" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Uragano" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Bomba a prua" && AttaccoNormale.Successo == true)
             {
                 CameraAudio.PlayOneShot(attaccanteUnit.AudioMossaSpeciale);
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Il sinistro magico del numero 7" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Lama a forma di croce" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Lancio di un gavettone" && AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa));
+                StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
             }
             else if (mossa.nomeMossa == "Il maiale Ooink" && AttaccoNormale.Successo == true) 
@@ -280,7 +279,7 @@ public class Mossa : MonoBehaviour
             }
             else if (AttaccoNormale.Successo == true)
             {
-                StartCoroutine(WaitAnimationMossa(colpitoUnit));
+                StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
 
@@ -304,7 +303,7 @@ public class Mossa : MonoBehaviour
                 int danno = attaccanteUnit.currentHP / 3;
                 //attaccanteUnit.TakeDamage(danno);
                 //attacanteHUD.SetHP(attaccanteUnit.currentHP);
-                StartCoroutine(WaitAnimationMossa(colpitoUnit));
+                StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(attaccanteUnit)));
                 StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -463,7 +462,7 @@ public class Mossa : MonoBehaviour
         {
             string DifensoreGiustizia = attaccanteUnit.unitName + " usa Difensore della Giustizia.";
             string AumentaDifesa = attaccanteUnit.unitName + " aumenta di 2 punti la sua difesa speciale.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
             StartCoroutine(BoosterLampeggiante((attaccanteUnit).gameObject)); /////DSHALKDJHLSABDJHKVDSKJHSDAVKDJHSAVKDJSAHVD
             StartCoroutine(ShowTextDouble(DifensoreGiustizia, AumentaDifesa));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -484,7 +483,7 @@ public class Mossa : MonoBehaviour
         {
             string Licantropia = attaccanteUnit.unitName + " usa Licantropia";
             string AumentaAttacco = attaccanteUnit.unitName + " aumenta di 2 punti il suo attacco.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
             StartCoroutine(BoosterLampeggiante((attaccanteUnit).gameObject)); 
             StartCoroutine(ShowTextDouble(Licantropia, AumentaAttacco));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -506,8 +505,8 @@ public class Mossa : MonoBehaviour
     {
         
         string arthurSub = "Arthur si sostituisce a " + attaccanteUnit.unitName;
-        StartCoroutine(WaitAnimationMossa(attaccanteUnit));
-        StartCoroutine(ShowText(arthurSub);
+        StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
+        StartCoroutine(ShowText(arthurSub));
             
     }
 
@@ -536,7 +535,7 @@ public class Mossa : MonoBehaviour
                     StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
                     StartCoroutine(WaitMossaAttaccoFuoriPosto());
                     StartCoroutine(Coltelli(mossa, attaccanteUnit, colpitoUnit, colpitoHUD));
-                    StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa));
+                    StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa, MossaAnimation));
 
                     if (colpitoUnit.currentHP <= 0)
                     {
@@ -622,7 +621,7 @@ public class Mossa : MonoBehaviour
         {
             string ScorpacciataCacciatore = attaccanteUnit.unitName + " usa Scorpacciata Del Cacciatore.";
             string Cura = attaccanteUnit.unitName + " si cura del 30% la propria vita.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
             StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
             StartCoroutine(ShowTextDouble(ScorpacciataCacciatore, Cura));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -664,7 +663,7 @@ public class Mossa : MonoBehaviour
         }
 
         string vieneAvvelenato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
-        StartCoroutine(WaitAnimationMossa(colpitoUnit));
+        StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
         StartCoroutine(Avvelenato(FindColpito(colpitoUnit)));
         StartCoroutine(ShowTextDouble(bombaAglio, vieneAvvelenato));
 
@@ -687,7 +686,7 @@ public class Mossa : MonoBehaviour
         {
             string powerOfLove = attaccanteUnit.unitName + " usa Power of love.";
             string Cura = attaccanteUnit.unitName + " si cura di 30 ps.";
-            StartCoroutine(WaitAnimationMossa(attaccanteUnit));
+            StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
             StartCoroutine(BoosterLampeggiante(FindColpito(attaccanteUnit)));
             StartCoroutine(ShowTextDouble(powerOfLove, Cura));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -722,7 +721,17 @@ public class Mossa : MonoBehaviour
         }
 
         string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
-        StartCoroutine(WaitAnimationMossa(colpitoUnit));
+        Debug.Log("LLLLLLLLLL");
+        Debug.Log(attaccanteUnit.transform.position.y);
+        if (attaccanteUnit.transform.position.y > 0)
+        {
+            StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimation));
+        }
+        else
+        {
+            StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, Quaternion.identity, mossa, MossaAnimationUp));
+        }
+
         StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
         StartCoroutine(ShowText(vieneParalizzato));
         StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -750,7 +759,7 @@ public class Mossa : MonoBehaviour
             }
 
             string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
-            StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
             StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
             StartCoroutine(ShowTextDouble(BacioPrincipessa, vieneParalizzato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -782,7 +791,7 @@ public class Mossa : MonoBehaviour
             }
             string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + ".";
             mossa.puoiUsarla = false;
-            StartCoroutine(WaitAnimationMossa(colpitoUnit));
+            StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
             StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
             StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
             StartCoroutine(WaitMossaAttaccoFuoriPosto());
@@ -817,7 +826,7 @@ public class Mossa : MonoBehaviour
                 if (personaggio.unitID == colpitoUnit.unitID)
                 {
                     personaggio.attacco -= 1;
-                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[z]));
+                    StartCoroutine(WaitAnimationMossa(battleSystem.nemici[z], MossaAnimation));
                     StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
                 }
                 z++;
@@ -898,7 +907,7 @@ public class Mossa : MonoBehaviour
                 string OrdineRegina = attaccanteUnit.unitName + " usa Ordine Della Futura Regina.";
                 string AmicoBoostato = "La difesa normale e speciale di " + amicoDaBoostare.unitName + " aumenta di 3 punti!";
                 StartCoroutine(ShowTextDouble(OrdineRegina, AmicoBoostato));
-                StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+                StartCoroutine(WaitAnimationMossa(amicoDaBoostare, MossaAnimation));
                 StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
                 Debug.Log(attaccanteUnit.unitName + " aumenta la difesa e la difesa speciale di " + amicoDaBoostare.unitName + " 3 punti!");
@@ -967,7 +976,7 @@ public class Mossa : MonoBehaviour
                 string Assist = attaccanteUnit.unitName + " usa Assist al bacio.";
                 string AmicoBoostato = "L'attacco di " + amicoDaBoostare.unitName + " aumenta di 5 punti!";
                 StartCoroutine(ShowTextDouble(Assist, AmicoBoostato));
-                StartCoroutine(WaitAnimationMossa(amicoDaBoostare));
+                StartCoroutine(WaitAnimationMossa(amicoDaBoostare, MossaAnimation));
                 StartCoroutine(BoosterLampeggiante(FindColpito(amicoDaBoostare)));
                 StartCoroutine(WaitMossaAttaccoFuoriPosto());
                 Debug.Log(attaccanteUnit.unitName + " aumenta l'attacco di " + amicoDaBoostare.unitName + " 5 punti!");
@@ -1006,21 +1015,21 @@ public class Mossa : MonoBehaviour
                     {
                         battleSystem.amici[0].attacco -= 1;
                         battleSystem.amici[1].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
-                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
                     }
                     else if (battleSystem.amici[0].currentHP > 0 && battleSystem.amici[1].currentHP <= 0)
                     {
                         battleSystem.amici[0].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[0], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[0])));
                     }
                     else if (battleSystem.amici[0].currentHP <= 0 && battleSystem.amici[1].currentHP > 0)
                     {
                         battleSystem.amici[1].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.amici[1], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.amici[1])));
                     }
                 }
@@ -1037,21 +1046,21 @@ public class Mossa : MonoBehaviour
                     {
                         battleSystem.nemici[0].attacco -= 1;
                         battleSystem.nemici[1].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
-                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
                     }
                     else if (battleSystem.nemici[0].currentHP > 0 && battleSystem.nemici[1].currentHP <= 0)
                     {
                         battleSystem.nemici[0].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[0], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[0])));
                     }
                     else if (battleSystem.nemici[0].currentHP <= 0 && battleSystem.nemici[1].currentHP > 0)
                     {
                         battleSystem.nemici[1].attacco -= 1;
-                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1]));
+                        StartCoroutine(WaitAnimationMossa(battleSystem.nemici[1], MossaAnimation));
                         StartCoroutine(MalusLampeggiante(FindColpito(battleSystem.nemici[1])));
                     }
                 }
