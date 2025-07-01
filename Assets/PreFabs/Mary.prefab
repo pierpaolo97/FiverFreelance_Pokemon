@@ -56,9 +56,10 @@ MonoBehaviour:
   attacco_speciale: 50
   difesa_speciale: 40
   velocita: 60
-  elemento: SPAZIO
+  elemento: BUIO
   paralizzato: 0
   avvelenato: 0
+  subisceDanno: 1
   boost: 0
   nTurniBoost: 0
   whichBoost: 
@@ -69,6 +70,7 @@ MonoBehaviour:
   - {fileID: 4335958221497668165, guid: c25fb751332b6f041bf3ef2e68e85f29, type: 3}
   - {fileID: 4335958221497668165, guid: b8275aa589621604f924fa96043a3a85, type: 3}
   spriteUnit: {fileID: 21300000, guid: 8f0de5ff53fd1418197b38dfe6e8015e, type: 3}
+  arthurSprite: {fileID: 21300000, guid: d6d79575b81454503b35cb46b793bf2e, type: 3}
   unitID: 0
   maschio: 0
   audioAttacchiSubiti:

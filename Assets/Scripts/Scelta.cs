@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Scelta : MonoBehaviour
 {
@@ -79,7 +81,9 @@ public class Scelta : MonoBehaviour
         {
             disattivaUltimo();
         }
-        
+
+        yield return new WaitForSeconds(1.5f);
+
     }
 
     public void Back1()
@@ -108,6 +112,32 @@ public class Scelta : MonoBehaviour
         }
         back.SetActive(false);
         StartCoroutine(example(scegliCompagno, gameobjectDaDisattivare_due, scegliEnemy1, scegliCompagno, 0, true));
+
+        if(SceneManager.GetActiveScene().name == "StoriaScene")
+        {
+            StartCoroutine(StartStoriaSceneFlow());
+        }
+    }
+
+    IEnumerator StartStoriaSceneFlow()
+    {
+        SelectRandomCharacters();
+
+        // Wait until the audio played in example() is done
+        yield return new WaitWhile(() => cameraAudio.isPlaying);
+
+        Avanza_3();
+        StartGame();
+    }
+
+
+    private void SelectRandomCharacters()
+    {
+        var compagnoScript = scegliCompagno.GetComponent<ScegliPersonaggi>();
+        var enemyScript = scegliEnemy1.GetComponent<ScegliPersonaggi>();
+
+        compagnoScript.indexPlayer = UnityEngine.Random.Range(0, compagnoScript.personaggiDisponibili.Length);
+        enemyScript.indexPlayer = UnityEngine.Random.Range(0, enemyScript.personaggiDisponibili.Length);
     }
 
     public void Back2()

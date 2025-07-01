@@ -174,7 +174,16 @@ public class BattleSystem : MonoBehaviour
             if(playerUnit.mosse[i].puoiUsarla == false)
             {
                 bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = false;
-                playerUnit.mosse[i].puoiUsarla = true;
+                if (playerUnit.mosse[i].nomeMossa != "Arthur")
+                {
+                    playerUnit.mosse[i].puoiUsarla = true;
+                }
+                else
+                {
+                    playerUnit.subisceDanno = true;
+                    playerUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = playerUnit.spriteUnit;
+                }
+                
             }
         }
 
@@ -285,7 +294,15 @@ public class BattleSystem : MonoBehaviour
                     if (playerUnit.mosse[i].puoiUsarla == false)
                     {
                         bottoniMosse.transform.GetChild(i).GetComponent<Button>().interactable = false;
-                        playerUnit.mosse[i].puoiUsarla = true;
+                        if (playerUnit.mosse[i].nomeMossa != "Arthur")
+                        {
+                            playerUnit.mosse[i].puoiUsarla = true;
+                        }
+                        else
+                        {
+                            playerUnit.subisceDanno = true;
+                            playerUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = playerUnit.spriteUnit;
+                        }
                     }
                     else
                     {
@@ -456,7 +473,15 @@ public class BattleSystem : MonoBehaviour
                 if(mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla==false) // || mossa.tipologiaDiMosaa == "SENZA_TARGET")
                 {
                     numeroDiMossaCura++;
-                    mossa.puoiUsarla = true;
+                    if (mossa.nomeMossa != "Arthur")
+                    {
+                        mossa.puoiUsarla = true;
+                    }
+                    else
+                    {
+                        giocatoreCheDeveDecidereUnit.subisceDanno = true;
+                        giocatoreCheDeveDecidereUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = giocatoreCheDeveDecidereUnit.spriteUnit;
+                    }
                 }
                 else
                 {
@@ -544,7 +569,16 @@ public class BattleSystem : MonoBehaviour
                 if (mossa.tipologiaDiMosaa == "CURA" || mossa.puoiUsarla == false)
                 {
                     numeroDiMossaCura++;
-                    mossa.puoiUsarla = true;
+                    if (mossa.nomeMossa != "Arthur")
+                    {
+                        mossa.puoiUsarla = true;
+                    }
+                    else
+                    {
+                        giocatoreCheDeveDecidereUnit.subisceDanno = true;
+                        giocatoreCheDeveDecidereUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = giocatoreCheDeveDecidereUnit.spriteUnit;
+                    }
+
                 }
                 else
                 {
@@ -1611,15 +1645,16 @@ public class BattleSystem : MonoBehaviour
 
     public float Modificatore(Mossa mossa, Unit attaccato)
     {
-        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO (BUIO) - NORMALE - ACQUA 
+        //RIGA: FUOCO - TERRA - VENTO (VOLANTE) - SPAZIO  - BUIO - NORMALE - ACQUA 
         // La riga è chi attacca, colonna chi subisce. Quindi ad esempio riga 6, colonna 1 vuol dire che acqua attacca su fuoco. 
 
-        float[,] matrice = { { 0.5f, 1,  1,   1,   1, 0.5f},
-                             {  2,   1,  0,   1,   1, 1f},
-                             {  1,   1,  1,   1,   1, 1f},
-                             {  1,   1,  1,  0.5f, 1, 1f},
-                             {  1,   1,  1,   1,   1, 1f},
-                             {  2,   1,  1,   1,   1, 1f}};
+        float[,] matrice = { { 0.5f, 1,  1,   1,   1, 1, 0.5f},
+                             {  2,   1,  0,   1,   1, 1, 1f},
+                             {  1,   1,  1,   1,   1, 1, 1f},
+                             {  1,   1,  1,  0.5f, 1, 1, 1f},
+                             {  1,   1,  1,   2,   1, 1, 1f},
+                             {  1,   1,  1,   1,   1, 1, 1f},
+                             {  2,   1,  1,   1,   1, 1, 1f}};
 
         Dictionary<string, int> dict = new Dictionary<string, int>()
         {
@@ -1627,8 +1662,9 @@ public class BattleSystem : MonoBehaviour
             {"TERRA",   1 },
             {"VENTO",   2 },
             {"SPAZIO",  3 },
-            {"NORMALE", 4 },
-            {"ACQUA",   5 },
+            {"BUIO",    4 },
+            {"NORMALE", 5 },
+            {"ACQUA",   6 },
         };
 
         int riga;
@@ -1636,7 +1672,6 @@ public class BattleSystem : MonoBehaviour
         int colonna;
         dict.TryGetValue(attaccato.elemento, out colonna);
 
-        
         float valore = matrice[riga, colonna];
         //Debug.Log("Riga: " + riga + ", colonna: " + colonna + ", valore: " + valore);
 

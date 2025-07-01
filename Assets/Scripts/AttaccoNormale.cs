@@ -53,101 +53,114 @@ public class AttaccoNormale : MonoBehaviour
         {
             if (x <= precisione)
             {
-                Successo = true;
-                //Debug.Log(giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName);
-                int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
-
-                bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
-
-                //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
-                string UsaConSuccesso = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + "! ";
-
-                StartCoroutine(ShowText(UsaConSuccesso));
-
-                yield return new WaitForSecondsRealtime(5);
-
-                if (this.gameObject.GetComponent<Mossa>().nomeMossa == "Fusione Del Reattore")
+                if (qualeNemicoAttacchi.subisceDanno)
                 {
-                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP, ma anche Atomo perde 1/3 dei propri HP." + superEfficace;
-                    StartCoroutine(ShowText(NemicoPerdeDanni));
-                }
-                else
-                {
-                    string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP." + superEfficace;
-                    StartCoroutine(ShowText(NemicoPerdeDanni));
-                }
+                    Successo = true;
 
-                Successo = false;
+                    int dannoEffettivo = battleSystem.calcolaDannoEffettivo(danno, giocatoreCheAttacca, qualeNemicoAttacchi, mossa);
 
-                yield return new WaitForSecondsRealtime(2);
+                    bool isDead = qualeNemicoAttacchi.TakeDamage(dannoEffettivo);
 
-                qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
+                    //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP);
+                    string UsaConSuccesso = giocatoreCheAttacca.unitName + " usa " + this.gameObject.GetComponent<Mossa>().nomeMossa + " contro " + qualeNemicoAttacchi.unitName + "! ";
 
-                //Unit giocatoreNONAttaccato;
+                    StartCoroutine(ShowText(UsaConSuccesso));
 
-                int z = 0;
+                    yield return new WaitForSecondsRealtime(5);
 
-                foreach (Unit personaggio in battleSystem.amici)
-                {
-                    if (personaggio.unitID == qualeNemicoAttacchi.unitID)
+                    if (this.gameObject.GetComponent<Mossa>().nomeMossa == "Fusione Del Reattore")
                     {
-                        if (z == 0)
-                        {
-                            giocatoreNONAttaccato = battleSystem.amici[1];
-                        }
-                        else
-                        {
-                            giocatoreNONAttaccato = battleSystem.amici[0];
-                        }
+                        string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP, ma anche Atomo perde 1/3 dei propri HP." + superEfficace;
+                        StartCoroutine(ShowText(NemicoPerdeDanni));
                     }
-                    z++;
-                }
-
-                z = 0;
-
-                foreach (Unit personaggio in battleSystem.nemici)
-                {
-                    if (personaggio.unitID == qualeNemicoAttacchi.unitID)
-                    {
-                        if (z == 0)
-                        {
-                            giocatoreNONAttaccato = battleSystem.nemici[1];
-                        }
-                        else
-                        {
-                            giocatoreNONAttaccato = battleSystem.nemici[0];
-                        }
-                    }
-                    z++;
-                }
-
-                if (isDead && giocatoreNONAttaccato.currentHP <= 0)
-                {
-                    Debug.Log("FINE ATTACCO");
-                    battleSystem.state = BattleState.FINISHED;
-                    //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-                    battleSystem.EndBattle();
-                    if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
-                        StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
                     else
-                        StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
+                    {
+                        string NemicoPerdeDanni = qualeNemicoAttacchi.unitName + " perde " + dannoEffettivo + "HP." + superEfficace;
+                        StartCoroutine(ShowText(NemicoPerdeDanni));
+                    }
+
+                    Successo = false;
+
+                    yield return new WaitForSecondsRealtime(2);
+
+                    qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
+
+                    //Unit giocatoreNONAttaccato;
+
+                    int z = 0;
+
+                    foreach (Unit personaggio in battleSystem.amici)
+                    {
+                        if (personaggio.unitID == qualeNemicoAttacchi.unitID)
+                        {
+                            if (z == 0)
+                            {
+                                giocatoreNONAttaccato = battleSystem.amici[1];
+                            }
+                            else
+                            {
+                                giocatoreNONAttaccato = battleSystem.amici[0];
+                            }
+                        }
+                        z++;
+                    }
+
+                    z = 0;
+
+                    foreach (Unit personaggio in battleSystem.nemici)
+                    {
+                        if (personaggio.unitID == qualeNemicoAttacchi.unitID)
+                        {
+                            if (z == 0)
+                            {
+                                giocatoreNONAttaccato = battleSystem.nemici[1];
+                            }
+                            else
+                            {
+                                giocatoreNONAttaccato = battleSystem.nemici[0];
+                            }
+                        }
+                        z++;
+                    }
+
+                    if (isDead && giocatoreNONAttaccato.currentHP <= 0)
+                    {
+                        Debug.Log("FINE ATTACCO");
+                        battleSystem.state = BattleState.FINISHED;
+                        //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+                        battleSystem.EndBattle();
+                        if (giocatoreCheAttacca.unitID == 0 || giocatoreCheAttacca.unitID == 1)
+                            StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
+                        else
+                            StartCoroutine(gameObject.GetComponent<Mossa>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
+                    }
+                    else
+                    {
+                        //state = BattleState.ENEMYTURN;
+                        qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
+                        //dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
+
+                        //yield return new WaitForSeconds(5f);
+
+                        //battleSystem.StartCoroutine(ProssimoCheAttacca());
+                        //StartCoroutine(EnemyTurn());
+                    }
                 }
                 else
                 {
-                    //state = BattleState.ENEMYTURN;
-                    qualeNemicoHUD.SetHP(qualeNemicoAttacchi);
-                    //dialogueText.text = "Hai tolto " + playerUnit.damage + " HP...";
-
-                    //yield return new WaitForSeconds(5f);
-
-                    //battleSystem.StartCoroutine(ProssimoCheAttacca());
-                    //StartCoroutine(EnemyTurn());
+                    string arthurSiSostituisce = "";
+                    if (qualeNemicoAttacchi.unitName == "Mary")
+                    {
+                        arthurSiSostituisce = " Arthur subisce i danni al posto di Mary!";
+                    }
+                    String attaccoSenzaDanno = giocatoreCheAttacca.unitName + " attacca " + qualeNemicoAttacchi.unitName + ", che però non subisce danno." + arthurSiSostituisce;
+                    StartCoroutine(ShowText(attaccoSenzaDanno));
                 }
             }
             else
             {
                 //Debug.Log(giocatoreCheAttacca.unitName + " fallisce l'attacco! ");
-                String AttaccoFallito = giocatoreCheAttacca.unitName + " prova ad attaccare ma fallisce! ";
+                String AttaccoFallito = giocatoreCheAttacca.unitName + " prova ad attaccare ma fallisce!";
                 StartCoroutine(ShowText(AttaccoFallito));
                 //yield return new WaitForSeconds(5);
                 //battleSystem.StartCoroutine(ProssimoCheAttacca());

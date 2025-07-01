@@ -143,6 +143,7 @@ MonoBehaviour:
   elemento: TERRA
   paralizzato: 0
   avvelenato: 0
+  subisceDanno: 1
   boost: 0
   nTurniBoost: 0
   whichBoost: 
@@ -153,6 +154,7 @@ MonoBehaviour:
   - {fileID: 5179171615908493374, guid: c21da7f37754c2649b296007503034ce, type: 3}
   - {fileID: 2611070430221132175, guid: 57908a695f7e7e9459486a6c8080086b, type: 3}
   spriteUnit: {fileID: 21300000, guid: c185ff698b18541f0b7b0d7afea2c6ff, type: 3}
+  arthurSprite: {fileID: 0}
   unitID: 0
   maschio: 1
   audioAttacchiSubiti:

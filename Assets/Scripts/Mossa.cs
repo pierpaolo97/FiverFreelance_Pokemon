@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using System;
+//using System.CodeDom;
 //using System.Diagnostics;
 
 public class Mossa : MonoBehaviour
@@ -111,7 +113,7 @@ public class Mossa : MonoBehaviour
         Paralizzato.GetComponent<Animator>().Play("ParalizzatoPg");
     }
 
-    IEnumerator WaitAnimationMossa(Unit Colpito, GameObject Mossa)
+    IEnumerator WaitAnimationMossa(Unit Colpito, GameObject Mossa, bool isArthur = false)
     {
         yield return new WaitForSeconds(2f);
         GameObject MossaInstanziata = Instantiate(Mossa, Colpito.transform.position, transform.rotation);
@@ -120,6 +122,10 @@ public class Mossa : MonoBehaviour
             MossaInstanziata.transform.position = new Vector3(Colpito.transform.position.x, -0.94f, Colpito.transform.position.z);
         }
         Destroy(MossaInstanziata, 1.5f);
+        if (isArthur)
+        {
+            Colpito.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = Colpito.arthurSprite;
+        }
     }
 
     IEnumerator WaitAnimationMossaDiagonale(Unit Attacante, Unit Colpito, Quaternion Inclinazione, Mossa mossa, GameObject directionMossa)
@@ -300,65 +306,72 @@ public class Mossa : MonoBehaviour
             StartCoroutine(mossa.GetComponent<AttaccoNormale>(). Attacco(mossa, attaccanteUnit, attacanteHUD, colpitoUnit, colpitoHUD));
             if (AttaccoNormale.Successo == true)
             {
-                int danno = attaccanteUnit.currentHP / 3;
-                //attaccanteUnit.TakeDamage(danno);
-                //attacanteHUD.SetHP(attaccanteUnit.currentHP);
-                StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
-                StartCoroutine(ColpitoLampeggiante(FindColpito(attaccanteUnit)));
-                StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
-                StartCoroutine(WaitMossaAttaccoFuoriPosto());
-                StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, attacanteHUD,danno));
-
-                int z = 0;
-                foreach (Unit personaggio in battleSystem.amici)
+                if (GiocatoreSubisceDanno(colpitoUnit))
                 {
-                    if (personaggio.unitID == attaccanteUnit.unitID)
+                    int danno = attaccanteUnit.currentHP / 3;
+                    //attaccanteUnit.TakeDamage(danno);
+                    //attacanteHUD.SetHP(attaccanteUnit.currentHP);
+                    StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
+                    StartCoroutine(ColpitoLampeggiante(FindColpito(attaccanteUnit)));
+                    StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+                    StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                    StartCoroutine(WaitTakeDamageFusioneReattore(attaccanteUnit, attacanteHUD, danno));
+
+                    int z = 0;
+                    foreach (Unit personaggio in battleSystem.amici)
                     {
-                        if (z == 0)
+                        if (personaggio.unitID == attaccanteUnit.unitID)
                         {
-                            giocatoreAmicoONemico = battleSystem.amici[1];
+                            if (z == 0)
+                            {
+                                giocatoreAmicoONemico = battleSystem.amici[1];
+                            }
+                            else
+                            {
+                                giocatoreAmicoONemico = battleSystem.amici[0];
+                            }
+                        }
+                        z++;
+                    }
+
+                    z = 0;
+                    foreach (Unit personaggio in battleSystem.nemici)
+                    {
+                        if (personaggio.unitID == attaccanteUnit.unitID)
+                        {
+                            if (z == 0)
+                            {
+                                giocatoreAmicoONemico = battleSystem.nemici[1];
+                            }
+                            else
+                            {
+                                giocatoreAmicoONemico = battleSystem.nemici[0];
+                            }
+                        }
+                        z++;
+                    }
+
+                    if (attaccanteUnit.currentHP <= 0 && giocatoreAmicoONemico.currentHP <= 0)
+                    {
+                        Debug.Log("FINE Mossa");
+
+                        battleSystem.state = BattleState.FINISHED;
+                        //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
+                        battleSystem.EndBattle();
+
+                        if (attaccanteUnit.unitID == 0 || giocatoreAmicoONemico.unitID == 1)
+                        {
+                            StartCoroutine(FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
                         }
                         else
                         {
-                            giocatoreAmicoONemico = battleSystem.amici[0];
+                            StartCoroutine(FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
                         }
                     }
-                    z++;
                 }
-
-                z = 0;
-                foreach (Unit personaggio in battleSystem.nemici)
+                else
                 {
-                    if (personaggio.unitID == attaccanteUnit.unitID)
-                    {
-                        if (z == 0)
-                        {
-                            giocatoreAmicoONemico = battleSystem.nemici[1];
-                        }
-                        else
-                        {
-                            giocatoreAmicoONemico = battleSystem.nemici[0];
-                        }
-                    }
-                    z++;
-                }
-
-                if (attaccanteUnit.currentHP <= 0 && giocatoreAmicoONemico.currentHP <= 0)
-                {
-                    Debug.Log("FINE Mossa");
-
-                    battleSystem.state = BattleState.FINISHED;
-                    //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-                    battleSystem.EndBattle();
-
-                    if (attaccanteUnit.unitID == 0 || giocatoreAmicoONemico.unitID == 1)
-                    {
-                        StartCoroutine(FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab));
-                    }
-                    else
-                    {
-                        StartCoroutine(FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab));
-                    }
+                    GestisciGiocatoreNonSubisceDanno(colpitoUnit);
                 }
             }
             //battleSystem.StartCoroutine(ProssimoCheAttacca());
@@ -443,7 +456,7 @@ public class Mossa : MonoBehaviour
         int audioRandom = UnityEngine.Random.RandomRange(0, 2);
         if (mossa.tipologiaDiMosaa == "ATTACCO NORMALE")
         {
-            float a = Random.Range(0, 100);
+            float a = UnityEngine.Random.Range(0, 100);
             //Debug.Log("numero" + a);
 
             yield return new WaitForSeconds(4f);
@@ -454,6 +467,30 @@ public class Mossa : MonoBehaviour
         }
     }
 
+
+    public bool GiocatoreSubisceDanno(Unit giocatoreAttaccato)
+    {
+        if (giocatoreAttaccato.subisceDanno)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+    public void GestisciGiocatoreNonSubisceDanno(Unit giocatoreAttaccato)
+    {
+        string arthurSiSostituisce = "";
+        if (giocatoreAttaccato.unitName == "Mary")
+        {
+            arthurSiSostituisce = " Arthur subisce i danni al posto di Mary!";
+        }
+        String attaccoSenzaDanno = giocatoreAttaccato.unitName + " non subisce danno." + arthurSiSostituisce;
+        StartCoroutine(ShowText(attaccoSenzaDanno));
+    }
 
 
     public void DifensoreDellaGiustizia(Mossa mossa, Unit attaccanteUnit)
@@ -503,11 +540,12 @@ public class Mossa : MonoBehaviour
 
     public void Arthur(Mossa mossa, Unit attaccanteUnit)
     {
-        
         string arthurSub = "Arthur si sostituisce a " + attaccanteUnit.unitName;
-        StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation));
+        StartCoroutine(WaitAnimationMossa(attaccanteUnit, MossaAnimation, true));
         StartCoroutine(ShowText(arthurSub));
-            
+        puoiUsarla = false;
+        attaccanteUnit.subisceDanno = false;
+        
     }
 
 
@@ -528,77 +566,66 @@ public class Mossa : MonoBehaviour
         {
             if (AttaccoRiesce(precisione))
             {
-                x = Random.Range(1, 5);
-                Debug.Log("Scarica di coltelli viene usata " + x + " volte");
-                for (int i = 0; i < x; i++)
+                if (GiocatoreSubisceDanno(colpitoUnit))
                 {
-                    StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
-                    StartCoroutine(WaitMossaAttaccoFuoriPosto());
-                    StartCoroutine(Coltelli(mossa, attaccanteUnit, colpitoUnit, colpitoHUD));
-                    StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa, MossaAnimation));
-
-                    if (colpitoUnit.currentHP <= 0)
+                    x = UnityEngine.Random.Range(1, 5);
+                    Debug.Log("Scarica di coltelli viene usata " + x + " volte");
+                    for (int i = 0; i < x; i++)
                     {
-                        attaccatoMorto = true;
-                    }
+                        StartCoroutine(ColpitoLampeggiante(FindColpito(colpitoUnit)));
+                        StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                        StartCoroutine(Coltelli(mossa, attaccanteUnit, colpitoUnit, colpitoHUD));
+                        StartCoroutine(WaitAnimationMossaDiagonale(attaccanteUnit, colpitoUnit, new Quaternion(0, 0, 0.216439605f, 0.976296067f), mossa, MossaAnimation));
 
-                    int z = 0;
-                    foreach (Unit personaggio in battleSystem.amici)
-                    {
-                        if (personaggio.unitID == colpitoUnit.unitID)
+                        if (colpitoUnit.currentHP <= 0)
                         {
-                            if (z == 0)
-                            {
-                                giocatoreNONAttaccato = battleSystem.amici[1];
-                            }
-                            else
-                            {
-                                giocatoreNONAttaccato = battleSystem.amici[0];
-                            }
+                            attaccatoMorto = true;
                         }
-                        z++;
-                    }
 
-                    z = 0;
-
-                    foreach (Unit personaggio in battleSystem.nemici)
-                    {
-                        if (personaggio.unitID == colpitoUnit.unitID)
+                        int z = 0;
+                        foreach (Unit personaggio in battleSystem.amici)
                         {
-                            if (z == 0)
+                            if (personaggio.unitID == colpitoUnit.unitID)
                             {
-                                giocatoreNONAttaccato = battleSystem.nemici[1];
+                                if (z == 0)
+                                {
+                                    giocatoreNONAttaccato = battleSystem.amici[1];
+                                }
+                                else
+                                {
+                                    giocatoreNONAttaccato = battleSystem.amici[0];
+                                }
                             }
-                            else
+                            z++;
+                        }
+
+                        z = 0;
+
+                        foreach (Unit personaggio in battleSystem.nemici)
+                        {
+                            if (personaggio.unitID == colpitoUnit.unitID)
                             {
-                                giocatoreNONAttaccato = battleSystem.nemici[0];
+                                if (z == 0)
+                                {
+                                    giocatoreNONAttaccato = battleSystem.nemici[1];
+                                }
+                                else
+                                {
+                                    giocatoreNONAttaccato = battleSystem.nemici[0];
+                                }
                             }
+                            z++;
                         }
-                        z++;
-                    }
 
-                    /*if (colpitoUnit.currentHP <= 0 && giocatoreNONAttaccato.currentHP <= 0)
-                    {
-                        battleSystem.state = BattleState.FINISHED;
-                        //qualeNemicoHUD.SetHP(qualeNemicoAttacchi.currentHP = 0);
-                        Debug.Log("MORTO CON COLTELLI");
-                        battleSystem.EndBattle();
-                        if (attaccanteUnit.unitID == 0 || attaccanteUnit.unitID == 1)
+                        if (attaccatoMorto)
                         {
-                            mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.playerPrefab, battleSystem.friendPrefab);
-                            Debug.Log("MORTO CON COLTELLI 1");
+                            break;
                         }
-                        else
-                        {
-                            mossa.gameObject.GetComponent<AttaccoNormale>().FinePartita(battleSystem.enemyPrefab, battleSystem.enemy2Prefab);
-                            Debug.Log("MORTO CON COLTELLI 2");
-                        }
-                    }*/
-
-                    if (attaccatoMorto)
-                    {
-                        break;
                     }
+                }
+                else
+                {
+                    GestisciGiocatoreNonSubisceDanno(colpitoUnit);
                 }
             }
             else
@@ -746,27 +773,34 @@ public class Mossa : MonoBehaviour
     {
         if (AttaccoRiesce(mossa.precisione))
         {
-            string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
-
-            string dipendeDalSesso;
-            if (colpitoUnit.maschio)
+            if (GiocatoreSubisceDanno(colpitoUnit))
             {
-                dipendeDalSesso = "paralizzato";
+                string BacioPrincipessa = attaccanteUnit.unitName + " usa Bacio Della Principessa.";
+
+                string dipendeDalSesso;
+                if (colpitoUnit.maschio)
+                {
+                    dipendeDalSesso = "paralizzato";
+                }
+                else
+                {
+                    dipendeDalSesso = "paralizzata";
+                }
+
+                string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
+                StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
+                StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
+                StartCoroutine(ShowTextDouble(BacioPrincipessa, vieneParalizzato));
+                StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                colpitoUnit.paralizzato = true;
+                StartCoroutine(WaitActivateParalizzato(colpitoUnit));
+                //Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
+                //combactButtons.SetActive(false);
             }
             else
             {
-                dipendeDalSesso = "paralizzata";
+                GestisciGiocatoreNonSubisceDanno(colpitoUnit);
             }
-
-            string vieneParalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + "."; //paralizzato.";
-            StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
-            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
-            StartCoroutine(ShowTextDouble(BacioPrincipessa, vieneParalizzato));
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
-            colpitoUnit.paralizzato = true;
-            StartCoroutine(WaitActivateParalizzato(colpitoUnit));
-            //Debug.Log(colpitoUnit.unitName + " viene paralizzato.");
-            //combactButtons.SetActive(false);
         }
         else
         {
@@ -779,26 +813,33 @@ public class Mossa : MonoBehaviour
     {
         if (AttaccoRiesce(mossa.precisione))
         {
-            string BacioPrincipessa = attaccanteUnit.unitName + " usa Cartellino rosso.";
-            string dipendeDalSesso;
-            if (colpitoUnit.maschio)
+            if (GiocatoreSubisceDanno(colpitoUnit))
             {
-                dipendeDalSesso = "espulso (paralizzato)";
+                string BacioPrincipessa = attaccanteUnit.unitName + " usa Cartellino rosso.";
+                string dipendeDalSesso;
+                if (colpitoUnit.maschio)
+                {
+                    dipendeDalSesso = "espulso (paralizzato)";
+                }
+                else
+                {
+                    dipendeDalSesso = "espulsa (paralizzata)";
+                }
+                string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + ".";
+                mossa.puoiUsarla = false;
+                StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
+                StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
+                StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
+                StartCoroutine(WaitMossaAttaccoFuoriPosto());
+                colpitoUnit.paralizzato = true;
+                StartCoroutine(WaitActivateParalizzato(colpitoUnit));
+                //Debug.Log(colpitoUnit.unitName + " viene espulso.");
+                //combactButtons.SetActive(false);
             }
             else
             {
-                dipendeDalSesso = "espulsa (paralizzata)";
+                GestisciGiocatoreNonSubisceDanno(colpitoUnit);
             }
-            string VieneParalalizzato = colpitoUnit.unitName + " viene " + dipendeDalSesso + ".";
-            mossa.puoiUsarla = false;
-            StartCoroutine(WaitAnimationMossa(colpitoUnit, MossaAnimation));
-            StartCoroutine(Paralizzato(FindColpito(colpitoUnit)));
-            StartCoroutine(ShowTextDouble(BacioPrincipessa, VieneParalalizzato));
-            StartCoroutine(WaitMossaAttaccoFuoriPosto());
-            colpitoUnit.paralizzato = true;
-            StartCoroutine(WaitActivateParalizzato(colpitoUnit));
-            //Debug.Log(colpitoUnit.unitName + " viene espulso.");
-            //combactButtons.SetActive(false);
         }
         else
         {
@@ -1078,7 +1119,7 @@ public class Mossa : MonoBehaviour
 
     bool AttaccoRiesce(int precisione)
     {
-        int k = Random.Range(0, 100);
+        int k = UnityEngine.Random.Range(0, 100);
         if (k <= precisione)
         {
             Debug.Log("Attacco riuscito");
@@ -1135,6 +1176,7 @@ public class Mossa : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
+        yield return new WaitForSeconds(2);
         currentText = "";
         yield return new WaitForSeconds(4);
 
@@ -1146,7 +1188,7 @@ public class Mossa : MonoBehaviour
             yield return new WaitForSeconds(delay);
         }
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(4f);
     }
 
     IEnumerator ShowText(string textDaScrivere)
