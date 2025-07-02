@@ -29,6 +29,7 @@ public class Unit : MonoBehaviour
 
     public List<Mossa> mosse;
     public Sprite spriteUnit;
+	public Sprite spriteUnitDown;
 	public Sprite arthurSprite;
     public int unitID;
     public bool maschio;
@@ -38,7 +39,19 @@ public class Unit : MonoBehaviour
 	public AudioClip AudioMossaSpeciale;
 	public AudioClip AudioEsultanza;
 
-	public bool TakeDamage(int dmg)
+    public void Update()
+    {
+		if (this.transform.position.y < 0 && unitName == "Mary")
+		{
+			SpriteRenderer sr = transform.Find("ImmaginePG")?.GetComponent<SpriteRenderer>();
+			if (sr != null)
+			{
+				sr.sprite = spriteUnitDown;
+			}
+		}
+	}
+
+    public bool TakeDamage(int dmg)
 	{
 		currentHP -= dmg;
 

@@ -70,6 +70,7 @@ MonoBehaviour:
   - {fileID: 4335958221497668165, guid: c25fb751332b6f041bf3ef2e68e85f29, type: 3}
   - {fileID: 4335958221497668165, guid: b8275aa589621604f924fa96043a3a85, type: 3}
   spriteUnit: {fileID: 21300000, guid: 8f0de5ff53fd1418197b38dfe6e8015e, type: 3}
+  spriteUnitDown: {fileID: 21300000, guid: 385e11554589d42fbbc18bd2611e9f4e, type: 3}
   arthurSprite: {fileID: 21300000, guid: d6d79575b81454503b35cb46b793bf2e, type: 3}
   unitID: 0
   maschio: 0
