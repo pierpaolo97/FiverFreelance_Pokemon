@@ -34,6 +34,11 @@ public class MenuOrganizer : MonoBehaviour
         StartCoroutine(LoadSceneTrans("FirstScene"));
     }
 
+    public void GoToStoryScene()
+    {
+        StartCoroutine(LoadSceneTrans("StoriaScene"));
+    }
+
     public void PauseGame()
     {
         Time.timeScale = 0;
