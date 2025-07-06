@@ -59,6 +59,7 @@ MonoBehaviour:
   elemento: NORMALE
   paralizzato: 0
   avvelenato: 0
+  subisceDanno: 1
   boost: 0
   nTurniBoost: 0
   whichBoost: 
@@ -69,6 +70,8 @@ MonoBehaviour:
   - {fileID: 4335958221497668165, guid: db2591731a914404199ae4e7367beb87, type: 3}
   - {fileID: 4335958221497668165, guid: 7844047857e423a449cf8282faa56987, type: 3}
   spriteUnit: {fileID: 21300000, guid: 0e92d542b08ee46d99c3eb7e9c7c73fe, type: 3}
+  spriteUnitDown: {fileID: 0}
+  arthurSprite: {fileID: 0}
   unitID: 0
   maschio: 1
   audioAttacchiSubiti:
@@ -125,7 +128,7 @@ Transform:
   m_GameObject: {fileID: 6450721039946225802}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75378, y: 0.75378, z: 0.50252}
+  m_LocalScale: {x: 0.60212505, y: 0.60212505, z: 0.40141672}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3973862563508761831}
@@ -172,7 +175,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: 0b034e363c19f4b37a1350eadb2c63c7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0e92d542b08ee46d99c3eb7e9c7c73fe, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
