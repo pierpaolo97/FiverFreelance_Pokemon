@@ -41,14 +41,14 @@ public class Unit : MonoBehaviour
 
     public void Update()
     {
-		if (this.transform.position.y < 0 && unitName == "Mary")
-		{
-			SpriteRenderer sr = transform.Find("ImmaginePG")?.GetComponent<SpriteRenderer>();
-			if (sr != null)
-			{
-				sr.sprite = spriteUnitDown;
-			}
-		}
+		//if (this.transform.position.y < 0 && unitName == "Mary")
+		//{
+		//	SpriteRenderer sr = transform.Find("ImmaginePG")?.GetComponent<SpriteRenderer>();
+		//	if (sr != null)
+		//	{
+		//		sr.sprite = spriteUnitDown;
+		//	}
+		//}
 	}
 
     public bool TakeDamage(int dmg)

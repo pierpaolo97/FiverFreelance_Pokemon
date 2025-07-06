@@ -14355,6 +14355,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  mary1: {fileID: 21300000, guid: 385e11554589d42fbbc18bd2611e9f4e, type: 3}
+  mary2: {fileID: 21300000, guid: 8f0de5ff53fd1418197b38dfe6e8015e, type: 3}
   CameraAudio: {fileID: 519420033}
 --- !u!4 &1714929644
 Transform:

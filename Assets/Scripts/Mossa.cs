@@ -545,7 +545,6 @@ public class Mossa : MonoBehaviour
         StartCoroutine(ShowText(arthurSub));
         puoiUsarla = false;
         attaccanteUnit.subisceDanno = false;
-        
     }
 
 

@@ -74,6 +74,8 @@ public class BattleSystem : MonoBehaviour
     public BattleHUD giocatoreDaAttaccareENEMY2_HUD;
 
     public GameObject[] bot;
+    public Sprite mary1;
+    public Sprite mary2;
 
     private float delay = 0.025f;
 
@@ -137,6 +139,7 @@ public class BattleSystem : MonoBehaviour
             playerPrefab.transform.position = new Vector3(-2.8f, -1.2f, 0f);
         }
 
+
         playerUnit = playerPrefab.GetComponent<Unit>();
         friendUnit = friendPrefab.GetComponent<Unit>();
         enemyUnit = enemyPrefab.GetComponent<Unit>();
@@ -146,6 +149,11 @@ public class BattleSystem : MonoBehaviour
         enemyHUD.SetHUD(enemyUnit);
         friendHUD.SetHUD(friendUnit);
         enemy2HUD.SetHUD(enemy2Unit);
+
+        SetCharacterSprite(playerPrefab, playerUnit, mary1);
+        SetCharacterSprite(friendPrefab, friendUnit, mary1);
+        SetCharacterSprite(enemyPrefab, enemyUnit, mary2);
+        SetCharacterSprite(enemy2Prefab, enemy2Unit, mary2);
 
         string TestoBenvenuto = playerUnit.unitName + " e " + friendUnit.unitName + ", " + enemyUnit.unitName + " e " + enemy2Unit.unitName + " vi sfidano! ";
 
@@ -180,6 +188,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else
                 {
+                    isPriorityMove = false;
                     playerUnit.subisceDanno = true;
                     playerUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = playerUnit.spriteUnit;
                 }
@@ -201,6 +210,23 @@ public class BattleSystem : MonoBehaviour
 		state = BattleState.PLAYERTURN;
 		PlayerTurn();
 	}
+
+
+    void SetCharacterSprite(GameObject prefab, Unit unit, Sprite sprite, string targetName = "Mary")
+    {
+        if (unit.name == targetName)
+        {
+            UnityEngine.Debug.Log("trovato mary");
+            unit.spriteUnit = sprite;
+            Transform child = prefab.transform.GetChild(0);
+            SpriteRenderer renderer = child.GetComponent<SpriteRenderer>();
+            if (renderer != null)
+            {
+                unit.spriteUnit = sprite;
+                renderer.sprite = unit.spriteUnit;
+            }
+        }
+    }
 
 
     public void CheckForArthurMove()
@@ -270,6 +296,7 @@ public class BattleSystem : MonoBehaviour
         {
             gameobjectInOrdine[i] = gameobjectInOrdineDefault[i];
         }
+        turnoDiGameobject = gameobjectInOrdine[0];
     }
 
 
@@ -300,6 +327,7 @@ public class BattleSystem : MonoBehaviour
                         }
                         else
                         {
+                            isPriorityMove = false;
                             playerUnit.subisceDanno = true;
                             playerUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = playerUnit.spriteUnit;
                         }
@@ -479,6 +507,7 @@ public class BattleSystem : MonoBehaviour
                     }
                     else
                     {
+                        isPriorityMove = false;
                         giocatoreCheDeveDecidereUnit.subisceDanno = true;
                         giocatoreCheDeveDecidereUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = giocatoreCheDeveDecidereUnit.spriteUnit;
                     }
@@ -575,6 +604,7 @@ public class BattleSystem : MonoBehaviour
                     }
                     else
                     {
+                        isPriorityMove = false;
                         giocatoreCheDeveDecidereUnit.subisceDanno = true;
                         giocatoreCheDeveDecidereUnit.transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = giocatoreCheDeveDecidereUnit.spriteUnit;
                     }
