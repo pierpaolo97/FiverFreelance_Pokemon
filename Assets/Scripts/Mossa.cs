@@ -1199,6 +1199,7 @@ public class Mossa : MonoBehaviour
             battleSystem.dialogueText.GetComponent<TextMeshProUGUI>().text = currentText;
             yield return new WaitForSeconds(delay);
         }
+        yield return new WaitForSeconds(3f);
     }
 
     public IEnumerator FinePartita(GameObject Vincitore1, GameObject Vincitore2)
